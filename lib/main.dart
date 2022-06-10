@@ -38,12 +38,12 @@ class MainPage extends StatefulWidget {
 
 class _MainPageState extends State<MainPage> {
   //int currentNavIndex = 0;
-  int _page = 1;
+  int _page = 0;
   final GlobalKey<CurvedNavigationBarState> _bottomNavigationKey = GlobalKey();
 
   final screens = [
-    RecipesPage(),
     HomePage(),
+    RecipesPage(),
     CommunityPage(),
   ];
 
@@ -59,17 +59,18 @@ class _MainPageState extends State<MainPage> {
   Widget build(BuildContext context) {
     final items = <Widget>[
       Icon(
-        Icons.food_bank,
+        Icons.home_filled,
         size: 30,
       ),
       Icon(
-        Icons.home_filled,
+        Icons.food_bank,
         size: 30,
       ),
       Icon(
         Icons.groups_rounded,
         size: 30,
       ),
+      
     ];
 
     return Scaffold(
@@ -85,7 +86,7 @@ class _MainPageState extends State<MainPage> {
         )),
         child: CurvedNavigationBar(
           key: _bottomNavigationKey,
-          index: 1,
+          index: _page,
           height: 60.0,
           items: items,
           color: Color(0xFF12A2726),
