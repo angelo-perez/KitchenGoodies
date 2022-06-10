@@ -15,7 +15,20 @@ class _ChickenRecipesState extends State<ChickenRecipes> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(),
+      backgroundColor: Color(0xFFF2E5D9),
+      body: Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            Text(
+              'List of Chicken Dishes',
+              textAlign: TextAlign.center,
+              style: TextStyle(fontSize: 30),
+            ),
+          ],
+        ),
+      ),
     );
   }
 }

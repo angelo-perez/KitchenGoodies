@@ -2,6 +2,8 @@
 // import 'package:flutter/src/widgets/framework.dart';
 import 'package:elective_project/recipe_categories/chicken_recipes.dart';
 import 'package:flutter/material.dart';
+import 'package:persistent_bottom_nav_bar/persistent-tab-view.dart';
+
 
 class RecipesPage extends StatefulWidget {
   const RecipesPage({Key? key}) : super(key: key);
@@ -21,15 +23,11 @@ class _RecipesPageState extends State<RecipesPage> {
       // ),
       InkWell(
         splashColor: Colors.black26,
-        onTap: () {
-          Navigator.of(context).push(
-            MaterialPageRoute(
-              builder: (BuildContext context) {
-                return ChickenRecipes();
-              },
+          onTap: () =>
+            pushNewScreen(
+              context, screen: ChickenRecipes(), 
+              withNavBar: true
             ),
-          );
-        },
         child: Ink.image(
           image: const NetworkImage(
               'https://149361674.v2.pressablecdn.com/wp-content/uploads/2019/09/La-Terraza-Montebello-1-683x1024.jpg'),
