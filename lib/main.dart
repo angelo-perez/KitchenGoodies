@@ -1,3 +1,5 @@
+import 'dart:ui';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:curved_navigation_bar/curved_navigation_bar.dart';
@@ -9,6 +11,17 @@ import 'community_page.dart';
 void main() {
   runApp(MyApp());
 }
+
+//to make scrolls work on web through mouse
+class AppScrollBehavior extends MaterialScrollBehavior {
+  @override
+  Set<PointerDeviceKind> get dragDevices => {
+        PointerDeviceKind.touch,
+        PointerDeviceKind.mouse,
+      };
+}
+
+////////////////////////////////////////////////////////////////////////////////////////////////////
 
 class MyApp extends StatefulWidget {
   MyApp({Key? key}) : super(key: key);
@@ -77,7 +90,7 @@ class _MainPageState extends State<MainPage> {
     //     Icons.groups_rounded,
     //     size: 30,
     //   ),
-      
+
     // ];
 
     return Scaffold(
@@ -118,7 +131,8 @@ class _MainPageState extends State<MainPage> {
         backgroundColor: navBarColor,
       ),
     );
-  } 
+  }
+
   List<PersistentBottomNavBarItem> _navBarsItems() {
     return [
       PersistentBottomNavBarItem(
@@ -140,9 +154,5 @@ class _MainPageState extends State<MainPage> {
         inactiveColorPrimary: canvasColor,
       ),
     ];
-  } 
+  }
 }
-
-
-
-
