@@ -94,10 +94,6 @@ class _MainPageState extends State<MainPage> {
     // ];
 
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Kitchen Goodies'),
-        backgroundColor: navBarColor,
-      ),
       // body: screens[_page], //selects what page it will display
       // bottomNavigationBar: Theme(
       //   data: Theme.of(context).copyWith(
