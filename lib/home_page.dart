@@ -130,19 +130,19 @@ class _HomePageState extends State<HomePage> {
               scrollDirection: Axis.horizontal,
               children: [
                 RecipeTile(
-                  foodImagePath: 'lib/images/adob.jpg',
+                  foodImagePath: 'images/adob.jpg',
                   foodName: 'Adobo',
                 ),
                 RecipeTile(
-                  foodImagePath: 'lib/images/bicol-express.jpg',
+                  foodImagePath: 'images/bicol-express.jpg',
                   foodName: 'Bicol Express',
                 ),
                 RecipeTile(
-                  foodImagePath: 'lib/images/kare-kare.jpg',
+                  foodImagePath: 'images/kare-kare.jpg',
                   foodName: 'Kare-Kare',
                 ),
                 RecipeTile(
-                  foodImagePath: 'lib/images/menudo.jpg',
+                  foodImagePath: 'images/menudo.jpg',
                   foodName: 'Menudo',
                 ),
               ],
