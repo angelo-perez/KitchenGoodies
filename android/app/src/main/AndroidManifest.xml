@@ -1,5 +1,5 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.example.elective_project">
+    package="com.efor.elective_project">
    <application
         android:label="elective_project"
         android:name="${applicationName}"

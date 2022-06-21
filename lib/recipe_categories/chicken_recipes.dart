@@ -1,7 +1,7 @@
 import 'package:flutter/src/foundation/key.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter/material.dart';
-import '../recipes_page.dart';
+import '../pages/recipes_page.dart';
 import '../main.dart';
 
 class Recipe {

@@ -1,4 +1,4 @@
-package com.example.elective_project
+package com.efor.elective_project
 
 import io.flutter.embedding.android.FlutterActivity
 

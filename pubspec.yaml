@@ -38,6 +38,11 @@ dependencies:
   curved_navigation_bar: ^1.0.3
   persistent_bottom_nav_bar: any
   google_fonts:
+  firebase_core: ^1.18.0
+  firebase_auth: ^3.3.20
+  cloud_firestore: ^3.1.18
+  provider: ^6.0.3
+  flutter_svg: ^1.1.0
 
 
 dev_dependencies:
@@ -65,7 +70,8 @@ flutter:
   # To add assets to your application, add an assets section, like this:
   assets:
     - images/
-    -
+    - images/test-images/
+    - images/test-icons/
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware
