@@ -5,7 +5,9 @@ import 'package:elective_project/pages/create_page.dart';
 import 'package:elective_project/pages/login_page.dart';
 import 'package:elective_project/pages/setting_page.dart';
 import 'package:elective_project/pages/signIn_page.dart';
+import 'package:elective_project/pages/signUp_page.dart';
 import 'package:elective_project/pages/splash_page.dart';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:curved_navigation_bar/curved_navigation_bar.dart';
@@ -99,7 +101,7 @@ class _MainPageState extends State<MainPage> {
     //   ),
 
     // ];
-    return LoginPage();
+    return SplashPage();
     // return Scaffold(
     //   // body: screens[_page], //selects what page it will display
     //   // bottomNavigationBar: Theme(
