@@ -1,7 +1,16 @@
+import 'dart:ffi';
+import 'dart:typed_data';
+
+import 'package:elective_project/main.dart';
 import 'package:elective_project/pages/signIn_page.dart';
+import 'package:elective_project/resources/auth_methods.dart';
 import 'package:elective_project/util/colors.dart';
+import 'package:elective_project/util/utils.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:image_picker/image_picker.dart';
 
 class SignUpPage extends StatefulWidget {
   const SignUpPage({Key? key}) : super(key: key);
@@ -15,7 +24,9 @@ class _SignUpPageState extends State<SignUpPage> {
   final TextEditingController _passwordController = TextEditingController();
   final TextEditingController _usernameController = TextEditingController();
   final TextEditingController _confirmPasswordController = TextEditingController();
-  bool isLoading = false;
+  Uint8List? _image;
+
+  bool _isLoading = false;
 
   @override
   void dispose() {
@@ -24,6 +35,44 @@ class _SignUpPageState extends State<SignUpPage> {
     _emailController.dispose();
     _passwordController.dispose();
     _usernameController.dispose();
+  }
+
+  void defaultpp() async {
+    final ByteData bytes = await rootBundle.load('images/test-images/default-pp.png');
+    final Uint8List list = bytes.buffer.asUint8List();
+    setState(() {
+      _image = list;
+    });
+  }
+
+  void selectImage() async {
+    Uint8List im = await pickImage(ImageSource.gallery);
+    setState(() {
+      _image = im;
+    });
+  }
+
+  void signUpUser() async {
+    setState(() {
+      _isLoading = true;
+    });
+
+    String res = await AuthMethods().signUpUser(
+      email: _emailController.text,
+      username: _usernameController.text,
+      password: _passwordController.text,
+      confirmPassword: _confirmPasswordController.text,
+      file: _image!,
+    );
+    setState(() {
+      _isLoading = false;
+    });
+
+    if (res != 'Success') {
+      showSnackBar(res, context);
+    } else {
+      Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (context) => SignInPage()));
+    }
   }
 
   @override
@@ -63,6 +112,33 @@ class _SignUpPageState extends State<SignUpPage> {
                     TextStyle(color: Color(0xFFB98068), fontSize: 32, fontWeight: FontWeight.w500),
               ),
             ),
+            // <--------- DEFAULT PICTURE --------->
+            Center(
+              child: Stack(
+                children: [
+                  _image != null
+                      ? CircleAvatar(
+                          radius: 64,
+                          backgroundImage: MemoryImage(_image!),
+                        )
+                      : const CircleAvatar(
+                          radius: 64,
+                          backgroundImage: AssetImage('images/test-images/default-pp.png'),
+                        ),
+                  Positioned(
+                    bottom: -10,
+                    left: 80,
+                    child: IconButton(
+                      onPressed: selectImage,
+                      icon: const Icon(
+                        Icons.add_a_photo,
+                      ),
+                    ),
+                  )
+                ],
+              ),
+            ),
+
             // <--------- EMAIL, USERNAME, AND PASSWORD CONTAINER --------->
             Container(
               padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 20),
@@ -98,7 +174,7 @@ class _SignUpPageState extends State<SignUpPage> {
                   ),
                   // <--------- USERNAME --------->
                   TextField(
-                    controller: _passwordController,
+                    controller: _usernameController,
                     keyboardType: TextInputType.text,
                     cursorColor: Colors.grey,
                     decoration: InputDecoration(
@@ -154,7 +230,7 @@ class _SignUpPageState extends State<SignUpPage> {
                     ),
                   ),
                   TextField(
-                    controller: _passwordController,
+                    controller: _confirmPasswordController,
                     keyboardType: TextInputType.text,
                     obscureText: true,
                     cursorColor: Colors.grey,
@@ -186,38 +262,53 @@ class _SignUpPageState extends State<SignUpPage> {
             ),
 
             const SizedBox(
-              height: 60,
+              height: 30,
             ),
 
-            // <--------- LOGIN CONTAINER --------->
-            Container(
-              padding: const EdgeInsets.symmetric(
-                horizontal: 30,
-              ),
-              child: TextButton(
-                onPressed: () {
-                  (_passwordController == _confirmPasswordController) ? () {} : () {};
-                },
-                style: TextButton.styleFrom(
-                  backgroundColor: mPrimaryColor,
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(36),
-                    side: BorderSide(
-                      color: mPrimaryColor,
-                    ),
-                  ),
+            // <--------- SIGNUP CONTAINER --------->
+            InkWell(
+              child: Container(
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 30,
                 ),
-                child: Container(
-                  padding: const EdgeInsets.symmetric(
-                    vertical: 16,
-                  ),
-                  width: double.infinity,
-                  alignment: Alignment.center,
-                  child: const Text(
-                    'Sign Up',
-                    style: TextStyle(
-                      color: Colors.white,
+                child: TextButton(
+                  onPressed: () async {
+                    if (_image == null) {
+                      defaultpp();
+                    }
+                    signUpUser();
+                  },
+                  style: TextButton.styleFrom(
+                    backgroundColor: mPrimaryColor,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(36),
+                      side: BorderSide(
+                        color: mPrimaryColor,
+                      ),
                     ),
+                  ),
+                  child: Container(
+                    padding: const EdgeInsets.symmetric(
+                      vertical: 16,
+                    ),
+                    width: double.infinity,
+                    alignment: Alignment.center,
+                    child: _isLoading
+                        ? const SizedBox(
+                            width: 20,
+                            height: 20,
+                            child: Center(
+                              child: CircularProgressIndicator(
+                                color: Color(0xFFFFFFFF),
+                              ),
+                            ),
+                          )
+                        : const Text(
+                            'Sign Up',
+                            style: TextStyle(
+                              color: Colors.white,
+                            ),
+                          ),
                   ),
                 ),
               ),
@@ -247,8 +338,8 @@ class _SignUpPageState extends State<SignUpPage> {
                       ),
                       recognizer: TapGestureRecognizer()
                         ..onTap = () {
-                          Navigator.of(context)
-                              .push(MaterialPageRoute(builder: (context) => SignInPage()));
+                          Navigator.of(context).pushReplacement(
+                              MaterialPageRoute(builder: (context) => SignInPage()));
                         },
                     ),
                   ],

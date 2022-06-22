@@ -1,6 +1,12 @@
+import 'package:elective_project/main.dart';
+import 'package:elective_project/pages/signUp_page.dart';
+import 'package:elective_project/resources/auth_methods.dart';
 import 'package:elective_project/util/colors.dart';
+import 'package:elective_project/util/utils.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+
+import 'main_page.dart';
 
 class SignInPage extends StatefulWidget {
   const SignInPage({Key? key}) : super(key: key);
@@ -12,7 +18,7 @@ class SignInPage extends StatefulWidget {
 class _SignInPageState extends State<SignInPage> {
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
-  bool isLoading = false;
+  bool _isLoading = false;
 
   @override
   void dispose() {
@@ -20,6 +26,24 @@ class _SignInPageState extends State<SignInPage> {
     super.dispose();
     _emailController.dispose();
     _passwordController.dispose();
+  }
+
+  void loginUser() async {
+    setState(() {
+      _isLoading = true;
+    });
+    String res = await AuthMethods().loginUser(
+      email: _emailController.text,
+      password: _passwordController.text,
+    );
+    if (res == "Success") {
+      Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (context) => MainPage()));
+    } else {
+      showSnackBar(res, context);
+    }
+    setState(() {
+      _isLoading = false;
+    });
   }
 
   @override
@@ -142,7 +166,7 @@ class _SignInPageState extends State<SignInPage> {
                 horizontal: 30,
               ),
               child: TextButton(
-                onPressed: () {},
+                onPressed: loginUser,
                 style: TextButton.styleFrom(
                   backgroundColor: mPrimaryColor,
                   shape: RoundedRectangleBorder(
@@ -158,12 +182,22 @@ class _SignInPageState extends State<SignInPage> {
                   ),
                   width: double.infinity,
                   alignment: Alignment.center,
-                  child: const Text(
-                    'Sign In',
-                    style: TextStyle(
-                      color: Colors.white,
-                    ),
-                  ),
+                  child: _isLoading
+                      ? const SizedBox(
+                          width: 20,
+                          height: 20,
+                          child: Center(
+                            child: CircularProgressIndicator(
+                              color: Color(0xFFFFFFFF),
+                            ),
+                          ),
+                        )
+                      : const Text(
+                          'Sign In',
+                          style: TextStyle(
+                            color: Colors.white,
+                          ),
+                        ),
                 ),
               ),
             ),
@@ -192,7 +226,8 @@ class _SignInPageState extends State<SignInPage> {
                       ),
                       recognizer: TapGestureRecognizer()
                         ..onTap = () {
-                          Navigator.pop(context);
+                          Navigator.of(context).pushReplacement(
+                              MaterialPageRoute(builder: (context) => SignUpPage()));
                         },
                     ),
                   ],
