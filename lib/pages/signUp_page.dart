@@ -64,14 +64,19 @@ class _SignUpPageState extends State<SignUpPage> {
       confirmPassword: _confirmPasswordController.text,
       file: _image!,
     );
-    setState(() {
-      _isLoading = false;
-    });
 
-    if (res != 'Success') {
-      showSnackBar(res, context);
-    } else {
+    
+
+    if (res == 'Success') {
+      setState(() {
+      _isLoading = false;
+      });
       Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (context) => SignInPage()));
+    } else {
+      showSnackBar(res, context);
+      setState(() {
+      _isLoading = false;
+      });
     }
   }
 
