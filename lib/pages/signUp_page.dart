@@ -92,13 +92,13 @@ class _SignUpPageState extends State<SignUpPage> {
       backgroundColor: const Color(0xFFF2E5D9),
       resizeToAvoidBottomInset: false,
       appBar: AppBar(
-        backgroundColor: const Color(0xFF12A2726), //Color(0xFFF2E5D9),
+        backgroundColor: const Color(0xFFF2E5D9), //Color(0xFFF2E5D9),
         elevation: 0,
         centerTitle: true,
         title: const Text(
           'Sign Up',
           style: TextStyle(
-            color: Color(0xFFF2E5D9),
+            color: Color(0xFF6e3d28),
           ),
         ),
         leading: IconButton(
@@ -107,7 +107,7 @@ class _SignUpPageState extends State<SignUpPage> {
           },
           icon: const Icon(
             Icons.arrow_back_ios,
-            color: Color(0xFFF2E5D9),
+            color: Color(0xFF6e3d28),
           ),
         ),
       ),

@@ -52,13 +52,13 @@ class _SignInPageState extends State<SignInPage> {
       backgroundColor: Color(0xFFF2E5D9),
       resizeToAvoidBottomInset: false,
       appBar: AppBar(
-        backgroundColor: const Color(0xFF12A2726),
+        backgroundColor: const Color(0xFFF2E5D9),
         elevation: 0,
         centerTitle: true,
         title: const Text(
           'Sign In',
           style: TextStyle(
-            color: Color(0xFFF2E5D9),
+            color: Color(0xFF6e3d28),
           ),
         ),
         leading: IconButton(
@@ -67,7 +67,7 @@ class _SignInPageState extends State<SignInPage> {
           },
           icon: const Icon(
             Icons.arrow_back_ios,
-            color: Color(0xFFF2E5D9),
+            color: Color(0xFF6e3d28),
           ),
         ),
       ),
@@ -81,7 +81,7 @@ class _SignInPageState extends State<SignInPage> {
               child: const Text(
                 'Welcome Back',
                 style:
-                    TextStyle(color: Color(0xFFB98068), fontSize: 32, fontWeight: FontWeight.w500),
+                    TextStyle(color: Color(0xFF6e3d28), fontSize: 32, fontWeight: FontWeight.w500),
               ),
             ),
             // <--------- EMAIL AND PASSWORD CONTAINER --------->
@@ -154,7 +154,7 @@ class _SignInPageState extends State<SignInPage> {
               alignment: Alignment.centerRight,
               child: Text(
                 'Forgot Password?',
-                style: TextStyle(color: mPrimaryColor),
+                style: TextStyle(color: Color(0xFF6e3d28)),
               ),
             ),
             const SizedBox(
@@ -169,11 +169,11 @@ class _SignInPageState extends State<SignInPage> {
               child: TextButton(
                 onPressed: loginUser,
                 style: TextButton.styleFrom(
-                  backgroundColor: mPrimaryColor,
+                  backgroundColor: Color(0xFF6e3d28),
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(36),
                     side: BorderSide(
-                      color: mPrimaryColor,
+                      color: Color(0xFF6e3d28),
                     ),
                   ),
                 ),
@@ -222,7 +222,7 @@ class _SignInPageState extends State<SignInPage> {
                     TextSpan(
                       text: ' Register',
                       style: TextStyle(
-                        color: mPrimaryColor,
+                        color: Color(0xFF6e3d28),
                         fontSize: 16,
                       ),
                       recognizer: TapGestureRecognizer()
