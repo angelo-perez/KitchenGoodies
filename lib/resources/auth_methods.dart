@@ -66,4 +66,10 @@ class AuthMethods {
     }
     return res;
   }
+
+  Future<String> signOut() async {
+    String res = 'signout';
+    await FirebaseAuth.instance.signOut();
+    return res;
+  }
 }

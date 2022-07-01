@@ -40,8 +40,8 @@ class LoginPage extends StatelessWidget {
                     Expanded(
                       child: TextButton(
                         onPressed: () {
-                          Navigator.of(context).push(MaterialPageRoute(builder: (context) => SignUpPage()));
-                          
+                          Navigator.of(context)
+                              .push(MaterialPageRoute(builder: (context) => SignUpPage()));
                         },
                         style: TextButton.styleFrom(
                           shape: RoundedRectangleBorder(
@@ -149,7 +149,11 @@ class LoginPage extends StatelessWidget {
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: <Widget>[
-                        SvgPicture.asset('images/test-images/facebook.svg'),
+                        SvgPicture.asset(
+                          'images/test-images/google.svg',
+                          width: 16,
+                          height: 16,
+                        ),
                         const SizedBox(
                           width: 12,
                         ),

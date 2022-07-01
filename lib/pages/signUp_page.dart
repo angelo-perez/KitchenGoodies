@@ -52,11 +52,19 @@ class _SignUpPageState extends State<SignUpPage> {
     });
   }
 
+  @override
+  void initState() {
+    defaultpp();
+    super.initState();
+  }
+
   void signUpUser() async {
     setState(() {
       _isLoading = true;
     });
-
+    // if (_image == null) {
+    //   defaultpp();
+    // }
     String res = await AuthMethods().signUpUser(
       email: _emailController.text,
       username: _usernameController.text,
@@ -65,17 +73,15 @@ class _SignUpPageState extends State<SignUpPage> {
       file: _image!,
     );
 
-    
-
     if (res == 'Success') {
       setState(() {
-      _isLoading = false;
+        _isLoading = false;
       });
       Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (context) => SignInPage()));
     } else {
       showSnackBar(res, context);
       setState(() {
-      _isLoading = false;
+        _isLoading = false;
       });
     }
   }
@@ -278,9 +284,6 @@ class _SignUpPageState extends State<SignUpPage> {
                 ),
                 child: TextButton(
                   onPressed: () async {
-                    if (_image == null) {
-                      defaultpp();
-                    }
                     signUpUser();
                   },
                   style: TextButton.styleFrom(
