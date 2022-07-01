@@ -11,6 +11,7 @@ class LoginPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+        backgroundColor: Color(0xFFF2E5D9),
         resizeToAvoidBottomInset: false,
         body: SafeArea(
           child: Column(
@@ -20,11 +21,11 @@ class LoginPage extends StatelessWidget {
               const SizedBox(
                 height: 5,
               ),
-              Text(
+              const Text(
                 'Cooking is love\nmade visible!',
                 textAlign: TextAlign.center,
                 style: TextStyle(
-                  color: mPrimaryTextColor,
+                  color: Color(0xFF6e3d28),
                   fontSize: 32,
                   fontWeight: FontWeight.w500,
                 ),
@@ -47,7 +48,7 @@ class LoginPage extends StatelessWidget {
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(36),
                           ),
-                          backgroundColor: mPrimaryColor,
+                          backgroundColor: Color(0xFF6e3d28),
                         ),
                         child: Container(
                           padding: const EdgeInsets.symmetric(
@@ -78,7 +79,7 @@ class LoginPage extends StatelessWidget {
                           shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(36),
                               side: BorderSide(
-                                color: mPrimaryColor,
+                                color: Color(0xFF6e3d28),
                               )),
                         ),
                         child: Container(
@@ -90,7 +91,7 @@ class LoginPage extends StatelessWidget {
                           child: const Text(
                             "Sign In",
                             style: TextStyle(
-                              color: Color(0xFFB98068),
+                              color: Color(0xFF6e3d28),
                             ),
                           ),
                         ),

@@ -49,24 +49,25 @@ class _SignInPageState extends State<SignInPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Color(0xFFF2E5D9),
       resizeToAvoidBottomInset: false,
       appBar: AppBar(
-        backgroundColor: mBackgroundColor,
+        backgroundColor: const Color(0xFF12A2726),
         elevation: 0,
         centerTitle: true,
-        title: Text(
+        title: const Text(
           'Sign In',
           style: TextStyle(
-            color: mPrimaryTextColor,
+            color: Color(0xFFF2E5D9),
           ),
         ),
         leading: IconButton(
           onPressed: () {
             Navigator.pop(context);
           },
-          icon: Icon(
+          icon: const Icon(
             Icons.arrow_back_ios,
-            color: mPrimaryTextColor,
+            color: Color(0xFFF2E5D9),
           ),
         ),
       ),
