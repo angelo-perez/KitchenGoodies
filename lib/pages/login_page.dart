@@ -21,7 +21,7 @@ class LoginPage extends StatelessWidget {
                 height: 5,
               ),
               Text(
-                'Get the best coffee\nin town!',
+                'Cooking is love\nmade visible!',
                 textAlign: TextAlign.center,
                 style: TextStyle(
                   color: mPrimaryTextColor,
