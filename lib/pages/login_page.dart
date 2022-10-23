@@ -1,8 +1,8 @@
-import 'package:elective_project/google_sign_in/google_sign_in.dart';
+import 'package:elective_project/resources/google_sign_in.dart';
 import 'package:elective_project/main.dart';
 import 'package:elective_project/pages/signIn_page.dart';
 import 'package:elective_project/pages/signUp_page.dart';
-import 'package:elective_project/google_sign_in/verify_google_sign_in.dart';
+import 'package:elective_project/resources/verify_sign_in.dart';
 import 'package:elective_project/util/colors.dart';
 import 'package:elective_project/util/utils.dart';
 import 'package:elective_project/widget/sliderDot.dart';
@@ -111,48 +111,14 @@ class LoginPage extends StatelessWidget {
               Container(
                 padding: const EdgeInsets.symmetric(horizontal: 30),
                 child: TextButton(
-                  onPressed: () {},
-                  style: TextButton.styleFrom(
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(36),
-                      ),
-                      side: BorderSide(
-                        color: mFacebookColor,
-                      )),
-                  child: Container(
-                    padding: const EdgeInsets.symmetric(vertical: 10),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: <Widget>[
-                        SvgPicture.asset('images/test-images/facebook.svg'),
-                        const SizedBox(
-                          width: 12,
-                        ),
-                        Text(
-                          'Sign in with Facebook',
-                          style: TextStyle(
-                            color: mFacebookColor,
-                          ),
-                        )
-                      ],
-                    ),
-                  ),
-                ),
-              ),
-              const SizedBox(
-                height: 10,
-              ),
-              Container(
-                padding: const EdgeInsets.symmetric(horizontal: 30),
-                child: TextButton(
                   onPressed: () {
                     final provider = Provider.of<GoogleSignInProvider>(context,
                         listen: false);
                     provider.googleLogin();
-                    Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (context) => VerifyGoogleSignIn()));
+                    Navigator.of(context).pushReplacement(MaterialPageRoute(
+                        builder: (context) => VerifyGoogleSignIn()));
                     // Navigator.of(context).pushReplacement(
                     //       MaterialPageRoute(builder: (context) => MainPage()));
-                  
                   },
                   style: TextButton.styleFrom(
                       shape: RoundedRectangleBorder(
@@ -176,6 +142,40 @@ class LoginPage extends StatelessWidget {
                         ),
                         Text(
                           'Sign in with Google',
+                          style: TextStyle(
+                            color: mFacebookColor,
+                          ),
+                        )
+                      ],
+                    ),
+                  ),
+                ),
+              ),
+              const SizedBox(
+                height: 10,
+              ),
+              Container(
+                padding: const EdgeInsets.symmetric(horizontal: 30),
+                child: TextButton(
+                  onPressed: () {},
+                  style: TextButton.styleFrom(
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(36),
+                      ),
+                      side: BorderSide(
+                        color: mFacebookColor,
+                      )),
+                  child: Container(
+                    padding: const EdgeInsets.symmetric(vertical: 10),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: <Widget>[
+                        SvgPicture.asset('images/test-images/facebook.svg'),
+                        const SizedBox(
+                          width: 12,
+                        ),
+                        Text(
+                          'Sign in with Facebook',
                           style: TextStyle(
                             color: mFacebookColor,
                           ),

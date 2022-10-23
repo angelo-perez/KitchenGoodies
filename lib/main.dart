@@ -2,7 +2,7 @@ import 'dart:ui';
 
 import 'package:elective_project/pages/community_page.dart';
 import 'package:elective_project/pages/create_page.dart';
-import 'package:elective_project/google_sign_in/google_sign_in.dart';
+import 'package:elective_project/resources/google_sign_in.dart';
 import 'package:elective_project/pages/login_page.dart';
 import 'package:elective_project/pages/main_page.dart';
 import 'package:elective_project/pages/setting_page.dart';

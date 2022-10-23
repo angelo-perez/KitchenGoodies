@@ -6,7 +6,7 @@ import 'package:elective_project/util/utils.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 
-import '../google_sign_in/verify_google_sign_in.dart';
+import '../resources/verify_sign_in.dart';
 import 'main_page.dart';
 
 class SignInPage extends StatefulWidget {
