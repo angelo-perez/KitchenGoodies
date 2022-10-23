@@ -6,6 +6,7 @@ import 'package:elective_project/util/utils.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 
+import '../google_sign_in/verify_google_sign_in.dart';
 import 'main_page.dart';
 
 class SignInPage extends StatefulWidget {
@@ -37,7 +38,8 @@ class _SignInPageState extends State<SignInPage> {
       password: _passwordController.text,
     );
     if (res == "Success") {
-      Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (context) => MainPage()));
+      //Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (context) => MainPage()));
+      Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (context) => VerifyGoogleSignIn()));
     } else {
       showSnackBar(res, context);
     }

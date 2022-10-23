@@ -3,6 +3,7 @@ import 'package:elective_project/pages/create_page.dart';
 import 'package:elective_project/pages/home_page.dart';
 import 'package:elective_project/pages/recipes_page.dart';
 import 'package:elective_project/pages/setting_page.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:persistent_bottom_nav_bar/persistent-tab-view.dart';
@@ -20,10 +21,12 @@ class _MainPageState extends State<MainPage> {
   //int currentNavIndex = 0;
   //int _page = 0;
   //final GlobalKey<CurvedNavigationBarState> _bottomNavigationKey = GlobalKey();
+ 
 
   Color navBarColor = const Color(0xFF12A2726);
   static Color canvasColor = const Color(0xFFF2E5D9);
-  final PersistentTabController _controller = PersistentTabController(initialIndex: 0);
+  final PersistentTabController _controller =
+      PersistentTabController(initialIndex: 0);
 
   final _screens = [
     HomePage(),
@@ -43,6 +46,7 @@ class _MainPageState extends State<MainPage> {
 
   @override
   Widget build(BuildContext context) {
+    
     // final items = <Widget>[
     //   Icon(
     //     Icons.home_filled,

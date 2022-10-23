@@ -1,9 +1,16 @@
+import 'package:elective_project/google_sign_in/google_sign_in.dart';
+import 'package:elective_project/main.dart';
 import 'package:elective_project/pages/signIn_page.dart';
 import 'package:elective_project/pages/signUp_page.dart';
+import 'package:elective_project/google_sign_in/verify_google_sign_in.dart';
 import 'package:elective_project/util/colors.dart';
+import 'package:elective_project/util/utils.dart';
 import 'package:elective_project/widget/sliderDot.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:provider/provider.dart';
+
+import 'main_page.dart';
 
 class LoginPage extends StatelessWidget {
   const LoginPage({Key? key}) : super(key: key);
@@ -41,8 +48,8 @@ class LoginPage extends StatelessWidget {
                     Expanded(
                       child: TextButton(
                         onPressed: () {
-                          Navigator.of(context)
-                              .push(MaterialPageRoute(builder: (context) => SignUpPage()));
+                          Navigator.of(context).push(MaterialPageRoute(
+                              builder: (context) => SignUpPage()));
                         },
                         style: TextButton.styleFrom(
                           shape: RoundedRectangleBorder(
@@ -71,7 +78,8 @@ class LoginPage extends StatelessWidget {
                     Expanded(
                       child: TextButton(
                         onPressed: () {
-                          Navigator.push(context, MaterialPageRoute(builder: (context) {
+                          Navigator.push(context,
+                              MaterialPageRoute(builder: (context) {
                             return const SignInPage();
                           }));
                         },
@@ -121,7 +129,7 @@ class LoginPage extends StatelessWidget {
                           width: 12,
                         ),
                         Text(
-                          'Connect with Facebook',
+                          'Sign in with Facebook',
                           style: TextStyle(
                             color: mFacebookColor,
                           ),
@@ -137,7 +145,15 @@ class LoginPage extends StatelessWidget {
               Container(
                 padding: const EdgeInsets.symmetric(horizontal: 30),
                 child: TextButton(
-                  onPressed: () {},
+                  onPressed: () {
+                    final provider = Provider.of<GoogleSignInProvider>(context,
+                        listen: false);
+                    provider.googleLogin();
+                    Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (context) => VerifyGoogleSignIn()));
+                    // Navigator.of(context).pushReplacement(
+                    //       MaterialPageRoute(builder: (context) => MainPage()));
+                  
+                  },
                   style: TextButton.styleFrom(
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(36),
@@ -159,7 +175,7 @@ class LoginPage extends StatelessWidget {
                           width: 12,
                         ),
                         Text(
-                          'Connect with Gmail',
+                          'Sign in with Google',
                           style: TextStyle(
                             color: mFacebookColor,
                           ),

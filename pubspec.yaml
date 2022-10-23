@@ -39,12 +39,26 @@ dependencies:
   persistent_bottom_nav_bar: any
   google_fonts:
   firebase_core: ^1.18.0
+
+  #Google Sign In
   firebase_auth: ^3.3.20
-  cloud_firestore: ^3.1.18
+  google_sign_in: ^5.4.2
+
+  #Google Icon
+  font_awesome_flutter: ^9.0.0
+
+  #State Management
   provider: ^6.0.3
+
+  #flutter_facebook_auth:
+
+  cloud_firestore: ^3.1.18
   flutter_svg: ^1.1.0
   firebase_storage: ^10.2.18
   image_picker: ^0.8.5+3
+  bulleted_list: ^0.0.1+0.1a
+  countdown_progress_indicator: ^0.1.2
+  percent_indicator: ^4.2.2
 
 
 dev_dependencies:
