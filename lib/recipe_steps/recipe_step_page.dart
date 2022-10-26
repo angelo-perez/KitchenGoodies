@@ -1,5 +1,5 @@
-import 'package:elective_project/steps/step_indicator.dart';
-import 'package:elective_project/steps/timer_widget.dart';
+import 'package:elective_project/recipe_steps/step_indicator.dart';
+import 'package:elective_project/recipe_steps/timer_widget.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/container.dart';

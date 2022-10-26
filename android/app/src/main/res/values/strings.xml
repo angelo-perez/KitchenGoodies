@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+  <string name="app_name">Kitchen Goodies</string>
+  <string name="facebook_app_id">888152748752061</string>
+  <string name="fb_login_protocol_scheme">fb888152748752061</string>
+  <string name="facebook_client_token">6e57dc5b1df95d58d02bd2b8b47be9e1</string>
+</resources>

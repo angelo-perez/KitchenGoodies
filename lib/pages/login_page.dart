@@ -1,3 +1,4 @@
+import 'package:elective_project/resources/facebook_sign_in.dart';
 import 'package:elective_project/resources/google_sign_in.dart';
 import 'package:elective_project/main.dart';
 import 'package:elective_project/pages/signIn_page.dart';
@@ -7,13 +8,17 @@ import 'package:elective_project/util/colors.dart';
 import 'package:elective_project/util/utils.dart';
 import 'package:elective_project/widget/sliderDot.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_facebook_auth/flutter_facebook_auth.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:provider/provider.dart';
 
 import 'main_page.dart';
 
 class LoginPage extends StatelessWidget {
-  const LoginPage({Key? key}) : super(key: key);
+  LoginPage({Key? key}) : super(key: key);
+
+  bool _isLoggedIn = false;
+  Map _userObj = {};
 
   @override
   Widget build(BuildContext context) {
@@ -117,8 +122,6 @@ class LoginPage extends StatelessWidget {
                     provider.googleLogin();
                     Navigator.of(context).pushReplacement(MaterialPageRoute(
                         builder: (context) => VerifyGoogleSignIn()));
-                    // Navigator.of(context).pushReplacement(
-                    //       MaterialPageRoute(builder: (context) => MainPage()));
                   },
                   style: TextButton.styleFrom(
                       shape: RoundedRectangleBorder(
@@ -154,37 +157,42 @@ class LoginPage extends StatelessWidget {
               const SizedBox(
                 height: 10,
               ),
-              Container(
-                padding: const EdgeInsets.symmetric(horizontal: 30),
-                child: TextButton(
-                  onPressed: () {},
-                  style: TextButton.styleFrom(
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(36),
-                      ),
-                      side: BorderSide(
-                        color: mFacebookColor,
-                      )),
-                  child: Container(
-                    padding: const EdgeInsets.symmetric(vertical: 10),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: <Widget>[
-                        SvgPicture.asset('images/test-images/facebook.svg'),
-                        const SizedBox(
-                          width: 12,
-                        ),
-                        Text(
-                          'Sign in with Facebook',
-                          style: TextStyle(
-                            color: mFacebookColor,
-                          ),
-                        )
-                      ],
-                    ),
-                  ),
-                ),
-              ),
+              // FACEBOOK LOGIN (Unfixed)
+              // Container(
+              //   padding: const EdgeInsets.symmetric(horizontal: 30),
+              //   child: TextButton(
+              //     onPressed: () async {
+              //       await FacebookSignIn().facebookLogin();
+              //       Navigator.of(context).pushReplacement(MaterialPageRoute(
+              //           builder: (context) => VerifyGoogleSignIn()));
+              //     },
+              //     style: TextButton.styleFrom(
+              //         shape: RoundedRectangleBorder(
+              //           borderRadius: BorderRadius.circular(36),
+              //         ),
+              //         side: BorderSide(
+              //           color: mFacebookColor,
+              //         )),
+              //     child: Container(
+              //       padding: const EdgeInsets.symmetric(vertical: 10),
+              //       child: Row(
+              //         mainAxisAlignment: MainAxisAlignment.center,
+              //         children: <Widget>[
+              //           SvgPicture.asset('images/test-images/facebook.svg'),
+              //           const SizedBox(
+              //             width: 12,
+              //           ),
+              //           Text(
+              //             'Sign in with Facebook',
+              //             style: TextStyle(
+              //               color: mFacebookColor,
+              //             ),
+              //           )
+              //         ],
+              //       ),
+              //     ),
+              //   ),
+              // ),
             ],
           ),
         ));

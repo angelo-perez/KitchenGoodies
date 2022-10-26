@@ -1,7 +1,7 @@
 import 'dart:ffi';
 
 import 'package:bulleted_list/bulleted_list.dart';
-import 'package:elective_project/steps/recipe_step_page.dart';
+import 'package:elective_project/recipe_steps/recipe_step_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/container.dart';
 import 'package:flutter/src/widgets/framework.dart';

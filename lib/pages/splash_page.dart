@@ -15,7 +15,7 @@ class _SplashPageState extends State<SplashPage> {
     var time = Duration(seconds: 3);
     Future.delayed(time, () {
       Navigator.pushAndRemoveUntil(this.context, MaterialPageRoute(builder: (context) {
-        return const LoginPage();
+        return LoginPage();
       }), (route) => false);
     });
 
