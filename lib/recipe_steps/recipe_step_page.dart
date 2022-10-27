@@ -4,6 +4,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/container.dart';
 import 'package:flutter/src/widgets/framework.dart';
+import 'package:flutter_ringtone_player/flutter_ringtone_player.dart';
 import 'package:persistent_bottom_nav_bar/persistent-tab-view.dart';
 
 import 'finished_page.dart';
@@ -55,6 +56,8 @@ class _RecipeStepPageState extends State<RecipeStepPage> {
     if (widget.step_index < widget.total_steps_count) {
       widget.step_index++;
     }
+
+    FlutterRingtonePlayer.stop();
 
     return WillPopScope(
       onWillPop: _onWillPop,

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/src/foundation/key.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:countdown_progress_indicator/countdown_progress_indicator.dart';
+import 'package:flutter_ringtone_player/flutter_ringtone_player.dart';
 import 'package:persistent_bottom_nav_bar/persistent-tab-view.dart';
 
 class TimerWidget extends StatefulWidget {
@@ -15,12 +16,19 @@ class TimerWidget extends StatefulWidget {
 
 class _TimerWidgetState extends State<TimerWidget> {
   bool _isRunning = true;
+  //bool _isCompleted = false;
   final _controller = CountDownController();
   int addTwoMinutes = 0;
 
   @override
   Widget build(BuildContext context) {
     int stepDurationSeconds = widget.current_step_duration * (60 / 1).toInt();
+
+    FlutterRingtonePlayer.play(
+      fromAsset: "audio/slow-tick-tock-clock-timer.wav",
+      looping: true, // Android only - API >= 28
+    );
+
     return Container(
       child: Center(
         child: Column(
@@ -42,12 +50,18 @@ class _TimerWidgetState extends State<TimerWidget> {
                       .split('.')[0]
                       .padLeft(8, '0');
                 },
-                onComplete: () => null,
+                onComplete: () {
+                  //_isCompleted = true;
+                  FlutterRingtonePlayer.stop();
+                  FlutterRingtonePlayer.play(
+                      fromAsset: 'audio/microwave-timer.wav');
+                },
                 timeTextStyle: TextStyle(fontSize: 40),
               ),
             ),
             ElevatedButton(
-              style: ElevatedButton.styleFrom(backgroundColor: Color(0xFF12A2726)),
+              style:
+                  ElevatedButton.styleFrom(backgroundColor: Color(0xFF12A2726)),
               onPressed: () => setState(() {
                 if (_isRunning) {
                   _controller.pause();
@@ -63,12 +77,16 @@ class _TimerWidgetState extends State<TimerWidget> {
               ),
             ),
             ElevatedButton(
-              style: ElevatedButton.styleFrom(backgroundColor: Color(0xFF12A2726)),
+              style:
+                  ElevatedButton.styleFrom(backgroundColor: Color(0xFF12A2726)),
               onPressed: () => setState(() {
-                //stepDurationSeconds += 300;
-                addTwoMinutes += 120; //adds 2 mins (300s) to the time
-              }),
-              child: Text('+2 minutes', style: TextStyle(color: Color(0xFFF2E5D9)),),
+                        //stepDurationSeconds += 300;
+                        addTwoMinutes += 120; //adds 2 mins (300s) to the time
+                      }),
+              child: Text(
+                '+2 minutes',
+                style: TextStyle(color: Color(0xFFF2E5D9)),
+              ),
             ),
           ],
         ),
