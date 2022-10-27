@@ -40,6 +40,7 @@ class _RecipeStepPageState extends State<RecipeStepPage> {
                 ),
                 TextButton(
                   onPressed: () {
+                    FlutterRingtonePlayer.stop();
                     for (int i = widget.step_index; i >= 0; i--) {
                       print(widget.step_index);
                       Navigator.of(context).pop(true);
