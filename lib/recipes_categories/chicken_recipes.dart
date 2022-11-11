@@ -5,7 +5,7 @@ import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter/material.dart';
 import 'package:persistent_bottom_nav_bar/persistent-tab-view.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
-import '../pages/recipes_page.dart';
+import '../main_pages/recipes_page.dart';
 import '../main.dart';
 
 class ChickenRecipes extends StatefulWidget {

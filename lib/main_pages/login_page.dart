@@ -1,8 +1,8 @@
 import 'package:elective_project/resources/facebook_sign_in.dart';
 import 'package:elective_project/resources/google_sign_in.dart';
 import 'package:elective_project/main.dart';
-import 'package:elective_project/pages/signIn_page.dart';
-import 'package:elective_project/pages/signUp_page.dart';
+import 'package:elective_project/main_pages/signIn_page.dart';
+import 'package:elective_project/main_pages/signUp_page.dart';
 import 'package:elective_project/resources/verify_sign_in.dart';
 import 'package:elective_project/util/colors.dart';
 import 'package:elective_project/util/utils.dart';

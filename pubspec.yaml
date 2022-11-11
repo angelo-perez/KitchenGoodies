@@ -62,6 +62,8 @@ dependencies:
   flutter_ringtone_player: ^3.2.0
   carousel_slider: ^4.1.1
   smooth_page_indicator: ^1.0.0+2
+  fluttertoast: ^8.1.1
+  dynamic_form: ^0.23.0
 
 
 dev_dependencies:

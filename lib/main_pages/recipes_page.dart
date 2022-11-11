@@ -15,7 +15,7 @@ class RecipeCategories {
 
 List<RecipeCategories> recipeCategoryList = [
   RecipeCategories(
-      1, 'images/img1.png', 'Category 1', 'First Category'),
+      1, 'images/img1.png', 'Chicken', 'First Category'),
   RecipeCategories(
       2, 'images/img1.png', 'Category 2', 'Second Category'),
   RecipeCategories(
@@ -47,9 +47,7 @@ class _RecipesPageState extends State<RecipesPage> {
     return Scaffold(
       backgroundColor: Color(0xFFF2E5D9),
       body: Center(
-        child: Container(
-            height: double.infinity,
-            width: double.infinity,
+        child: SafeArea(
             child: Scrollbar(
               child: GridView.builder(
                 gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(

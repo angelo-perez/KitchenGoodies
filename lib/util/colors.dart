@@ -14,6 +14,10 @@ Color mFacebookColor = Color(0xFF4277BC);
 
 Color mTitleTextColor = Color(0xFF2D140D);
 
+Color scaffoldBackgroundColor = Color(0xFFF2E5D9);
+
+Color appBarColor = Color(0xFF12A2726);
+
 List<String> coffeeNames = [
   'Espresso',
   'Cappuccino',

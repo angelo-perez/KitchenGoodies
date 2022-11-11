@@ -1,6 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:elective_project/pages/login_page.dart';
-import 'package:elective_project/pages/main_page.dart';
+import 'package:elective_project/main_pages/login_page.dart';
+import 'package:elective_project/main_pages/main_page.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';

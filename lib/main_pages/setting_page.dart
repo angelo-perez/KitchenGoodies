@@ -1,5 +1,5 @@
 import 'package:elective_project/resources/google_sign_in.dart';
-import 'package:elective_project/pages/login_page.dart';
+import 'package:elective_project/main_pages/login_page.dart';
 import 'package:elective_project/resources/auth_methods.dart';
 import 'package:elective_project/util/colors.dart';
 import 'package:firebase_auth/firebase_auth.dart';

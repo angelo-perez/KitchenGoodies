@@ -1,8 +1,8 @@
-import 'package:elective_project/pages/community_page.dart';
-import 'package:elective_project/pages/create_page.dart';
-import 'package:elective_project/pages/home_page.dart';
-import 'package:elective_project/pages/recipes_page.dart';
-import 'package:elective_project/pages/setting_page.dart';
+import 'package:elective_project/main_pages/community_page.dart';
+import 'package:elective_project/main_pages/create_page.dart';
+import 'package:elective_project/main_pages/home_page.dart';
+import 'package:elective_project/main_pages/recipes_page.dart';
+import 'package:elective_project/main_pages/setting_page.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';

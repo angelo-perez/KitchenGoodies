@@ -1,5 +1,5 @@
 import 'package:elective_project/main.dart';
-import 'package:elective_project/pages/signUp_page.dart';
+import 'package:elective_project/main_pages/signUp_page.dart';
 import 'package:elective_project/resources/auth_methods.dart';
 import 'package:elective_project/util/colors.dart';
 import 'package:elective_project/util/utils.dart';
