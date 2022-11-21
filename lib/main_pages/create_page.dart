@@ -1,5 +1,6 @@
 import 'dart:typed_data';
 
+import 'package:dropdown_search/dropdown_search.dart';
 import 'package:elective_project/create_recipe/add_ingredients.dart';
 import 'package:flutter/material.dart';
 import 'package:elective_project/util/colors.dart';
@@ -20,6 +21,8 @@ class CreatePage extends StatefulWidget {
 
 class _CreatePageState extends State<CreatePage> {
   TextEditingController recipeName = TextEditingController();
+  String? recipeVisibility = "Private";
+
   final _validateName = SnackBar(
     content: Text('Recipe Name can\'t be empty'),
   );
@@ -55,41 +58,79 @@ class _CreatePageState extends State<CreatePage> {
               ),
               Padding(padding: EdgeInsets.all(8.0)),
               Text(
-                'Step 1: Start by entering the name of your recipe.',
+                'Step 1: Start by entering the name of your recipe and setting its visibility.',
                 style: TextStyle(fontSize: 20),
               ),
-              TextField(
-                controller: recipeName,
-                keyboardType: TextInputType.name,
-                cursorColor: Colors.grey,
-                decoration: InputDecoration(
-                  labelText: 'Recipe Name',
-                  labelStyle: const TextStyle(color: Colors.grey),
-                  border: UnderlineInputBorder(
-                    borderSide: BorderSide(
-                      color: mPrimaryColor,
-                      width: 2,
+              Padding(
+                padding: const EdgeInsets.only(top: 20.0),
+                child: TextField(
+                  controller: recipeName,
+                  keyboardType: TextInputType.name,
+                  cursorColor: Colors.grey,
+                  decoration: InputDecoration(
+                    labelText: 'Recipe Name',
+                    labelStyle: const TextStyle(color: Colors.grey),
+                    border: OutlineInputBorder(
+                      borderSide: BorderSide(
+                        color: mPrimaryColor,
+                        width: 2,
+                      ),
+                    ),
+                    focusedBorder: OutlineInputBorder(
+                      borderSide: BorderSide(
+                        color: mPrimaryColor,
+                        width: 2,
+                      ),
                     ),
                   ),
-                  focusedBorder: UnderlineInputBorder(
-                    borderSide: BorderSide(
-                      color: mPrimaryColor,
-                      width: 2,
+                ),
+              ),
+              Padding(
+                padding: const EdgeInsets.only(top: 15.0),
+                child: DropdownSearch<String>(
+
+                  popupProps: PopupProps.menu(
+                      fit: FlexFit.loose,
+                      showSelectedItems: true,
+                      menuProps: MenuProps(
+                        backgroundColor: scaffoldBackgroundColor,
+                        elevation: 16,
+                        shadowColor: appBarColor, 
+                      )
+                  ),
+                  items: ["Private", "Public"],
+                  dropdownDecoratorProps: DropDownDecoratorProps(
+                    dropdownSearchDecoration: InputDecoration(
+                      labelText: "Recipe Visibility",
+                      hintText: "Recipe Visibility",
+                      labelStyle: const TextStyle(color: Colors.grey),
+                      border: OutlineInputBorder(
+                        borderSide: BorderSide(
+                          color: mPrimaryColor,
+                          width: 2,
+                        ),
+                      ),
+                      focusedBorder: OutlineInputBorder(
+                        borderSide: BorderSide(
+                          color: mPrimaryColor,
+                          width: 2,
+                        ),
+                      ),
                     ),
                   ),
-                  enabledBorder: const UnderlineInputBorder(
-                    borderSide: BorderSide(
-                      color: Colors.grey,
-                      width: 0.5,
-                    ),
-                  ),
+                  onChanged: (value) {
+                    recipeVisibility = value;
+                    print(recipeVisibility);
+                  },
+                  selectedItem: "Private",
                 ),
               ),
               Padding(padding: EdgeInsets.all(8.0)),
               ElevatedButton(
                 onPressed: () {
                   recipeName.text.isEmpty
-                      ? ScaffoldMessenger.of(context).showSnackBar(_validateName)
+                      ? ScaffoldMessenger.of(context)
+                          .showSnackBar(_validateName)
                       // TOAST
                       // Fluttertoast.showToast(
                       //     msg: "Recipe Name can't be empty",
@@ -100,7 +141,8 @@ class _CreatePageState extends State<CreatePage> {
                       //     textColor: Colors.white,
                       //     fontSize: 16.0)
                       : pushNewScreen(context,
-                          screen: AddIngredients(recipeName.text.toString()), withNavBar: true);
+                          screen: AddIngredients(recipeName.text.toString()),
+                          withNavBar: true);
                 },
                 child: Text("Next"),
                 style: ElevatedButton.styleFrom(backgroundColor: appBarColor),

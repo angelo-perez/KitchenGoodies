@@ -55,6 +55,7 @@ class _MyAppState extends State<MyApp> {
         debugShowCheckedModeBanner: false,
         theme: ThemeData(
           primaryColor: Color(0xFF12A2726),
+          
         ),
         home: StreamBuilder(
           stream: FirebaseAuth.instance.authStateChanges(),

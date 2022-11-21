@@ -1,39 +1,45 @@
-import 'package:elective_project/create_recipe/add_steps.dart';
+import 'package:elective_project/create_recipe/add_picture.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/container.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:persistent_bottom_nav_bar/persistent-tab-view.dart';
+import 'package:flutter_spinbox/flutter_spinbox.dart';
 
 import '../util/colors.dart';
 
-class AddIngredients extends StatefulWidget {
-  AddIngredients(this.recipeName);
+class AddSteps extends StatefulWidget {
+  AddSteps(this.recipeName);
 
   final String recipeName;
 
   @override
-  State<AddIngredients> createState() => _AddIngredientsState();
+  State<AddSteps> createState() => _AddAddStepsState();
 }
 
-class _AddIngredientsState extends State<AddIngredients> {
-  late int _ingredientCount;
-  late List<Map<String, dynamic>> _values;
-  late String _result;
-  late List ingredientsList;
+class _AddAddStepsState extends State<AddSteps> {
+  late int _stepCount;
+  late List<Map<String, dynamic>> _stepValues;
+  late List<Map<String, dynamic>> _timerValues;
+  late String _stepResult;
+  late String _timerResult;
+  late List stepsArray; //Steps array to be uploaded in the Database
+  late List timerArray; //Timer array to be uploaded in the Database
 
   List _initialPlaceholders = [
-    'Ingredient 1',
-    'Ingredient 2',
-    'Ingredient 3',
+    'Step 1',
+    'Step 2',
+    'Step 3',
   ];
 
   void initState() {
     super.initState();
-    _ingredientCount = _initialPlaceholders.length;
-    _values = [];
-    _result = '';
+    _stepCount = _initialPlaceholders.length;
+    _stepValues = [];
+    _timerValues = [];
+    _stepResult = '';
+    _timerResult = '';
   }
 
   @override
@@ -66,7 +72,7 @@ class _AddIngredientsState extends State<AddIngredients> {
           ),
           Padding(padding: EdgeInsets.all(8.0)),
           Text(
-            'Step 2: Then, add the ingredients of your recipe.',
+            'Step 3: Next, add the steps of your recipe.',
             style: TextStyle(fontSize: 20),
           ),
           Padding(padding: EdgeInsets.all(8.0)),
@@ -82,7 +88,7 @@ class _AddIngredientsState extends State<AddIngredients> {
               padding: const EdgeInsets.all(10.0),
               shrinkWrap: true,
               physics: ClampingScrollPhysics(),
-              itemCount: _ingredientCount,
+              itemCount: _stepCount,
               itemBuilder: (context, key) {
                 return _row(key);
               }),
@@ -91,13 +97,13 @@ class _AddIngredientsState extends State<AddIngredients> {
             children: [
               IconButton(
                   onPressed: () async {
-                    if (_ingredientCount > 0) {
+                    if (_stepCount > 0) {
                       setState(() {
-                        _ingredientCount--;
-                        _initialPlaceholders.removeAt(_ingredientCount);
+                        _stepCount--;
+                        _initialPlaceholders.removeAt(_stepCount);
                       });
                     }
-                    print(_ingredientCount);
+                    print(_stepCount);
                     print(_initialPlaceholders);
                   },
                   icon: Icon(
@@ -107,11 +113,10 @@ class _AddIngredientsState extends State<AddIngredients> {
               IconButton(
                   onPressed: () async {
                     setState(() {
-                      _ingredientCount++;
-                      _initialPlaceholders
-                          .add("Ingredient ${_ingredientCount}");
+                      _stepCount++;
+                      _initialPlaceholders.add("Ingredient ${_stepCount}");
                     });
-                    print(_ingredientCount);
+                    print(_stepCount);
                     print(_initialPlaceholders);
                   },
                   icon: Icon(
@@ -122,10 +127,13 @@ class _AddIngredientsState extends State<AddIngredients> {
           ),
           ElevatedButton(
             onPressed: () {
-              ingredientsList = _values.map((item) => item['value']).toList();
-              print(ingredientsList);
+              stepsArray = _stepValues.map((item) => item['step']).toList();
+              timerArray = _timerValues.map((item) => item['timer']).toList();
+              print(stepsArray);
+              print(timerArray);
               pushNewScreen(context,
-                  screen: AddSteps(widget.recipeName), withNavBar: true);
+                  screen: AddPicture(widget.recipeName),
+                  withNavBar: true);
             },
             child: Text("Next"),
             style: ElevatedButton.styleFrom(backgroundColor: appBarColor),
@@ -142,11 +150,12 @@ class _AddIngredientsState extends State<AddIngredients> {
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           Expanded(
+            flex: 2,
             child: TextFormField(
               //controller: TextEditingController(),
               textInputAction: TextInputAction.next,
               decoration: InputDecoration(
-                labelText: 'Ingredient ${key + 1}',
+                labelText: 'Step ${key + 1}',
                 labelStyle: const TextStyle(color: Colors.grey),
                 border: OutlineInputBorder(
                   borderSide: BorderSide(
@@ -162,18 +171,48 @@ class _AddIngredientsState extends State<AddIngredients> {
                 ),
               ),
               onChanged: (val) {
-                _onUpdate(key, val);
+                _onStepUpdate(key, val);
+                _onTimerUpdate(key, 0);
               },
             ),
           ),
+          Padding(padding: EdgeInsets.only(left: 4.0, right: 4.0)),
+          Expanded(
+            child: SpinBox(
+              min: 0,
+              max: 100,
+              value: 0,
+              //onChanged: (value) => print(value),
+              spacing: 4,
+              decoration: InputDecoration(
+                labelText: 'Timer (minutes)',
+                labelStyle: const TextStyle(color: Colors.grey),
+                border: OutlineInputBorder(
+                  borderSide: BorderSide(
+                    color: mPrimaryColor,
+                    width: 2,
+                  ),
+                ),
+                focusedBorder: OutlineInputBorder(
+                  borderSide: BorderSide(
+                    color: mPrimaryColor,
+                    width: 2,
+                  ),
+                ),
+              ),
+              onChanged: (val) {
+                _onTimerUpdate(key, val.toInt());
+              },
+            ),
+          )
         ],
       ),
     );
   }
 
-  _onUpdate(int key, String val) {
+  _onStepUpdate(int key, String val) {
     int foundKey = -1;
-    for (var map in _values) {
+    for (var map in _stepValues) {
       // check if certain key already exist
       if (map.containsKey('id')) {
         if (map['id'] == key) {
@@ -183,21 +222,54 @@ class _AddIngredientsState extends State<AddIngredients> {
       }
     }
     if (foundKey != -1) {
-      _values.removeWhere((map) =>
+      _stepValues.removeWhere((map) =>
           map['id'] ==
           foundKey); //remove the element (using its key) that is already existent in the list(json)
     }
     Map<String, dynamic> json = {
       'id': key,
-      'value': val
+      'step': val
     }; // for multiple values: 'values' : {text: val, number: num}
-    _values.add(json); // adds element to the list(json)
-    _values
+
+    _stepValues.add(json); // adds element to the list(json)
+    _stepValues
         .sort((a, b) => a['id'].compareTo(b['id'])); // sort the list using id
 
     setState(() {
-      _result = _values.toString();
-      print(_result);
+      _stepResult = _stepValues.toString();
+      print(_stepResult);
+    });
+  }
+
+
+  _onTimerUpdate(int key, int val) {
+    int foundKey = -1;
+    for (var map in _timerValues) {
+      // check if certain key already exist
+      if (map.containsKey('id')) {
+        if (map['id'] == key) {
+          foundKey = key;
+          break;
+        }
+      }
+    }
+    if (foundKey != -1) {
+      _timerValues.removeWhere((map) =>
+          map['id'] ==
+          foundKey); //remove the element (using its key) that is already existent in the list(json)
+    }
+    Map<String, dynamic> json = {
+      'id': key,
+      'timer': val
+    }; // for multiple values: 'values' : {text: val, number: num}
+
+    _timerValues.add(json); // adds element to the list(json)
+    _timerValues
+        .sort((a, b) => a['id'].compareTo(b['id'])); // sort the list using id
+
+    setState(() {
+      _timerResult = _timerValues.toString();
+      print(_timerResult);
     });
   }
 }
