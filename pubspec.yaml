@@ -66,6 +66,7 @@ dependencies:
   dynamic_form: ^0.23.0
   flutter_spinbox: ^0.11.0
   dropdown_search: ^5.0.3
+  camera: ^0.10.0+4
 
 
 dev_dependencies:

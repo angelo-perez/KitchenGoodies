@@ -1,5 +1,5 @@
 import 'dart:ui';
-
+import 'package:camera/camera.dart';
 import 'package:elective_project/main_pages/community_page.dart';
 import 'package:elective_project/main_pages/create_page.dart';
 import 'package:elective_project/resources/google_sign_in.dart';
@@ -20,7 +20,8 @@ import 'package:persistent_bottom_nav_bar/persistent-tab-view.dart';
 import 'package:provider/provider.dart';
 import 'main_pages/home_page.dart';
 import 'main_pages/recipes_page.dart';
-import 'main_pages/community_page.dart';
+
+
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -55,7 +56,6 @@ class _MyAppState extends State<MyApp> {
         debugShowCheckedModeBanner: false,
         theme: ThemeData(
           primaryColor: Color(0xFF12A2726),
-          
         ),
         home: StreamBuilder(
           stream: FirebaseAuth.instance.authStateChanges(),

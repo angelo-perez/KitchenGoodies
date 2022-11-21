@@ -131,15 +131,7 @@ class _CreatePageState extends State<CreatePage> {
                   recipeName.text.isEmpty
                       ? ScaffoldMessenger.of(context)
                           .showSnackBar(_validateName)
-                      // TOAST
-                      // Fluttertoast.showToast(
-                      //     msg: "Recipe Name can't be empty",
-                      //     toastLength: Toast.LENGTH_SHORT,
-                      //     gravity: ToastGravity.CENTER,
-                      //     timeInSecForIosWeb: 1,
-                      //     backgroundColor: Colors.red,
-                      //     textColor: Colors.white,
-                      //     fontSize: 16.0)
+
                       : pushNewScreen(context,
                           screen: AddIngredients(recipeName.text.toString()),
                           withNavBar: true);
