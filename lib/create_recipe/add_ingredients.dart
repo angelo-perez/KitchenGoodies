@@ -9,9 +9,10 @@ import 'package:persistent_bottom_nav_bar/persistent-tab-view.dart';
 import '../util/colors.dart';
 
 class AddIngredients extends StatefulWidget {
-  AddIngredients(this.recipeName);
+  AddIngredients(this.recipeName, this.recipePrivacy);
 
   final String recipeName;
+  final String recipePrivacy;
 
   @override
   State<AddIngredients> createState() => _AddIngredientsState();
@@ -123,9 +124,11 @@ class _AddIngredientsState extends State<AddIngredients> {
           ElevatedButton(
             onPressed: () {
               ingredientsList = _values.map((item) => item['value']).toList();
+              print(widget.recipeName);
+              print(widget.recipePrivacy);
               print(ingredientsList);
               pushNewScreen(context,
-                  screen: AddSteps(widget.recipeName), withNavBar: true);
+                  screen: AddSteps(widget.recipeName, widget.recipePrivacy, ingredientsList), withNavBar: true);
             },
             child: Text("Next"),
             style: ElevatedButton.styleFrom(backgroundColor: appBarColor),

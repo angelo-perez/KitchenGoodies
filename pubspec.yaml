@@ -67,6 +67,8 @@ dependencies:
   flutter_spinbox: ^0.11.0
   dropdown_search: ^5.0.3
   camera: ^0.10.0+4
+  focused_menu: ^1.0.5
+  star_menu: ^3.1.0+1
 
 
 dev_dependencies:

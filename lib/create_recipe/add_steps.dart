@@ -10,9 +10,11 @@ import 'package:flutter_spinbox/flutter_spinbox.dart';
 import '../util/colors.dart';
 
 class AddSteps extends StatefulWidget {
-  AddSteps(this.recipeName);
+  AddSteps(this.recipeName, this.recipePrivacy, this.recipeIngredients);
 
   final String recipeName;
+  final String recipePrivacy;
+  final List recipeIngredients;
 
   @override
   State<AddSteps> createState() => _AddAddStepsState();
@@ -129,10 +131,14 @@ class _AddAddStepsState extends State<AddSteps> {
             onPressed: () {
               stepsArray = _stepValues.map((item) => item['step']).toList();
               timerArray = _timerValues.map((item) => item['timer']).toList();
+              print(widget.recipeName);
+              print(widget.recipePrivacy);
+              print(widget.recipeIngredients);
               print(stepsArray);
               print(timerArray);
               pushNewScreen(context,
-                  screen: AddPicture(widget.recipeName),
+                  screen: AddPicture(widget.recipeName, widget.recipePrivacy,
+                      widget.recipeIngredients, stepsArray, timerArray),
                   withNavBar: true);
             },
             child: Text("Next"),
@@ -240,7 +246,6 @@ class _AddAddStepsState extends State<AddSteps> {
       print(_stepResult);
     });
   }
-
 
   _onTimerUpdate(int key, int val) {
     int foundKey = -1;

@@ -21,7 +21,7 @@ class CreatePage extends StatefulWidget {
 
 class _CreatePageState extends State<CreatePage> {
   TextEditingController recipeName = TextEditingController();
-  String? recipeVisibility = "Private";
+  String? recipePrivacy = "Private";
 
   final _validateName = SnackBar(
     content: Text('Recipe Name can\'t be empty'),
@@ -58,7 +58,7 @@ class _CreatePageState extends State<CreatePage> {
               ),
               Padding(padding: EdgeInsets.all(8.0)),
               Text(
-                'Step 1: Start by entering the name of your recipe and setting its visibility.',
+                'Step 1: Start by entering the name of your recipe, its category, and setting its privacy.',
                 style: TextStyle(fontSize: 20),
               ),
               Padding(
@@ -66,6 +66,7 @@ class _CreatePageState extends State<CreatePage> {
                 child: TextField(
                   controller: recipeName,
                   keyboardType: TextInputType.name,
+                  textInputAction: TextInputAction.next,
                   cursorColor: Colors.grey,
                   decoration: InputDecoration(
                     labelText: 'Recipe Name',
@@ -88,21 +89,19 @@ class _CreatePageState extends State<CreatePage> {
               Padding(
                 padding: const EdgeInsets.only(top: 15.0),
                 child: DropdownSearch<String>(
-
                   popupProps: PopupProps.menu(
                       fit: FlexFit.loose,
                       showSelectedItems: true,
                       menuProps: MenuProps(
                         backgroundColor: scaffoldBackgroundColor,
                         elevation: 16,
-                        shadowColor: appBarColor, 
-                      )
-                  ),
+                        shadowColor: appBarColor,
+                      )),
                   items: ["Private", "Public"],
                   dropdownDecoratorProps: DropDownDecoratorProps(
                     dropdownSearchDecoration: InputDecoration(
-                      labelText: "Recipe Visibility",
-                      hintText: "Recipe Visibility",
+                      labelText: "Recipe Privacy",
+                      hintText: "Recipe Privacy",
                       labelStyle: const TextStyle(color: Colors.grey),
                       border: OutlineInputBorder(
                         borderSide: BorderSide(
@@ -119,8 +118,8 @@ class _CreatePageState extends State<CreatePage> {
                     ),
                   ),
                   onChanged: (value) {
-                    recipeVisibility = value;
-                    print(recipeVisibility);
+                    recipePrivacy = value;
+                    print(recipePrivacy);
                   },
                   selectedItem: "Private",
                 ),
@@ -128,12 +127,15 @@ class _CreatePageState extends State<CreatePage> {
               Padding(padding: EdgeInsets.all(8.0)),
               ElevatedButton(
                 onPressed: () {
+                  String recipe_name = recipeName.text;
+                  print(recipe_name);
+                  print(recipePrivacy);
                   recipeName.text.isEmpty
                       ? ScaffoldMessenger.of(context)
                           .showSnackBar(_validateName)
-
                       : pushNewScreen(context,
-                          screen: AddIngredients(recipeName.text.toString()),
+                          screen: AddIngredients(
+                              recipe_name, recipePrivacy!),
                           withNavBar: true);
                 },
                 child: Text("Next"),
