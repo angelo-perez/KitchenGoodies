@@ -328,6 +328,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "2.0.6"
+  flutter_rating_bar:
+    dependency: "direct main"
+    description:
+      name: flutter_rating_bar
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "4.0.1"
   flutter_ringtone_player:
     dependency: "direct main"
     description:
@@ -667,6 +674,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "0.27.5"
+  settings_ui:
+    dependency: "direct main"
+    description:
+      name: settings_ui
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "2.0.2"
   sky_engine:
     dependency: transitive
     description: flutter
@@ -679,6 +693,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "1.0.0+2"
+  social_share:
+    dependency: "direct main"
+    description:
+      name: social_share
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "2.3.1"
   source_span:
     dependency: transitive
     description:

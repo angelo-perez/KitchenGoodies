@@ -69,6 +69,9 @@ dependencies:
   camera: ^0.10.0+4
   focused_menu: ^1.0.5
   star_menu: ^3.1.0+1
+  flutter_rating_bar: ^4.0.1
+  social_share: ^2.3.1
+  settings_ui: ^2.0.2
 
 
 dev_dependencies:

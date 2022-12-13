@@ -10,8 +10,18 @@ import 'package:persistent_bottom_nav_bar/persistent-tab-view.dart';
 import 'finished_page.dart';
 
 class RecipeStepPage extends StatefulWidget {
-  RecipeStepPage(this.steps, this.steps_timer, this.total_steps_count, this.step_index, this.current_step, this.current_step_duration);
+  RecipeStepPage(
+      this.recipe_image,
+      this.recipe_name,
+      this.steps,
+      this.steps_timer,
+      this.total_steps_count,
+      this.step_index,
+      this.current_step,
+      this.current_step_duration);
 
+  String recipe_image;
+  String recipe_name;
   List steps;
   List steps_timer;
   int total_steps_count;
@@ -26,7 +36,6 @@ class RecipeStepPage extends StatefulWidget {
 class _RecipeStepPageState extends State<RecipeStepPage> {
   @override
   Widget build(BuildContext context) {
-
     Future<bool> _onWillPop() async {
       return (await showDialog(
             context: context,
@@ -87,20 +96,26 @@ class _RecipeStepPageState extends State<RecipeStepPage> {
                     ? TimerWidget(
                         current_step_duration: widget.current_step_duration)
                     : Container(),
-                widget.step_index > 1 ? ElevatedButton(
-                  style: ElevatedButton.styleFrom(backgroundColor: Color(0xFF12A2726)),
-                  onPressed: () => Navigator.of(context).pop(true),
-                  child: Text(
-                    'Prev',
-                    style: TextStyle(color: Color(0xFFF2E5D9)),
-                  ),
-                ) : Container(),
+                widget.step_index > 1
+                    ? ElevatedButton(
+                        style: ElevatedButton.styleFrom(
+                            backgroundColor: Color(0xFF12A2726)),
+                        onPressed: () => Navigator.of(context).pop(true),
+                        child: Text(
+                          'Prev',
+                          style: TextStyle(color: Color(0xFFF2E5D9)),
+                        ),
+                      )
+                    : Container(),
                 widget.step_index < widget.steps.length
                     ? ElevatedButton(
-                        style: ElevatedButton.styleFrom(backgroundColor: Color(0xFF12A2726)),
+                        style: ElevatedButton.styleFrom(
+                            backgroundColor: Color(0xFF12A2726)),
                         onPressed: () => pushNewScreen(
                           context,
                           screen: RecipeStepPage(
+                            widget.recipe_image,
+                            widget.recipe_name,
                             widget.steps,
                             widget.steps_timer,
                             widget.total_steps_count,
@@ -117,14 +132,19 @@ class _RecipeStepPageState extends State<RecipeStepPage> {
                         ),
                       )
                     : ElevatedButton(
-                        style: ElevatedButton.styleFrom(backgroundColor: Color(0xFF12A2726)),
-                        onPressed: () => pushNewScreen(
-                          context,
-                          screen: FinishedRecipePage(),
-                          withNavBar: false,
-                          pageTransitionAnimation:
-                              PageTransitionAnimation.cupertino,
-                        ),
+                        style: ElevatedButton.styleFrom(
+                            backgroundColor: Color(0xFF12A2726)),
+                        onPressed: () {
+                          FlutterRingtonePlayer.stop();
+                          pushNewScreen(
+                            context,
+                            screen: FinishedRecipePage(
+                                widget.recipe_image, widget.recipe_name),
+                            withNavBar: false,
+                            pageTransitionAnimation:
+                                PageTransitionAnimation.cupertino,
+                          );
+                        },
                         child: Text(
                           'Done',
                           style: TextStyle(color: Color(0xFFF2E5D9)),
@@ -133,9 +153,7 @@ class _RecipeStepPageState extends State<RecipeStepPage> {
                 Padding(
                   padding: const EdgeInsets.all(10.0),
                   child: StepsIndicatorPage(
-                     widget.step_index,
-                     widget.total_steps_count
-                  ),
+                      widget.step_index, widget.total_steps_count),
                 ),
               ],
             ),

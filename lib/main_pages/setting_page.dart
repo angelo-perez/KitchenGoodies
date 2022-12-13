@@ -4,7 +4,9 @@ import 'package:elective_project/resources/auth_methods.dart';
 import 'package:elective_project/util/colors.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
+import 'package:settings_ui/settings_ui.dart';
 import 'main_page.dart';
 
 class SettingsPage extends StatefulWidget {
@@ -17,74 +19,83 @@ class SettingsPage extends StatefulWidget {
 class _SettingsPageState extends State<SettingsPage> {
   @override
   Widget build(BuildContext context) {
-  
     final user =
         FirebaseAuth.instance.currentUser; // access current user's data
 
     return Scaffold(
+        appBar: AppBar(
+          backgroundColor: appBarColor,
+          title: Text(
+            'Kitchen Goodies',
+            style: GoogleFonts.bebasNeue(
+              fontSize: 27,
+              color: scaffoldBackgroundColor,
+            ),
+          ),
+        ),
+        backgroundColor: scaffoldBackgroundColor,
         resizeToAvoidBottomInset: false,
         body: SafeArea(
-          child: Column(
-            children: <Widget>[
-              Image.asset('images/test-images/coffee_time.png'),
-              const SizedBox(
-                height: 5,
+          child: SettingsList(
+            lightTheme: SettingsThemeData(
+              settingsListBackground: scaffoldBackgroundColor
+            ),
+            sections: [
+              SettingsSection(
+                title: Text('Settings'),
+                tiles: <SettingsTile>[
+                  SettingsTile.navigation(
+                    leading: Icon(Icons.person),
+                    title: Text('Account'),
+                    trailing: Icon(Icons.arrow_forward_ios),
+                  ),
+                  SettingsTile.navigation(
+                    leading: Icon(Icons.notifications),
+                    title: Text('Notifications'),
+                    trailing: Icon(Icons.arrow_forward_ios),
+                  ),
+                  SettingsTile.switchTile(
+                    onToggle: (value) {
+                      
+                    },
+                    initialValue: false,
+                    leading: Icon(Icons.format_paint_rounded),
+                    title: Text('Dark Theme'),
+                  ),
+                  SettingsTile.navigation(
+                    leading: Icon(Icons.security),
+                    title: Text('Privacy & Security'),
+                    trailing: Icon(Icons.arrow_forward_ios),
+                  ),
+                  SettingsTile.navigation(
+                    leading: Icon(Icons.support),
+                    title: Text('Help & Support'),
+                    trailing: Icon(Icons.arrow_forward_ios),
+                  ),
+                  SettingsTile.navigation(
+                    leading: Icon(Icons.help),
+                    title: Text('About'),
+                    trailing: Icon(Icons.arrow_forward_ios),
+                  ),
+                ],
               ),
-              Text(
-                'Get the best coffee in town!',
-                textAlign: TextAlign.center,
-                style: TextStyle(
-                  color: mPrimaryTextColor,
-                  fontSize: 32,
-                  fontWeight: FontWeight.w500,
-                ),
-              ),
-              Container(
-                padding: const EdgeInsets.symmetric(
-                  horizontal: 30,
-                  vertical: 20,
-                ),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: <Widget>[
-                    Expanded(
-                      child: TextButton(
-                        onPressed: () async {
-                          // await AuthMethods().signOut();
-                          // Navigator.of(context).pushReplacement(
-                          //     MaterialPageRoute(
-                          //         builder: (context) => LoginPage()));
-                          final provider = Provider.of<GoogleSignInProvider>( // works only with GOOGLE SIGN IN
+              SettingsSection(
+                tiles: [
+                  SettingsTile(
+                    title: Text('Logout'), 
+                    onPressed: (val){
+                      final provider = Provider.of<GoogleSignInProvider>( 
                               context,
                               listen: false);
                           provider.logout();
-                        },
-                        style: TextButton.styleFrom(
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(36),
-                          ),
-                          backgroundColor: mPrimaryColor,
-                        ),
-                        child: Container(
-                          padding: const EdgeInsets.symmetric(
-                            vertical: 10,
-                          ),
-                          width: double.infinity,
-                          alignment: Alignment.center,
-                          child: const Text(
-                            "Sign Out",
-                            style: TextStyle(
-                              color: Colors.white,
-                            ),
-                          ),
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
+                    },
+                    leading: Icon(Icons.logout),
+
+                  )
+                ],
               ),
-              
             ],
+            applicationType: ApplicationType.both,
           ),
         ));
   }

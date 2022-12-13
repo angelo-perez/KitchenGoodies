@@ -1,6 +1,6 @@
 // import 'package:flutter/src/foundation/key.dart';
 // import 'package:flutter/src/widgets/framework.dart';
-import 'package:elective_project/recipes_categories/chicken_recipes.dart';
+import 'package:elective_project/recipes_categories/category_recipes_page.dart';
 import 'package:flutter/material.dart';
 import 'package:persistent_bottom_nav_bar/persistent-tab-view.dart';
 
@@ -14,22 +14,14 @@ class RecipeCategories {
 }
 
 List<RecipeCategories> recipeCategoryList = [
-  RecipeCategories(
-      1, 'images/img1.png', 'Chicken', 'First Category'),
-  RecipeCategories(
-      2, 'images/img1.png', 'Category 2', 'Second Category'),
-  RecipeCategories(
-      3, 'images/img1.png', 'Category 3', 'Third Category'),
-  RecipeCategories(
-      4, 'images/img1.png', 'Category 4', 'Fourth Category'),
-  RecipeCategories(
-      5, 'images/img1.png', 'Category 5', 'Fifth Category'),
-  RecipeCategories(
-      6, 'images/img1.png', 'Category 6', 'Sixth Category'),
-  RecipeCategories(
-      7, 'images/img1.png', 'Category 7', 'Seventh Category'),
-  RecipeCategories(
-      8, 'images/img1.png', 'Category 8', 'Eight Category'),
+  RecipeCategories(1, 'images/img1.png', 'Chicken', 'First Category'),
+  RecipeCategories(2, 'images/img1.png', 'Pork', 'Second Category'),
+  RecipeCategories(3, 'images/img1.png', 'Beef', 'Third Category'),
+  RecipeCategories(4, 'images/img1.png', 'Fish', 'Fourth Category'),
+  RecipeCategories(5, 'images/img1.png', 'Crustacean', 'Fifth Category'),
+  RecipeCategories(6, 'images/img1.png', 'Vegetables', 'Sixth Category'),
+  RecipeCategories(7, 'images/img1.png', 'Dessert', 'Seventh Category'),
+  RecipeCategories(8, 'images/img1.png', 'Others', 'Eight Category'),
 ];
 
 class RecipesPage extends StatefulWidget {
@@ -49,20 +41,20 @@ class _RecipesPageState extends State<RecipesPage> {
       body: Center(
         child: SafeArea(
             child: Scrollbar(
-              child: GridView.builder(
-                gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                  crossAxisCount: 2,
-                  mainAxisSpacing: 8,
-                  crossAxisSpacing: 8,
-                  childAspectRatio: MediaQuery.of(context).size.width /
-                (MediaQuery.of(context).size.height/1.175),
-                ),
-                primary: false,
-                padding: const EdgeInsets.all(10),
-                itemCount: recipeCategoryList.length,
-                itemBuilder: _recipeCategoryItem,
-              ),
-            )),
+          child: GridView.builder(
+            gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+              crossAxisCount: 2,
+              mainAxisSpacing: 8,
+              crossAxisSpacing: 8,
+              childAspectRatio: MediaQuery.of(context).size.width /
+                  (MediaQuery.of(context).size.height / 1.175),
+            ),
+            primary: false,
+            padding: const EdgeInsets.all(10),
+            itemCount: recipeCategoryList.length,
+            itemBuilder: _recipeCategoryItem,
+          ),
+        )),
       ),
     );
   }
@@ -73,8 +65,10 @@ class _RecipesPageState extends State<RecipesPage> {
       elevation: 8,
       child: InkWell(
         splashColor: Colors.black26,
-        onTap: () =>
-            pushNewScreen(context, screen: ChickenRecipes(), withNavBar: true),
+        onTap: () {
+          print(recipeCategory.categoryName);
+          pushNewScreen(context, screen: CategoryRecipesPage(recipeCategory.categoryName), withNavBar: true);
+        },
         child: Ink.image(
           image: AssetImage(recipeCategory.imgPath),
           height: 200,
