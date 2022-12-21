@@ -1,4 +1,4 @@
-import 'package:elective_project/main_pages/community_page.dart';
+import 'package:elective_project/main_pages/community_page/community_page.dart';
 import 'package:elective_project/main_pages/create_page.dart';
 import 'package:elective_project/main_pages/home_page.dart';
 import 'package:elective_project/main_pages/recipes_page.dart';
@@ -21,12 +21,10 @@ class _MainPageState extends State<MainPage> {
   //int currentNavIndex = 0;
   //int _page = 0;
   //final GlobalKey<CurvedNavigationBarState> _bottomNavigationKey = GlobalKey();
- 
 
   Color navBarColor = const Color(0xFF12A2726);
   static Color canvasColor = const Color(0xFFF2E5D9);
-  final PersistentTabController _controller =
-      PersistentTabController(initialIndex: 0);
+  final PersistentTabController _controller = PersistentTabController(initialIndex: 0);
 
   final _screens = [
     HomePage(),
@@ -46,7 +44,6 @@ class _MainPageState extends State<MainPage> {
 
   @override
   Widget build(BuildContext context) {
-    
     // final items = <Widget>[
     //   Icon(
     //     Icons.home_filled,

@@ -1,27 +1,11 @@
 import 'dart:ui';
-import 'package:camera/camera.dart';
-import 'package:elective_project/main_pages/community_page.dart';
-import 'package:elective_project/main_pages/create_page.dart';
 import 'package:elective_project/resources/google_sign_in.dart';
-import 'package:elective_project/main_pages/login_page.dart';
 import 'package:elective_project/main_pages/main_page.dart';
-import 'package:elective_project/main_pages/setting_page.dart';
-import 'package:elective_project/main_pages/signIn_page.dart';
-import 'package:elective_project/main_pages/signUp_page.dart';
 import 'package:elective_project/main_pages/splash_page.dart';
-import 'package:elective_project/util/colors.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
-
 import 'package:flutter/material.dart';
-import 'package:flutter/cupertino.dart';
-import 'package:curved_navigation_bar/curved_navigation_bar.dart';
-import 'package:persistent_bottom_nav_bar/persistent-tab-view.dart';
 import 'package:provider/provider.dart';
-import 'main_pages/home_page.dart';
-import 'main_pages/recipes_page.dart';
-
-
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
