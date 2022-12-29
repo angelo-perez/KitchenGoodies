@@ -1,7 +1,7 @@
 import 'dart:typed_data';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:elective_project/main_pages/community_page/models/user.dart' as model;
+import 'package:elective_project/community_page/models/user.dart' as model;
 import 'package:elective_project/main_pages/login_page.dart';
 import 'package:elective_project/resources/storage_methods.dart';
 import 'package:firebase_auth/firebase_auth.dart';

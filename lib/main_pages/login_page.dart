@@ -1,5 +1,5 @@
 import 'package:elective_project/resources/facebook_sign_in.dart';
-import 'package:elective_project/resources/google_sign_in.dart';
+import 'package:elective_project/providers/google_sign_in.dart';
 import 'package:elective_project/main.dart';
 import 'package:elective_project/main_pages/signIn_page.dart';
 import 'package:elective_project/main_pages/signUp_page.dart';
@@ -120,8 +120,8 @@ class LoginPage extends StatelessWidget {
                     final provider = Provider.of<GoogleSignInProvider>(context,
                         listen: false);
                     provider.googleLogin();
-                    Navigator.of(context).pushReplacement(MaterialPageRoute(
-                        builder: (context) => VerifyGoogleSignIn()));
+                    // Navigator.of(context).pushReplacement(MaterialPageRoute(
+                    //     builder: (context) => VerifyGoogleSignIn()));
                   },
                   style: TextButton.styleFrom(
                       shape: RoundedRectangleBorder(

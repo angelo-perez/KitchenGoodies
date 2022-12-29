@@ -45,7 +45,7 @@ dependencies:
   google_sign_in: ^5.4.2
 
   #Google Icon
-  font_awesome_flutter: ^9.0.0
+  font_awesome_flutter: ^10.3.0
 
   #State Management
   provider: ^6.0.3
@@ -53,7 +53,7 @@ dependencies:
   flutter_facebook_auth:
 
   cloud_firestore: ^3.1.18
-  flutter_svg: ^1.1.0
+  flutter_svg: ^1.1.6
   firebase_storage: ^10.2.18
   image_picker: ^0.8.5+3
   bulleted_list: ^0.0.1+0.1a
@@ -62,7 +62,7 @@ dependencies:
   flutter_ringtone_player: ^3.2.0
   carousel_slider: ^4.1.1
   smooth_page_indicator: ^1.0.0+2
-  fluttertoast: ^8.1.1
+  fluttertoast: ^8.1.2
   dynamic_form: ^0.23.0
   flutter_spinbox: ^0.11.0
   dropdown_search: ^5.0.3
@@ -74,6 +74,15 @@ dependencies:
   settings_ui: ^2.0.2
   uuid: ^3.0.6
   intl: ^0.17.0
+  scroll_snap_list: ^0.9.1
+  cached_network_image: ^3.2.3
+  flutter_slidable: ^2.0.0
+  fluentui_system_icons: ^1.1.189
+  transformable_list_view: ^0.2.0
+  flutter_native_splash: ^2.2.16
+  animated_splash_screen: ^1.3.0
+  scaled_list: ^2.0.0
+  neon_circular_timer: ^0.0.7
 
 dev_dependencies:
   flutter_test:
@@ -89,6 +98,17 @@ dev_dependencies:
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
 
+# Specifically for 1st splash screen (eFor logo)
+# Run commands to generate splash screen
+# 1. flutter clean
+# 2. flutter pub get
+# 3. flutter pub run flutter_native_splash:create
+flutter_native_splash:
+  image: "images/logos/efor.png"
+  color: "#2C2C2B"
+  android: true
+  ios: true
+
 # The following section is specific to Flutter packages.
 flutter:
 
@@ -102,6 +122,9 @@ flutter:
     - images/
     - images/test-images/
     - images/test-icons/
+    - images/recipe_categories/
+    - images/icons/
+    - images/logos/
     - audio/
 
   # An image asset can refer to one or more resolution-specific "variants", see
@@ -115,10 +138,10 @@ flutter:
   # "family" key with the font family name, and a "fonts" key with a
   # list giving the asset and other descriptors for the font. For
   # example:
-  # fonts:
-  #   - family: Schyler
-  #     fonts:
-  #       - asset: fonts/Schyler-Regular.ttf
+  fonts:
+    - family: Montserrat
+      fonts:
+        - asset: fonts\Montserrat-Regular.ttf
   #       - asset: fonts/Schyler-Italic.ttf
   #         style: italic
   #   - family: Trajan Pro

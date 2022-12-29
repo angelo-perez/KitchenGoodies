@@ -15,12 +15,14 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:persistent_bottom_nav_bar/persistent-tab-view.dart';
 import 'package:social_share/social_share.dart';
+import '../util/colors.dart';
 import '../util/utils.dart';
 
 class FinishedRecipePage extends StatefulWidget {
-  FinishedRecipePage(this.recipe_image, this.recipe_name);
+  FinishedRecipePage(this.recipe_image, this.recipe_name, this.recipe_source);
   final String recipe_image;
   final String recipe_name;
+  final String recipe_source;
 
   @override
   State<FinishedRecipePage> createState() => _FinishedRecipePageState();
@@ -50,15 +52,35 @@ class _FinishedRecipePageState extends State<FinishedRecipePage> {
   //   });
   // }
 
+  String ratingDisplay = "";
+
   @override
   Widget build(BuildContext context) {
     FlutterRingtonePlayer.stop();
 
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Color(0xFF12A2726),
+        backgroundColor: appBarColor,
+        title: Column(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Text(
+              widget.recipe_name,
+              style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+            ),
+            Text(
+              "by ${widget.recipe_source}",
+              style: TextStyle(fontSize: 12, fontStyle: FontStyle.italic),
+            ),
+          ],
+        ),
+        elevation: 0,
+        foregroundColor: mBackgroundColor,
+        centerTitle: true,
       ),
-      backgroundColor: Color(0xFFF2E5D9),
+      //extendBodyBehindAppBar: true,
+      backgroundColor: mBackgroundColor,
       body: Container(
         width: double.infinity,
         decoration: widget.recipe_image != null
@@ -70,17 +92,33 @@ class _FinishedRecipePageState extends State<FinishedRecipePage> {
               )
             : BoxDecoration(),
         child: Column(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Padding(
-              padding:
-                  const EdgeInsets.symmetric(horizontal: 15.0, vertical: 30.0),
+            Container(
               child: Text(
-                'Congratulations',
+                'Well Done',
                 style: GoogleFonts.bebasNeue(
-                  fontSize: 45,
+                  fontSize: 50,
                   color: const Color(0xFF6e3d28),
                 ),
                 textAlign: TextAlign.center,
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.only(top: 10, bottom: 50),
+              child: Text(
+                'Enjoy your meal!',
+                textAlign: TextAlign.center,
+                style: TextStyle(fontSize: 20, fontStyle: FontStyle.italic),
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Text(
+                'How\'s the ${widget.recipe_name}?',
+                textAlign: TextAlign.center,
+                style: TextStyle(fontSize: 18),
               ),
             ),
             RatingBar.builder(
@@ -95,36 +133,59 @@ class _FinishedRecipePageState extends State<FinishedRecipePage> {
                 color: Colors.amber,
               ),
               onRatingUpdate: (rating) {
-                print(rating);
+                setState(() {
+                  ratingDisplay = rating.toString();
+                  print(ratingDisplay);
+                });
               },
             ),
+            Padding(
+              padding: const EdgeInsets.only(bottom: 50),
+              child: Text(
+                ratingDisplay,
+                textAlign: TextAlign.center,
+                style: TextStyle(fontSize: 40),
+              ),
+            ),
             ElevatedButton(
-              style:
-                  ElevatedButton.styleFrom(backgroundColor: Color(0xFF12A2726)),
+              style: ElevatedButton.styleFrom(
+                  backgroundColor: Color(0xFF12A2726),
+                  fixedSize: Size(100, 40)),
               onPressed: () {
                 pushNewScreen(context, screen: CreateDishPost());
               },
               child: Text(
                 'Share',
-                style: TextStyle(color: Color(0xFFF2E5D9)),
+                style: TextStyle(color: Color(0xFFF2E5D9), fontSize: 18),
               ),
             ),
+            // ElevatedButton(
+            //   style: ElevatedButton.styleFrom(
+            //       backgroundColor: Color(0xFF12A2726),
+            //       fixedSize: Size(100, 40)),
+            //   onPressed: () {
+            //     Navigator.of(context, rootNavigator: true).pushAndRemoveUntil(
+            //         MaterialPageRoute(builder: (context) => FirstPage()),
+            //         (route) => false);
+            //   },
+            //   child: Text(
+            //     'Recipes',
+            //     style: TextStyle(color: Color(0xFFF2E5D9), fontSize: 18),
+            //   ),
+            // ),
             ElevatedButton(
-              style:
-                  ElevatedButton.styleFrom(backgroundColor: Color(0xFF12A2726)),
-              onPressed: (){},
-              child: Text(
-                'Recipes',
-                style: TextStyle(color: Color(0xFFF2E5D9)),
-              ),
-            ),
-            ElevatedButton(
-              style:
-                  ElevatedButton.styleFrom(backgroundColor: Color(0xFF12A2726)),
-              onPressed: (){},
+              style: ElevatedButton.styleFrom(
+                  backgroundColor: Color(0xFF12A2726),
+                  fixedSize: Size(100, 40)),
+              onPressed: () {
+                Navigator.pushAndRemoveUntil(
+                    context,
+                    MaterialPageRoute(builder: (context) => MainPage()),
+                    (route) => false);
+              },
               child: Text(
                 'Home',
-                style: TextStyle(color: Color(0xFFF2E5D9)),
+                style: TextStyle(color: Color(0xFFF2E5D9), fontSize: 18),
               ),
             )
           ],

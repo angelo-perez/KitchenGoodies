@@ -1,11 +1,16 @@
 import 'dart:ui';
-import 'package:elective_project/resources/google_sign_in.dart';
+import 'package:animated_splash_screen/animated_splash_screen.dart';
+import 'package:google_fonts/google_fonts.dart';
+import 'package:page_transition/page_transition.dart';
+import 'package:elective_project/main_pages/login_page.dart';
+import 'package:elective_project/providers/google_sign_in.dart';
 import 'package:elective_project/main_pages/main_page.dart';
 import 'package:elective_project/main_pages/splash_page.dart';
-import 'package:elective_project/resources/user_provider.dart';
+import 'package:elective_project/providers/user_provider.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:provider/provider.dart';
 
 void main() async {
@@ -49,29 +54,37 @@ class _MyAppState extends State<MyApp> {
         title: 'Kitchen Goodies',
         theme: ThemeData(
           primaryColor: Color(0xFF12A2726),
+          fontFamily: 'Montserrat',
         ),
-        home: StreamBuilder(
-          stream: FirebaseAuth.instance.authStateChanges(),
-          builder: (context, snapshot) {
-            if (snapshot.connectionState == ConnectionState.active) {
-              if (snapshot.hasData) {
-                return const MainPage();
-              } else if (snapshot.hasError) {
-                return Center(
-                    child: Text(
-                  '${snapshot.error}',
-                ));
-              }
-            }
-            if (snapshot.connectionState == ConnectionState.waiting) {
-              return const Center(
-                child: CircularProgressIndicator(
-                  color: Color(0xFFFFFFFF),
-                ),
-              );
-            }
-            return const SplashPage();
-          },
+        home: AnimatedSplashScreen(
+          duration: 1500,
+          splash: SvgPicture.asset('images/logos/kitchen-goodies.svg',
+              color: Colors.white),
+          centered: true,
+          splashIconSize: 300,
+          splashTransition: SplashTransition.fadeTransition,
+          pageTransitionType: PageTransitionType.fade,
+          backgroundColor: Color(0xff2C2C2B),
+          nextScreen: StreamBuilder(
+              stream: FirebaseAuth.instance.authStateChanges(),
+              builder: (context, snapshot) {
+                if (snapshot.connectionState == ConnectionState.waiting) {
+                  return Center(
+                    child: CircularProgressIndicator(),
+                  );
+                } else if (snapshot.hasData) {
+                  final provider =
+                      Provider.of<GoogleSignInProvider>(context, listen: false);
+                  provider.saveUserData(); // only works with google accounts
+                  return MainPage();
+                } else if (snapshot.hasError) {
+                  return Center(
+                    child: Text('Something went wrong'),
+                  );
+                } else {
+                  return LoginPage();
+                }
+              }),
         ),
       ),
     );

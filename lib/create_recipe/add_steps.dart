@@ -10,9 +10,10 @@ import 'package:flutter_spinbox/flutter_spinbox.dart';
 import '../util/colors.dart';
 
 class AddSteps extends StatefulWidget {
-  AddSteps(this.recipeName, this.recipePrivacy, this.recipeIngredients);
+  AddSteps(this.recipeName, this.recipeCategory, this.recipePrivacy, this.recipeIngredients);
 
   final String recipeName;
+  final String recipeCategory;
   final String recipePrivacy;
   final List recipeIngredients;
 
@@ -49,22 +50,15 @@ class _AddAddStepsState extends State<AddSteps> {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: appBarColor,
-        title: Text(
-          'Kitchen Goodies',
-          style: GoogleFonts.bebasNeue(
-            fontSize: 27,
-            color: scaffoldBackgroundColor,
-          ),
-        ),
+        title: Text('Create Recipe'),
       ),
-      backgroundColor: scaffoldBackgroundColor,
       body: SafeArea(
         child: ListView(padding: EdgeInsets.all(10.0), children: [
           Padding(
             padding:
                 const EdgeInsets.symmetric(horizontal: 15.0, vertical: 15.0),
             child: Text(
-              'Create Your Own Recipe',
+              'Add the steps',
               style: GoogleFonts.bebasNeue(
                 fontSize: 45,
                 color: const Color(0xFF6e3d28),
@@ -132,12 +126,13 @@ class _AddAddStepsState extends State<AddSteps> {
               stepsArray = _stepValues.map((item) => item['step']).toList();
               timerArray = _timerValues.map((item) => item['timer']).toList();
               print(widget.recipeName);
+              print(widget.recipeCategory);
               print(widget.recipePrivacy);
               print(widget.recipeIngredients);
               print(stepsArray);
               print(timerArray);
               pushNewScreen(context,
-                  screen: AddPicture(widget.recipeName, widget.recipePrivacy,
+                  screen: AddPicture(widget.recipeName, widget.recipeCategory, widget.recipePrivacy,
                       widget.recipeIngredients, stepsArray, timerArray),
                   withNavBar: true);
             },

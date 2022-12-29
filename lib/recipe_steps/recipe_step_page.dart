@@ -1,5 +1,6 @@
 import 'package:elective_project/recipe_steps/step_indicator.dart';
 import 'package:elective_project/recipe_steps/timer_widget.dart';
+import 'package:fluentui_system_icons/fluentui_system_icons.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/container.dart';
@@ -7,12 +8,14 @@ import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter_ringtone_player/flutter_ringtone_player.dart';
 import 'package:persistent_bottom_nav_bar/persistent-tab-view.dart';
 
+import '../util/colors.dart';
 import 'finished_page.dart';
 
 class RecipeStepPage extends StatefulWidget {
   RecipeStepPage(
       this.recipe_image,
       this.recipe_name,
+      this.recipe_source,
       this.steps,
       this.steps_timer,
       this.total_steps_count,
@@ -22,6 +25,7 @@ class RecipeStepPage extends StatefulWidget {
 
   String recipe_image;
   String recipe_name;
+  String recipe_source;
   List steps;
   List steps_timer;
   int total_steps_count;
@@ -67,15 +71,35 @@ class _RecipeStepPageState extends State<RecipeStepPage> {
       widget.step_index++;
     }
 
-    FlutterRingtonePlayer.stop();
+    setState(() {
+      FlutterRingtonePlayer.stop();
+    });
 
     return WillPopScope(
       onWillPop: _onWillPop,
       child: Scaffold(
         appBar: AppBar(
-          backgroundColor: Color(0xFF12A2726),
+          backgroundColor: appBarColor,
+          title: Column(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Text(
+                widget.recipe_name,
+                style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+              ),
+              Text(
+                "by ${widget.recipe_source}",
+                style: TextStyle(fontSize: 12, fontStyle: FontStyle.italic),
+              ),
+            ],
+          ),
+          elevation: 0,
+          foregroundColor: mBackgroundColor,
+          centerTitle: true,
         ),
-        backgroundColor: Color(0xFFF2E5D9),
+        //extendBodyBehindAppBar: true,
+        backgroundColor: mBackgroundColor,
         body: Container(
           child: Center(
             child: Column(
@@ -83,7 +107,13 @@ class _RecipeStepPageState extends State<RecipeStepPage> {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Padding(
-                  padding: const EdgeInsets.all(20.0),
+                  padding: const EdgeInsets.fromLTRB(15, 15, 15, 10),
+                  child: Text("Step ${widget.step_index }", 
+                    style: TextStyle(fontSize: 25, fontWeight: FontWeight.bold, color: appBarColor)
+                  ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.fromLTRB(15, 10, 15, 20),
                   child: Text(
                     widget.steps[widget.step_index - 1],
                     style: TextStyle(
@@ -96,26 +126,27 @@ class _RecipeStepPageState extends State<RecipeStepPage> {
                     ? TimerWidget(
                         current_step_duration: widget.current_step_duration)
                     : Container(),
-                widget.step_index > 1
-                    ? ElevatedButton(
-                        style: ElevatedButton.styleFrom(
-                            backgroundColor: Color(0xFF12A2726)),
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceAround,
+                    children: [
+                      widget.step_index > 1
+                    ? IconButton(
+                        iconSize: 40,
                         onPressed: () => Navigator.of(context).pop(true),
-                        child: Text(
-                          'Prev',
-                          style: TextStyle(color: Color(0xFFF2E5D9)),
-                        ),
+                        icon: Icon(FluentIcons.arrow_circle_left_28_filled),
                       )
                     : Container(),
                 widget.step_index < widget.steps.length
-                    ? ElevatedButton(
-                        style: ElevatedButton.styleFrom(
-                            backgroundColor: Color(0xFF12A2726)),
+                    ? IconButton(
+                        iconSize: 40,
                         onPressed: () => pushNewScreen(
                           context,
                           screen: RecipeStepPage(
                             widget.recipe_image,
                             widget.recipe_name,
+                            widget.recipe_source,
                             widget.steps,
                             widget.steps_timer,
                             widget.total_steps_count,
@@ -126,34 +157,37 @@ class _RecipeStepPageState extends State<RecipeStepPage> {
                           withNavBar: false,
                           pageTransitionAnimation: PageTransitionAnimation.fade,
                         ),
-                        child: Text(
-                          'Next',
-                          style: TextStyle(color: Color(0xFFF2E5D9)),
-                        ),
+                        icon: Icon(FluentIcons.arrow_circle_right_28_filled),
                       )
-                    : ElevatedButton(
-                        style: ElevatedButton.styleFrom(
-                            backgroundColor: Color(0xFF12A2726)),
+                    : IconButton(
+                        iconSize: 40,
                         onPressed: () {
-                          FlutterRingtonePlayer.stop();
+                          for (int i = widget.step_index;
+                              i >= 0;
+                              i--) {
+                            print(widget.step_index);
+                            Navigator.of(context).pop(true);
+                          }
+                          FlutterRingtonePlayer.stop;
                           pushNewScreen(
                             context,
                             screen: FinishedRecipePage(
-                                widget.recipe_image, widget.recipe_name),
+                                widget.recipe_image, widget.recipe_name, widget.recipe_source),
                             withNavBar: false,
                             pageTransitionAnimation:
                                 PageTransitionAnimation.cupertino,
                           );
                         },
-                        child: Text(
-                          'Done',
-                          style: TextStyle(color: Color(0xFFF2E5D9)),
-                        ),
+                        icon: Icon(FluentIcons.arrow_circle_right_28_filled),
                       ),
+                    ],
+                  ),
+                ),
                 Padding(
                   padding: const EdgeInsets.all(10.0),
                   child: StepsIndicatorPage(
-                      widget.step_index, widget.total_steps_count),
+                      widget.step_index, widget.total_steps_count
+                  ),
                 ),
               ],
             ),

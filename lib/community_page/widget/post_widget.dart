@@ -1,8 +1,8 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:elective_project/main_pages/community_page/models/user.dart' as model;
-import 'package:elective_project/main_pages/community_page/widget/comments_screen.dart';
+import 'package:elective_project/community_page/models/user.dart' as model;
+import 'package:elective_project/community_page/widget/comments_screen.dart';
 import 'package:elective_project/resources/firestore_methods.dart';
-import 'package:elective_project/resources/user_provider.dart';
+import 'package:elective_project/providers/user_provider.dart';
 import 'package:elective_project/util/colors.dart';
 import 'package:elective_project/util/utils.dart';
 import 'package:elective_project/widget/like_animation.dart';

@@ -1,11 +1,11 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:elective_project/main_pages/community_page/models/user.dart' as model;
-import 'package:elective_project/main_pages/community_page/widget/comment_card.dart';
+import 'package:elective_project/community_page/models/user.dart' as model;
+import 'package:elective_project/community_page/widget/comment_card.dart';
 import 'package:elective_project/resources/firestore_methods.dart';
 import 'package:elective_project/util/colors.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import '../../../resources/user_provider.dart';
+import '../../providers/user_provider.dart';
 
 class CommentsScreen extends StatefulWidget {
   final snap;

@@ -1,16 +1,16 @@
 // import 'package:flutter/src/foundation/key.dart';
 // import 'package:flutter/src/widgets/framework.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:elective_project/main_pages/community_page/widget/add_post_widget.dart';
-import 'package:elective_project/main_pages/community_page/widget/post_widget.dart';
+import 'package:elective_project/community_page/widget/add_post_widget.dart';
+import 'package:elective_project/community_page/widget/post_widget.dart';
 import 'package:elective_project/util/colors.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:provider/provider.dart';
 
-import '../../resources/user_provider.dart';
-import 'models/user.dart';
+import '../providers/user_provider.dart';
+import '../community_page/models/user.dart';
 
 class CommunityPage extends StatelessWidget {
   const CommunityPage({Key? key}) : super(key: key);
@@ -22,7 +22,7 @@ class CommunityPage extends StatelessWidget {
         backgroundColor: mBackgroundColor,
         centerTitle: false,
         title: SvgPicture.asset(
-          'images/test-icons/Kitchen Goodies.svg',
+          'images/icons/Kitchen_Buddies.svg',
           color: mPrimaryColor,
           height: 30,
         ),

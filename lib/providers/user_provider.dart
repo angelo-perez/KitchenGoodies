@@ -1,7 +1,7 @@
 import 'package:elective_project/resources/auth_methods.dart';
 import 'package:flutter/widgets.dart';
 
-import '../main_pages/community_page/models/user.dart';
+import '../community_page/models/user.dart';
 
 class UserProvider with ChangeNotifier {
   User? _user;

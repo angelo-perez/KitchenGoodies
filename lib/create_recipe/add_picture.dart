@@ -1,6 +1,7 @@
 import 'dart:typed_data';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:elective_project/main_pages/main_page.dart';
 import 'package:elective_project/resources/upload_recipe.dart';
 import 'package:elective_project/util/colors.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -8,17 +9,22 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter/src/widgets/container.dart';
 import 'package:flutter/src/widgets/framework.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:provider/provider.dart';
 import 'package:star_menu/star_menu.dart';
 
+import '../providers/user_provider.dart';
 import '../util/utils.dart';
+import '../community_page/models/user.dart' as model;
 
 class AddPicture extends StatefulWidget {
-  AddPicture(this.recipeName, this.recipePrivacy, this.recipeIngredients,
-      this.recipeSteps, this.recipeTimer);
+  AddPicture(this.recipeName, this.recipeCategory, this.recipePrivacy,
+      this.recipeIngredients, this.recipeSteps, this.recipeTimer);
 
   final String recipeName;
+  final String recipeCategory;
   final String recipePrivacy;
   final List recipeIngredients;
   final List recipeSteps;
@@ -63,9 +69,12 @@ class _AddPictureState extends State<AddPicture> {
 
   @override
   Widget build(BuildContext context) {
-    final User? user = auth.currentUser;
-    final uid = user!.uid;
-
+    // final User? user = auth.currentUser;
+    // final uid = user!.uid;
+    // final username = user.displayName;
+    final model.User user = Provider.of<UserProvider>(context).getUser;
+    print(user.uid);
+    print(user.username);
 
     //final recipeAuthor = username;
 
@@ -110,21 +119,16 @@ class _AddPictureState extends State<AddPicture> {
         appBar: AppBar(
           backgroundColor: appBarColor,
           title: Text(
-            'Kitchen Goodies',
-            style: GoogleFonts.bebasNeue(
-              fontSize: 27,
-              color: scaffoldBackgroundColor,
-            ),
+            'Create Recipe',
           ),
         ),
-        backgroundColor: scaffoldBackgroundColor,
         body: SafeArea(
             child: ListView(padding: EdgeInsets.all(10.0), children: [
           Padding(
             padding:
                 const EdgeInsets.symmetric(horizontal: 15.0, vertical: 15.0),
             child: Text(
-              'Create Your Own Recipe',
+              'Add a Picture',
               style: GoogleFonts.bebasNeue(
                 fontSize: 45,
                 color: const Color(0xFF6e3d28),
@@ -185,23 +189,40 @@ class _AddPictureState extends State<AddPicture> {
           ElevatedButton(
               onPressed: () {
                 print(widget.recipeName);
+                print(widget.recipeCategory);
                 print(widget.recipePrivacy);
                 print(widget.recipeIngredients);
                 print(widget.recipeSteps);
                 print(widget.recipeTimer);
                 print(_image);
-                print(uid);
-                //print(recipeAuthor);
-                UploadRecipe uploadRecipe = UploadRecipe();
-                uploadRecipe.addSubColleciton(
-                  userId: uid,
-                  recipeName: widget.recipeName,
-                  recipePrivacy: widget.recipePrivacy,
-                  recipeIngredients: widget.recipeIngredients,
-                  recipeSteps: widget.recipeIngredients,
-                  recipeTimer: widget.recipeTimer,
-                  recipeImage: _image!,
-                );
+                print(user.uid);
+                print(user.username);
+
+                // UploadRecipe uploadRecipe = UploadRecipe();
+                // uploadRecipe.addSubColleciton(
+                //   userId: user.uid,
+                //   recipeName: widget.recipeName,
+                //   username: user.username,
+                //   recipeCategory: widget.recipeCategory,
+                //   recipePrivacy: widget.recipePrivacy,
+                //   recipeIngredients: widget.recipeIngredients,
+                //   recipeSteps: widget.recipeIngredients,
+                //   recipeTimer: widget.recipeTimer,
+                //   recipeImage: _image!,
+                // );
+
+                Fluttertoast.showToast(
+                    msg: "Your recipe was succesfully saved",
+                    toastLength: Toast.LENGTH_SHORT,
+                    gravity: ToastGravity.SNACKBAR,
+                    timeInSecForIosWeb: 1,
+                    backgroundColor: splashScreenBgColor,
+                    textColor: Colors.white,
+                    fontSize: 16.0);
+
+                Navigator.of(context, rootNavigator: true).pushAndRemoveUntil(
+                    MaterialPageRoute(builder: (context) => MainPage()), //should go to "myrecipe tab" not in homepage
+                    (route) => false);
               },
               child: Text("Save Recipe"),
               style: ElevatedButton.styleFrom(backgroundColor: appBarColor))

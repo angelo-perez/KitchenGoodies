@@ -6,9 +6,9 @@ import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
 
-import '../../../resources/firestore_methods.dart';
-import '../../../resources/user_provider.dart';
-import '../../../util/colors.dart';
+import '../../resources/firestore_methods.dart';
+import '../../providers/user_provider.dart';
+import '../../util/colors.dart';
 import '../models/user.dart' as model;
 
 class AddPostWidget extends StatefulWidget {

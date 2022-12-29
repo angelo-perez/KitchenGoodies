@@ -9,9 +9,10 @@ import 'package:persistent_bottom_nav_bar/persistent-tab-view.dart';
 import '../util/colors.dart';
 
 class AddIngredients extends StatefulWidget {
-  AddIngredients(this.recipeName, this.recipePrivacy);
+  AddIngredients(this.recipeName, this.recipeCategory, this.recipePrivacy);
 
   final String recipeName;
+  final String recipeCategory;
   final String recipePrivacy;
 
   @override
@@ -42,22 +43,15 @@ class _AddIngredientsState extends State<AddIngredients> {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: appBarColor,
-        title: Text(
-          'Kitchen Goodies',
-          style: GoogleFonts.bebasNeue(
-            fontSize: 27,
-            color: scaffoldBackgroundColor,
-          ),
-        ),
+        title: Text('Create Recipe'),
       ),
-      backgroundColor: scaffoldBackgroundColor,
       body: SafeArea(
         child: ListView(padding: EdgeInsets.all(10.0), children: [
           Padding(
             padding:
                 const EdgeInsets.symmetric(horizontal: 15.0, vertical: 15.0),
             child: Text(
-              'Create Your Own Recipe',
+              'Add the ingredients',
               style: GoogleFonts.bebasNeue(
                 fontSize: 45,
                 color: const Color(0xFF6e3d28),
@@ -125,10 +119,13 @@ class _AddIngredientsState extends State<AddIngredients> {
             onPressed: () {
               ingredientsList = _values.map((item) => item['value']).toList();
               print(widget.recipeName);
+              print(widget.recipeCategory);
               print(widget.recipePrivacy);
               print(ingredientsList);
               pushNewScreen(context,
-                  screen: AddSteps(widget.recipeName, widget.recipePrivacy, ingredientsList), withNavBar: true);
+                  screen: AddSteps(
+                      widget.recipeName, widget.recipeCategory, widget.recipePrivacy, ingredientsList),
+                  withNavBar: true);
             },
             child: Text("Next"),
             style: ElevatedButton.styleFrom(backgroundColor: appBarColor),

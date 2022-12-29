@@ -1,20 +1,24 @@
-import 'package:elective_project/main_pages/community_page/community_page.dart';
-import 'package:elective_project/main_pages/create_page.dart';
+import 'package:elective_project/main_pages/community_page.dart';
+import 'package:elective_project/create_recipe/create_page.dart';
 import 'package:elective_project/main_pages/home_page.dart';
+import 'package:elective_project/main_pages/myrecipes_page.dart';
 import 'package:elective_project/main_pages/recipes_page.dart';
 import 'package:elective_project/main_pages/setting_page.dart';
-import 'package:elective_project/resources/user_provider.dart';
+import 'package:elective_project/providers/user_provider.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:fluentui_system_icons/fluentui_system_icons.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_ringtone_player/flutter_ringtone_player.dart';
 import 'package:persistent_bottom_nav_bar/persistent-tab-view.dart';
 import 'package:provider/provider.dart';
+
+import '../util/colors.dart';
 
 //Main Page of the App (w/ Bottom Navigation Bar)
 
 class MainPage extends StatefulWidget {
   const MainPage({Key? key}) : super(key: key);
-
   @override
   State<MainPage> createState() => _MainPageState();
 }
@@ -26,23 +30,16 @@ class _MainPageState extends State<MainPage> {
 
   Color navBarColor = const Color(0xFF12A2726);
   static Color canvasColor = const Color(0xFFF2E5D9);
-  final PersistentTabController _controller = PersistentTabController(initialIndex: 0);
+  final PersistentTabController _controller =
+      PersistentTabController(initialIndex: 0);
 
   final _screens = [
     HomePage(),
     RecipesPage(),
-    CreatePage(),
+    MyRecipesPage(),
     CommunityPage(),
     SettingsPage(),
   ];
-
-  // bool isClickedCategory1 = false;
-  // bool isClickedCategory2 = false;
-  // bool isClickedCategory3 = false;
-  // bool isClickedCategory4 = false;
-  // bool isClickedCategory5 = false;
-  // bool isClickedCategory7 = false;
-  // bool isClickedCategory8 = false;
 
   @override
   void initState() {
@@ -51,60 +48,27 @@ class _MainPageState extends State<MainPage> {
   }
 
   addData() async {
-    UserProvider _userProvider = Provider.of<UserProvider>(context, listen: false);
+    UserProvider _userProvider =
+        Provider.of<UserProvider>(context, listen: false);
     await _userProvider.refreshUser();
   }
 
   @override
   Widget build(BuildContext context) {
-    // final items = <Widget>[
-    //   Icon(
-    //     Icons.home_filled,
-    //     size: 30,
-    //   ),
-    //   Icon(
-    //     Icons.food_bank,
-    //     size: 30,
-    //   ),
-    //   Icon(
-    //     Icons.groups_rounded,
-    //     size: 30,
-    //   ),
+    _precacheImage();
 
-    // ];
+    FlutterRingtonePlayer.stop;
+
 
     return Scaffold(
-      // body: screens[_page], //selects what page it will display
-      // bottomNavigationBar: Theme(
-      //   data: Theme.of(context).copyWith(
-      //       iconTheme: IconThemeData(
-      //     color: Color(0xFFF2E5D9),
-      //   )),
-      //   child: CurvedNavigationBar(
-      //     key: _bottomNavigationKey,
-      //     index: _page,
-      //     height: 60.0,
-      //     items: items,
-      //     color: Color(0xFF12A2726),
-      //     buttonBackgroundColor: Color(0xFF12A2726),
-      //     backgroundColor: Color(0xFFF2E5D9),
-      //     animationCurve: Curves.easeInOut,
-      //     animationDuration: Duration(milliseconds: 300),
-      //     onTap: (index) {
-      //       setState(() {
-      //         _page = index;
-      //       });
-      //     },
-      //     letIndexChange: (index) => true,
-      //   ),
-      // ),
       body: PersistentTabView(
         context,
         controller: _controller,
         screens: _screens,
         items: _navBarsItems(),
         navBarStyle: NavBarStyle.style12,
-        backgroundColor: navBarColor,
+        hideNavigationBarWhenKeyboardShows: true,
+        confineInSafeArea: true,
       ),
     );
   }
@@ -112,35 +76,48 @@ class _MainPageState extends State<MainPage> {
   List<PersistentBottomNavBarItem> _navBarsItems() {
     return [
       PersistentBottomNavBarItem(
-        icon: const Icon(CupertinoIcons.home),
+        icon: Icon(FluentIcons.home_24_filled),
         title: ("Home"),
-        activeColorPrimary: canvasColor,
-        inactiveColorPrimary: canvasColor,
+        activeColorPrimary: appBarColor,
+        inactiveColorPrimary: CupertinoColors.systemGrey,
       ),
       PersistentBottomNavBarItem(
-        icon: const Icon(CupertinoIcons.book),
+        icon: Icon(FluentIcons.food_24_filled),
         title: ("Recipes"),
-        activeColorPrimary: canvasColor,
-        inactiveColorPrimary: canvasColor,
+        activeColorPrimary: appBarColor,
+        inactiveColorPrimary: CupertinoColors.systemGrey,
       ),
       PersistentBottomNavBarItem(
-        icon: const Icon(CupertinoIcons.add),
-        title: ("Create"),
-        activeColorPrimary: canvasColor,
-        inactiveColorPrimary: canvasColor,
+        icon: Icon(FluentIcons.add_square_24_filled),
+        title: ("My Recipes"),
+        activeColorPrimary: appBarColor,
+        inactiveColorPrimary: CupertinoColors.systemGrey,
       ),
       PersistentBottomNavBarItem(
-        icon: const Icon(CupertinoIcons.group),
+        icon: Icon(FluentIcons.people_24_filled),
         title: ("Community"),
-        activeColorPrimary: canvasColor,
-        inactiveColorPrimary: canvasColor,
+        activeColorPrimary: appBarColor,
+        inactiveColorPrimary: CupertinoColors.systemGrey,
       ),
       PersistentBottomNavBarItem(
-        icon: const Icon(CupertinoIcons.settings),
+        icon: Icon(FluentIcons.settings_20_filled),
         title: ("Settings"),
-        activeColorPrimary: canvasColor,
-        inactiveColorPrimary: canvasColor,
+        activeColorPrimary: appBarColor,
+        inactiveColorPrimary: CupertinoColors.systemGrey,
       ),
     ];
+  }
+
+  void _precacheImage() {
+    precacheImage(AssetImage("images/recipe_categories/chicken.jpg"), context);
+    precacheImage(AssetImage("images/recipe_categories/pork.jpg"), context);
+    precacheImage(AssetImage("images/recipe_categories/beef.jpg"), context);
+    precacheImage(AssetImage("images/recipe_categories/fish.jpg"), context);
+    precacheImage(
+        AssetImage("images/recipe_categories/crustacean.jpg"), context);
+    precacheImage(
+        AssetImage("images/recipe_categories/vegetables.jpg"), context);
+    precacheImage(AssetImage("images/recipe_categories/dessert.jpg"), context);
+    precacheImage(AssetImage("images/recipe_categories/others.jpg"), context);
   }
 }

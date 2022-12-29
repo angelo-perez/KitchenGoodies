@@ -1,4 +1,5 @@
-import 'package:elective_project/resources/google_sign_in.dart';
+import 'package:elective_project/main.dart';
+import 'package:elective_project/providers/google_sign_in.dart';
 import 'package:elective_project/main_pages/login_page.dart';
 import 'package:elective_project/resources/auth_methods.dart';
 import 'package:elective_project/util/colors.dart';
@@ -19,27 +20,24 @@ class SettingsPage extends StatefulWidget {
 class _SettingsPageState extends State<SettingsPage> {
   @override
   Widget build(BuildContext context) {
-    final user = FirebaseAuth.instance.currentUser; // access current user's data
+    final user =
+        FirebaseAuth.instance.currentUser; // access current user's data
 
     return Scaffold(
         appBar: AppBar(
-          backgroundColor: appBarColor,
+          backgroundColor: Colors.white,
           title: Text(
-            'Kitchen Goodies',
-            style: GoogleFonts.bebasNeue(
-              fontSize: 27,
-              color: scaffoldBackgroundColor,
-            ),
+            'Settings', style: TextStyle(color: appBarColor),
           ),
+          elevation: 0.0,
         ),
-        backgroundColor: scaffoldBackgroundColor,
         resizeToAvoidBottomInset: false,
         body: SafeArea(
           child: SettingsList(
-            lightTheme: SettingsThemeData(settingsListBackground: scaffoldBackgroundColor),
+            lightTheme: SettingsThemeData(
+                settingsListBackground: Colors.white),
             sections: [
               SettingsSection(
-                title: Text('Settings'),
                 tiles: <SettingsTile>[
                   SettingsTile.navigation(
                     leading: Icon(Icons.person),
@@ -79,8 +77,10 @@ class _SettingsPageState extends State<SettingsPage> {
                   SettingsTile(
                     title: Text('Logout'),
                     onPressed: (val) {
-                      final provider = Provider.of<GoogleSignInProvider>(context, listen: false);
-                      provider.logout();
+                      final googleProvider = Provider.of<GoogleSignInProvider>(
+                          context,
+                          listen: false);
+                      googleProvider.logout(context);
                     },
                     leading: Icon(Icons.logout),
                   )

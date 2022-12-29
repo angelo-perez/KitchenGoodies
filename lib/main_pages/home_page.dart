@@ -2,6 +2,7 @@
 // import 'package:flutter/src/widgets/framework.dart';
 // ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables
 
+import 'package:elective_project/util/colors.dart';
 import 'package:elective_project/util/food_tiles.dart';
 import 'package:elective_project/util/food_types.dart';
 import 'package:flutter/material.dart';
@@ -48,7 +49,7 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        backgroundColor: Color(0xFFF2E5D9),
+        backgroundColor: mBackgroundColor,
         appBar: AppBar(
           elevation: 0,
           backgroundColor: Colors.transparent,

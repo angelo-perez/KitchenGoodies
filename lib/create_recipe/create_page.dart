@@ -9,7 +9,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:persistent_bottom_nav_bar/persistent-tab-view.dart';
 
-import '../create_recipe/add_ingredients.dart';
+import 'add_ingredients.dart';
 import '../util/utils.dart';
 
 class CreatePage extends StatefulWidget {
@@ -22,24 +22,16 @@ class CreatePage extends StatefulWidget {
 class _CreatePageState extends State<CreatePage> {
   TextEditingController recipeName = TextEditingController();
   String? recipePrivacy = "Private";
+  String? recipeCategory = "Select a category";
 
-  final _validateName = SnackBar(
-    content: Text('Recipe Name can\'t be empty'),
-  );
   @override
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
           backgroundColor: appBarColor,
-          title: Text(
-            'Kitchen Goodies',
-            style: GoogleFonts.bebasNeue(
-              fontSize: 27,
-              color: scaffoldBackgroundColor,
-            ),
-          ),
+          title: Text('Create Recipe'),
         ),
-        backgroundColor: scaffoldBackgroundColor,
+        backgroundColor: mBackgroundColor,
         body: SafeArea(
           child: ListView(
             padding: EdgeInsets.all(10.0),
@@ -97,6 +89,44 @@ class _CreatePageState extends State<CreatePage> {
                         elevation: 16,
                         shadowColor: appBarColor,
                       )),
+                  items: ['Chicken', 'Pork', 'Beef', 'Fish', 'Crustacean', 'Vegetables', 'Dessert', 'Others'],
+                  dropdownDecoratorProps: DropDownDecoratorProps(
+                    dropdownSearchDecoration: InputDecoration(
+                      labelText: "Recipe Category",
+                      hintText: "Recipe Category",
+                      labelStyle: const TextStyle(color: Colors.grey),
+                      border: OutlineInputBorder(
+                        borderSide: BorderSide(
+                          color: mPrimaryColor,
+                          width: 2,
+                        ),
+                      ),
+                      focusedBorder: OutlineInputBorder(
+                        borderSide: BorderSide(
+                          color: mPrimaryColor,
+                          width: 2,
+                        ),
+                      ),
+                    ),
+                  ),
+                  onChanged: (value) {
+                    recipeCategory = value;
+                    print(recipeCategory);
+                  },
+                  selectedItem: "Select a category",
+                ),
+              ),
+              Padding(
+                padding: const EdgeInsets.only(top: 15.0),
+                child: DropdownSearch<String>(
+                  popupProps: PopupProps.menu(
+                      fit: FlexFit.loose,
+                      showSelectedItems: true,
+                      menuProps: MenuProps(
+                        backgroundColor: scaffoldBackgroundColor,
+                        elevation: 16,
+                        shadowColor: appBarColor,
+                      )),
                   items: ["Private", "Public"],
                   dropdownDecoratorProps: DropDownDecoratorProps(
                     dropdownSearchDecoration: InputDecoration(
@@ -130,12 +160,17 @@ class _CreatePageState extends State<CreatePage> {
                   String recipe_name = recipeName.text;
                   print(recipe_name);
                   print(recipePrivacy);
-                  recipeName.text.isEmpty
-                      ? ScaffoldMessenger.of(context)
-                          .showSnackBar(_validateName)
+                  recipeName.text.isEmpty || recipeCategory == "Select a category"
+                      ? Fluttertoast.showToast(
+                          msg: "You've entered invalid information",
+                          toastLength: Toast.LENGTH_SHORT,
+                          gravity: ToastGravity.SNACKBAR,
+                          timeInSecForIosWeb: 1,
+                          backgroundColor: splashScreenBgColor,
+                          textColor: Colors.white,
+                          fontSize: 16.0)
                       : pushNewScreen(context,
-                          screen: AddIngredients(
-                              recipe_name, recipePrivacy!),
+                          screen: AddIngredients(recipe_name, recipeCategory! ,recipePrivacy!),
                           withNavBar: true);
                 },
                 child: Text("Next"),

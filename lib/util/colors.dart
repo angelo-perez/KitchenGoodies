@@ -18,6 +18,8 @@ Color scaffoldBackgroundColor = Color(0xFFF2E5D9); //Color(0xFFF2E5D9);
 
 Color appBarColor = Color(0xFF12A2726); //Color(0xFF12A2726);
 
+Color splashScreenBgColor = Color(0xff2C2C2B);
+
 List<String> coffeeNames = [
   'Espresso',
   'Cappuccino',
