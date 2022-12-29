@@ -1,15 +1,19 @@
 // import 'package:flutter/src/foundation/key.dart';
 // import 'package:flutter/src/widgets/framework.dart';
-import 'package:elective_project/main_pages/community_page/widget/post.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:elective_project/main_pages/community_page/widget/add_post_widget.dart';
+import 'package:elective_project/main_pages/community_page/widget/post_widget.dart';
 import 'package:elective_project/util/colors.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:provider/provider.dart';
+
+import '../../resources/user_provider.dart';
+import 'models/user.dart';
 
 class CommunityPage extends StatelessWidget {
   const CommunityPage({Key? key}) : super(key: key);
-
-  // @override
-  // State<CommunityPage> createState() => _CommunityPageState();
 
   @override
   Widget build(BuildContext context) {
@@ -18,7 +22,7 @@ class CommunityPage extends StatelessWidget {
         backgroundColor: mBackgroundColor,
         centerTitle: false,
         title: SvgPicture.asset(
-          'thanksgiving-text-title.svg',
+          'images/test-icons/Kitchen Goodies.svg',
           color: mPrimaryColor,
           height: 30,
         ),
@@ -32,39 +36,30 @@ class CommunityPage extends StatelessWidget {
           ),
         ],
       ),
-      body: const PostCard(),
+      body: StreamBuilder(
+        stream: FirebaseFirestore.instance.collection('posts').snapshots(),
+        builder: (context, AsyncSnapshot<QuerySnapshot<Map<String, dynamic>>> snapshot) {
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return const Center(
+              child: CircularProgressIndicator(),
+            );
+          }
+          return ListView.builder(
+            itemCount: snapshot.data!.docs.length,
+            itemBuilder: (context, index) => PostCard(
+              snap: snapshot.data!.docs[index].data(),
+            ),
+          );
+        },
+      ),
+      floatingActionButton: FloatingActionButton.extended(
+        onPressed: () {
+          Navigator.of(context).push(MaterialPageRoute(builder: (context) => AddPostWidget()));
+        },
+        icon: const Icon(Icons.post_add),
+        label: const Text("Post"),
+        backgroundColor: mPrimaryColor,
+      ),
     );
   }
 }
-
-
-
-
-
-
-
-
-
-// class _CommunityPageState extends State<CommunityPage> {
-//   @override
-//   Widget build(BuildContext context) {
-//     return Scaffold(
-//       backgroundColor: Color(0xFFF2E5D9),
-//       body: Center(
-//           child: Container(
-//             height: double.infinity,
-//             width: double.infinity,
-//             child: const Center(
-//               child: Text(
-//                 'COMMUNITY',
-//                 textAlign: TextAlign.center,
-//                 style: TextStyle(
-//                   fontSize: 50,
-//                 ),
-//               ),
-//             ),
-//           )
-//         ),
-//     );
-//   }
-// }

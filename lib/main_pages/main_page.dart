@@ -3,10 +3,12 @@ import 'package:elective_project/main_pages/create_page.dart';
 import 'package:elective_project/main_pages/home_page.dart';
 import 'package:elective_project/main_pages/recipes_page.dart';
 import 'package:elective_project/main_pages/setting_page.dart';
+import 'package:elective_project/resources/user_provider.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:persistent_bottom_nav_bar/persistent-tab-view.dart';
+import 'package:provider/provider.dart';
 
 //Main Page of the App (w/ Bottom Navigation Bar)
 
@@ -41,6 +43,17 @@ class _MainPageState extends State<MainPage> {
   // bool isClickedCategory5 = false;
   // bool isClickedCategory7 = false;
   // bool isClickedCategory8 = false;
+
+  @override
+  void initState() {
+    super.initState();
+    addData();
+  }
+
+  addData() async {
+    UserProvider _userProvider = Provider.of<UserProvider>(context, listen: false);
+    await _userProvider.refreshUser();
+  }
 
   @override
   Widget build(BuildContext context) {

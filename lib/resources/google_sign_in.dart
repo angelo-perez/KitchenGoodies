@@ -38,11 +38,9 @@ class GoogleSignInProvider extends ChangeNotifier {
     final FirebaseAuth firebaseAuth = FirebaseAuth.instance;
     final user = FirebaseAuth.instance.currentUser;
 
-    if (googleSignIn.currentUser != null) { //to avoid overwritting data of non-google accounts 
-      await FirebaseFirestore.instance
-          .collection('users')
-          .doc(cred.user?.uid)
-          .set({
+    if (googleSignIn.currentUser != null) {
+      //to avoid overwritting data of non-google accounts
+      await FirebaseFirestore.instance.collection('users').doc(cred.user?.uid).set({
         'uid': user?.uid,
         'email': user?.email,
         'username': user?.displayName,
@@ -60,6 +58,4 @@ class GoogleSignInProvider extends ChangeNotifier {
       await FirebaseAuth.instance.signOut();
     }
   }
-
-
 }

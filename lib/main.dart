@@ -2,6 +2,7 @@ import 'dart:ui';
 import 'package:elective_project/resources/google_sign_in.dart';
 import 'package:elective_project/main_pages/main_page.dart';
 import 'package:elective_project/main_pages/splash_page.dart';
+import 'package:elective_project/resources/user_provider.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
@@ -34,10 +35,18 @@ class MyApp extends StatefulWidget {
 class _MyAppState extends State<MyApp> {
   @override
   Widget build(BuildContext context) {
-    return ChangeNotifierProvider(
-      create: (context) => GoogleSignInProvider(),
+    return MultiProvider(
+      providers: [
+        ChangeNotifierProvider(
+          create: (context) => GoogleSignInProvider(),
+        ),
+        ChangeNotifierProvider(
+          create: (_) => UserProvider(),
+        )
+      ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
+        title: 'Kitchen Goodies',
         theme: ThemeData(
           primaryColor: Color(0xFF12A2726),
         ),

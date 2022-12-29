@@ -19,8 +19,7 @@ class SettingsPage extends StatefulWidget {
 class _SettingsPageState extends State<SettingsPage> {
   @override
   Widget build(BuildContext context) {
-    final user =
-        FirebaseAuth.instance.currentUser; // access current user's data
+    final user = FirebaseAuth.instance.currentUser; // access current user's data
 
     return Scaffold(
         appBar: AppBar(
@@ -37,9 +36,7 @@ class _SettingsPageState extends State<SettingsPage> {
         resizeToAvoidBottomInset: false,
         body: SafeArea(
           child: SettingsList(
-            lightTheme: SettingsThemeData(
-              settingsListBackground: scaffoldBackgroundColor
-            ),
+            lightTheme: SettingsThemeData(settingsListBackground: scaffoldBackgroundColor),
             sections: [
               SettingsSection(
                 title: Text('Settings'),
@@ -55,9 +52,7 @@ class _SettingsPageState extends State<SettingsPage> {
                     trailing: Icon(Icons.arrow_forward_ios),
                   ),
                   SettingsTile.switchTile(
-                    onToggle: (value) {
-                      
-                    },
+                    onToggle: (value) {},
                     initialValue: false,
                     leading: Icon(Icons.format_paint_rounded),
                     title: Text('Dark Theme'),
@@ -82,15 +77,12 @@ class _SettingsPageState extends State<SettingsPage> {
               SettingsSection(
                 tiles: [
                   SettingsTile(
-                    title: Text('Logout'), 
-                    onPressed: (val){
-                      final provider = Provider.of<GoogleSignInProvider>( 
-                              context,
-                              listen: false);
-                          provider.logout();
+                    title: Text('Logout'),
+                    onPressed: (val) {
+                      final provider = Provider.of<GoogleSignInProvider>(context, listen: false);
+                      provider.logout();
                     },
                     leading: Icon(Icons.logout),
-
                   )
                 ],
               ),
