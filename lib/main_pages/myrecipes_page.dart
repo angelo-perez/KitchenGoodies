@@ -195,8 +195,7 @@ class _MyRecipesPageState extends State<MyRecipesPage> {
                             screen: RecipeOverview(
                                 documentSnapshot['imageUrl'],
                                 documentSnapshot['name'],
-                                // documentSnapshot['source'],
-                                "Me",
+                                documentSnapshot['source'],
                                 documentSnapshot['ingredients'],
                                 documentSnapshot['steps'],
                                 documentSnapshot['steps-timer']),
