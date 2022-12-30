@@ -89,7 +89,16 @@ class _CreatePageState extends State<CreatePage> {
                         elevation: 16,
                         shadowColor: appBarColor,
                       )),
-                  items: ['Chicken', 'Pork', 'Beef', 'Fish', 'Crustacean', 'Vegetables', 'Dessert', 'Others'],
+                  items: [
+                    'Chicken',
+                    'Pork',
+                    'Beef',
+                    'Fish',
+                    'Crustacean',
+                    'Vegetables',
+                    'Dessert',
+                    'Others'
+                  ],
                   dropdownDecoratorProps: DropDownDecoratorProps(
                     dropdownSearchDecoration: InputDecoration(
                       labelText: "Recipe Category",
@@ -158,20 +167,37 @@ class _CreatePageState extends State<CreatePage> {
               ElevatedButton(
                 onPressed: () {
                   String recipe_name = recipeName.text;
+                  String toastMessage = "";
                   print(recipe_name);
                   print(recipePrivacy);
-                  recipeName.text.isEmpty || recipeCategory == "Select a category"
-                      ? Fluttertoast.showToast(
-                          msg: "You've entered invalid information",
+
+                  if (recipeName.text.isEmpty) {
+                    toastMessage = "Recipe Name can't be empty";
+                    Fluttertoast.showToast(
+                        msg:toastMessage,
+                        toastLength: Toast.LENGTH_SHORT,
+                        gravity: ToastGravity.SNACKBAR,
+                        timeInSecForIosWeb: 1,
+                        backgroundColor: splashScreenBgColor,
+                        textColor: Colors.white,
+                        fontSize: 16.0);
+                  } else if (recipeCategory == "Select a category") {
+                    toastMessage = "Please select a Recipe Category";
+                    Fluttertoast.showToast(
+                          msg: toastMessage,
                           toastLength: Toast.LENGTH_SHORT,
                           gravity: ToastGravity.SNACKBAR,
                           timeInSecForIosWeb: 1,
                           backgroundColor: splashScreenBgColor,
                           textColor: Colors.white,
-                          fontSize: 16.0)
-                      : pushNewScreen(context,
-                          screen: AddIngredients(recipe_name, recipeCategory! ,recipePrivacy!),
+                          fontSize: 16.0);
+                  }
+                  else{
+                    pushNewScreen(context,
+                          screen: AddIngredients(
+                              recipe_name, recipeCategory!, recipePrivacy!),
                           withNavBar: true);
+                  }
                 },
                 child: Text("Next"),
                 style: ElevatedButton.styleFrom(backgroundColor: appBarColor),

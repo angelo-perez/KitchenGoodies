@@ -1,4 +1,5 @@
 import 'package:elective_project/create_recipe/add_steps.dart';
+import 'package:fluentui_system_icons/fluentui_system_icons.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/container.dart';
@@ -81,39 +82,42 @@ class _AddIngredientsState extends State<AddIngredients> {
               itemBuilder: (context, key) {
                 return _row(key);
               }),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              IconButton(
-                  onPressed: () async {
-                    if (_ingredientCount > 0) {
+          Padding(
+            padding: const EdgeInsets.only(bottom: 10),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
+              children: [
+                IconButton(
+                    onPressed: () async {
                       setState(() {
-                        _ingredientCount--;
-                        _initialPlaceholders.removeAt(_ingredientCount);
+                        _ingredientCount++;
+                        _initialPlaceholders
+                            .add("Ingredient ${_ingredientCount}");
                       });
-                    }
-                    print(_ingredientCount);
-                    print(_initialPlaceholders);
-                  },
-                  icon: Icon(
-                    Icons.remove_circle,
-                    size: 30.0,
-                  )),
-              IconButton(
-                  onPressed: () async {
-                    setState(() {
-                      _ingredientCount++;
-                      _initialPlaceholders
-                          .add("Ingredient ${_ingredientCount}");
-                    });
-                    print(_ingredientCount);
-                    print(_initialPlaceholders);
-                  },
-                  icon: Icon(
-                    Icons.add_circle,
-                    size: 30.0,
-                  )),
-            ],
+                      print(_ingredientCount);
+                      print(_initialPlaceholders);
+                    },
+                    icon: Icon(
+                      FluentIcons.add_circle_32_filled,
+                      size: 30.0,
+                    )),
+                IconButton(
+                    onPressed: () async {
+                      if (_ingredientCount > 0) {
+                        setState(() {
+                          _ingredientCount--;
+                          _initialPlaceholders.removeAt(_ingredientCount);
+                        });
+                      }
+                      print(_ingredientCount);
+                      print(_initialPlaceholders);
+                    },
+                    icon: Icon(
+                      FluentIcons.subtract_circle_32_filled,
+                      size: 30.0,
+                    )),
+              ],
+            ),
           ),
           ElevatedButton(
             onPressed: () {
@@ -123,8 +127,8 @@ class _AddIngredientsState extends State<AddIngredients> {
               print(widget.recipePrivacy);
               print(ingredientsList);
               pushNewScreen(context,
-                  screen: AddSteps(
-                      widget.recipeName, widget.recipeCategory, widget.recipePrivacy, ingredientsList),
+                  screen: AddSteps(widget.recipeName, widget.recipeCategory,
+                      widget.recipePrivacy, ingredientsList),
                   withNavBar: true);
             },
             child: Text("Next"),

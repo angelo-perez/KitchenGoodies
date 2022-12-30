@@ -94,10 +94,11 @@ class _CategoryRecipesPageState extends State<CategoryRecipesPage> {
       return Scaffold(
         appBar: AppBar(
           backgroundColor: Colors.white,
-          leading: SvgPicture.asset(
-            'images/logos/kitchen-goodies.svg',
-            color: Colors.black,
-          ),
+          // leading: SvgPicture.asset(
+          //   'images/logos/kitchen-goodies.svg',
+          //   color: Colors.black,
+          // ),
+          iconTheme: IconThemeData(color: appBarColor),
           title: Text(
             '${categoryName} Recipes',
             style: TextStyle(color: Colors.black),
@@ -306,6 +307,7 @@ class _CategoryRecipesPageState extends State<CategoryRecipesPage> {
                       }
                     },
                     leading: Container(
+                      height: 72,
                       width: 72,
                       decoration: BoxDecoration(
                         borderRadius: BorderRadius.all(Radius.circular(20)),

@@ -1,6 +1,6 @@
 // import 'package:flutter/src/foundation/key.dart';
 // import 'package:flutter/src/widgets/framework.dart';
-import 'package:elective_project/recipes_categories/category_recipes_page.dart';
+import 'package:elective_project/recipes_page/category_recipes_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:persistent_bottom_nav_bar/persistent-tab-view.dart';

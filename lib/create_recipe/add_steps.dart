@@ -1,4 +1,5 @@
 import 'package:elective_project/create_recipe/add_picture.dart';
+import 'package:fluentui_system_icons/fluentui_system_icons.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/container.dart';
@@ -88,38 +89,41 @@ class _AddAddStepsState extends State<AddSteps> {
               itemBuilder: (context, key) {
                 return _row(key);
               }),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              IconButton(
-                  onPressed: () async {
-                    if (_stepCount > 0) {
+          Padding(
+            padding: const EdgeInsets.only(bottom: 10),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
+              children: [
+                IconButton(
+                    onPressed: () async {
                       setState(() {
-                        _stepCount--;
-                        _initialPlaceholders.removeAt(_stepCount);
+                        _stepCount++;
+                        _initialPlaceholders.add("Ingredient ${_stepCount}");
                       });
-                    }
-                    print(_stepCount);
-                    print(_initialPlaceholders);
-                  },
-                  icon: Icon(
-                    Icons.remove_circle,
-                    size: 30.0,
-                  )),
-              IconButton(
-                  onPressed: () async {
-                    setState(() {
-                      _stepCount++;
-                      _initialPlaceholders.add("Ingredient ${_stepCount}");
-                    });
-                    print(_stepCount);
-                    print(_initialPlaceholders);
-                  },
-                  icon: Icon(
-                    Icons.add_circle,
-                    size: 30.0,
-                  )),
-            ],
+                      print(_stepCount);
+                      print(_initialPlaceholders);
+                    },
+                    icon: Icon(
+                      FluentIcons.add_circle_32_filled,
+                      size: 30.0,
+                    )),
+                IconButton(
+                    onPressed: () async {
+                      if (_stepCount > 0) {
+                        setState(() {
+                          _stepCount--;
+                          _initialPlaceholders.removeAt(_stepCount);
+                        });
+                      }
+                      print(_stepCount);
+                      print(_initialPlaceholders);
+                    },
+                    icon: Icon(
+                      FluentIcons.subtract_circle_32_filled,
+                      size: 30.0,
+                    )),
+              ],
+            ),
           ),
           ElevatedButton(
             onPressed: () {

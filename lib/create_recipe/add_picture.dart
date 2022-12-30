@@ -2,9 +2,10 @@ import 'dart:typed_data';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:elective_project/main_pages/main_page.dart';
-import 'package:elective_project/resources/upload_recipe.dart';
+import 'package:elective_project/resources/manage_recipe.dart';
 import 'package:elective_project/util/colors.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:fluentui_system_icons/fluentui_system_icons.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter/src/widgets/container.dart';
@@ -83,13 +84,19 @@ class _AddPictureState extends State<AddPicture> {
         Padding(padding: EdgeInsets.only(top: 250.0)),
         FloatingActionButton(
           onPressed: captureImage,
-          child: Icon(Icons.camera, color: scaffoldBackgroundColor),
-          backgroundColor: appBarColor,
+          child: Icon(FluentIcons.camera_28_filled, color: appBarColor),
+          backgroundColor: Colors.white,
         ),
         Padding(padding: EdgeInsets.only(top: 4.0)),
-        Text(
-          "Camera",
-          style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold),
+        Center(
+          widthFactor: double.minPositive,
+          child: Container(
+            color: appBarColor,
+            child: Text(
+              "Camera",
+              style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
+            ),
+          ),
         )
       ]),
       Column(
@@ -102,12 +109,18 @@ class _AddPictureState extends State<AddPicture> {
               Icons.photo_size_select_actual_rounded,
               color: appBarColor,
             ),
-            backgroundColor: scaffoldBackgroundColor,
+            backgroundColor: Colors.white,
           ),
           Padding(padding: EdgeInsets.only(top: 4.0)),
-          Text(
-            "Gallery",
-            style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold),
+          Center(
+            widthFactor: double.minPositive,
+            child: Container(
+              color: appBarColor,
+              child: Text(
+                "Gallery",
+                style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
+              ),
+            ),
           )
         ],
       ),
@@ -116,6 +129,7 @@ class _AddPictureState extends State<AddPicture> {
     StarMenuController centerStarMenuController = StarMenuController();
 
     return Scaffold(
+
         appBar: AppBar(
           backgroundColor: appBarColor,
           title: Text(
@@ -180,7 +194,7 @@ class _AddPictureState extends State<AddPicture> {
                       height: 400,
                       width: 150,
                       fit: BoxFit.fill,
-                      color: Colors.grey[50],
+                      color: Colors.white,
                       colorBlendMode: BlendMode.darken,
                     ),
                   ),
@@ -198,18 +212,18 @@ class _AddPictureState extends State<AddPicture> {
                 print(user.uid);
                 print(user.username);
 
-                // UploadRecipe uploadRecipe = UploadRecipe();
-                // uploadRecipe.addSubColleciton(
-                //   userId: user.uid,
-                //   recipeName: widget.recipeName,
-                //   username: user.username,
-                //   recipeCategory: widget.recipeCategory,
-                //   recipePrivacy: widget.recipePrivacy,
-                //   recipeIngredients: widget.recipeIngredients,
-                //   recipeSteps: widget.recipeIngredients,
-                //   recipeTimer: widget.recipeTimer,
-                //   recipeImage: _image!,
-                // );
+                ManageRecipe uploadRecipe = ManageRecipe();
+                uploadRecipe.uploadRecipe(
+                  userId: user.uid,
+                  recipeName: widget.recipeName,
+                  username: user.username,
+                  recipeCategory: widget.recipeCategory,
+                  recipePrivacy: widget.recipePrivacy,
+                  recipeIngredients: widget.recipeIngredients,
+                  recipeSteps: widget.recipeSteps,
+                  recipeTimer: widget.recipeTimer,
+                  recipeImage: _image!,
+                );
 
                 Fluttertoast.showToast(
                     msg: "Your recipe was succesfully saved",

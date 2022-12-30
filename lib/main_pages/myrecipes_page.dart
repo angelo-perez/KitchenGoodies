@@ -1,8 +1,10 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:elective_project/create_recipe/create_page.dart';
+import 'package:elective_project/resources/manage_recipe.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:persistent_bottom_nav_bar/persistent-tab-view.dart';
 
 import '../recipe_steps/recipe_overview.dart';
@@ -17,6 +19,7 @@ class MyRecipesPage extends StatefulWidget {
 
 class _MyRecipesPageState extends State<MyRecipesPage> {
   bool _private = true;
+  String privacy = "";
 
   bool _noRecipeCreated = false;
 
@@ -39,16 +42,11 @@ class _MyRecipesPageState extends State<MyRecipesPage> {
         .doc(uid)
         .collection("MyRecipes");
 
-    // if (_myRecipes.doc().snapshots().length == 0) {
-    //   _noRecipeCreated = !_noRecipeCreated;
-    // }
-
     return Scaffold(
         backgroundColor: Colors.white,
         appBar: AppBar(
           backgroundColor: Colors.white,
-          title:
-              Text('My Recipes', style: TextStyle(color: appBarColor)),
+          title: Text('My Recipes', style: TextStyle(color: appBarColor)),
           actions: [
             IconButton(
                 onPressed: () {
@@ -106,7 +104,6 @@ class _MyRecipesPageState extends State<MyRecipesPage> {
   Widget _myRecipeListViewBuilder(BuildContext context, List items) {
     return ListView(
       children: [
-        Padding(padding: EdgeInsets.only(top: 5)),
         ListView.builder(
             itemCount: items.length,
             scrollDirection: Axis.vertical,
@@ -114,6 +111,13 @@ class _MyRecipesPageState extends State<MyRecipesPage> {
             physics: ScrollPhysics(),
             itemBuilder: (context, index) {
               final DocumentSnapshot documentSnapshot = items[index];
+
+              if (documentSnapshot["privacy"] == "Private") {
+                _private = true;
+              } else {
+                _private = false;
+              }
+
               return Slidable(
                 // Specify a key if the Slidable is dismissible.
                 key: const ValueKey(0),
@@ -127,9 +131,22 @@ class _MyRecipesPageState extends State<MyRecipesPage> {
                   children: [
                     // A SlidableAction can have an icon and/or a label.
                     SlidableAction(
-                      autoClose: false,
+                      autoClose: true,
                       onPressed: (context) {
                         TogglePrivacy();
+
+                        final User? user = auth.currentUser;
+                        final uid = user!.uid;
+
+                        String recipePrivacy = _private ? "Private" : "Public";
+
+                        ManageRecipe toggleRecipePrivacy = ManageRecipe();
+                        toggleRecipePrivacy.toggleRecipePrivacy(
+                          uid,
+                          documentSnapshot.id,
+                          recipePrivacy
+                        );
+
                         print(_private);
                       },
                       backgroundColor: Color.fromARGB(255, 0, 122, 6),
@@ -152,14 +169,22 @@ class _MyRecipesPageState extends State<MyRecipesPage> {
                   motion: DrawerMotion(),
                   children: [
                     SlidableAction(
-                      onPressed: doNothing,
+                      onPressed: (context) {
+                        
+                      },
                       backgroundColor: Color(0xFF0392CF),
                       foregroundColor: Colors.white,
                       icon: Icons.edit,
                       label: 'Edit',
                     ),
                     SlidableAction(
-                      onPressed: doNothing,
+                      onPressed: (context) {
+                        final User? user = auth.currentUser;
+                        final uid = user!.uid;
+
+                        deleteRecipeDialog(context, uid, documentSnapshot.id,
+                            documentSnapshot['name']);
+                      },
                       backgroundColor: Color(0xFFFE4A49),
                       foregroundColor: Colors.white,
                       icon: Icons.delete,
@@ -210,6 +235,7 @@ class _MyRecipesPageState extends State<MyRecipesPage> {
                         }
                       },
                       leading: Container(
+                        height: 72,
                         width: 72,
                         decoration: BoxDecoration(
                           borderRadius: BorderRadius.all(Radius.circular(20)),
@@ -258,6 +284,56 @@ class _MyRecipesPageState extends State<MyRecipesPage> {
   }
 
   void doNothing(BuildContext context) {}
+
+  void deleteRecipeDialog(BuildContext myrecipeContext, String uid,
+      String recipeId, String recipeName) {
+    showDialog(
+      context: context,
+      builder: (context) => new AlertDialog(
+        title: new Text('Are you sure?'),
+        content: new Text('Do you want to delete ${recipeName}?'),
+        actions: <Widget>[
+          TextButton(
+            onPressed: () {
+              Navigator.of(context).pop();
+              Fluttertoast.showToast(
+                  msg: "${recipeName} was not deleted",
+                  toastLength: Toast.LENGTH_SHORT,
+                  gravity: ToastGravity.SNACKBAR,
+                  timeInSecForIosWeb: 1,
+                  backgroundColor: splashScreenBgColor,
+                  textColor: Colors.white,
+                  fontSize: 16.0);
+            },
+            child: new Text('No'),
+          ),
+          TextButton(
+            onPressed: () {
+              final CollectionReference _myRecipes = FirebaseFirestore.instance
+                  .collection("users")
+                  .doc(uid)
+                  .collection("MyRecipes");
+
+              if (ManageRecipe().deleteRecipe(uid, recipeId) == 'success') {
+                Navigator.pop(myrecipeContext);
+                Fluttertoast.showToast(
+                    msg: "Successfully deleted ${recipeName}",
+                    toastLength: Toast.LENGTH_SHORT,
+                    gravity: ToastGravity.SNACKBAR,
+                    timeInSecForIosWeb: 1,
+                    backgroundColor: splashScreenBgColor,
+                    textColor: Colors.white,
+                    fontSize: 16.0);
+              }
+
+              Navigator.of(context).pop();
+            },
+            child: new Text('Yes'),
+          ),
+        ],
+      ),
+    );
+  }
 }
 
 class MyRecipeSearchDelegate extends SearchDelegate {
