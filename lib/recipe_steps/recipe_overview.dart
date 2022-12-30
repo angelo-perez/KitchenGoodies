@@ -54,6 +54,7 @@ class _RecipeOverviewState extends State<RecipeOverview> {
       //extendBodyBehindAppBar: true,
       backgroundColor: mBackgroundColor,
       body: Container(
+        height: double.infinity,
         width: double.infinity,
         decoration: overviewBG != null
             ? BoxDecoration(
