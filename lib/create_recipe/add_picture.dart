@@ -94,7 +94,8 @@ class _AddPictureState extends State<AddPicture> {
             color: appBarColor,
             child: Text(
               "Camera",
-              style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
+              style:
+                  TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
             ),
           ),
         )
@@ -106,7 +107,7 @@ class _AddPictureState extends State<AddPicture> {
           FloatingActionButton(
             onPressed: selectImage,
             child: Icon(
-              Icons.photo_size_select_actual_rounded,
+              FluentIcons.image_28_filled,
               color: appBarColor,
             ),
             backgroundColor: Colors.white,
@@ -118,7 +119,8 @@ class _AddPictureState extends State<AddPicture> {
               color: appBarColor,
               child: Text(
                 "Gallery",
-                style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
+                style:
+                    TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
               ),
             ),
           )
@@ -129,13 +131,13 @@ class _AddPictureState extends State<AddPicture> {
     StarMenuController centerStarMenuController = StarMenuController();
 
     return Scaffold(
-
         appBar: AppBar(
           backgroundColor: appBarColor,
           title: Text(
             'Create Recipe',
           ),
         ),
+        backgroundColor: mBackgroundColor,
         body: SafeArea(
             child: ListView(padding: EdgeInsets.all(10.0), children: [
           Padding(
@@ -145,7 +147,7 @@ class _AddPictureState extends State<AddPicture> {
               'Add a Picture',
               style: GoogleFonts.bebasNeue(
                 fontSize: 45,
-                color: const Color(0xFF6e3d28),
+                color: appBarColor,
               ),
               textAlign: TextAlign.center,
             ),
@@ -160,7 +162,7 @@ class _AddPictureState extends State<AddPicture> {
             widget.recipeName,
             style: GoogleFonts.bebasNeue(
               fontSize: 30,
-              color: const Color(0xFF6e3d28),
+              color: appBarColor,
             ),
             textAlign: TextAlign.center,
           ),
@@ -213,7 +215,8 @@ class _AddPictureState extends State<AddPicture> {
                 print(user.username);
 
                 ManageRecipe uploadRecipe = ManageRecipe();
-                uploadRecipe.uploadRecipe(
+                uploadRecipe
+                    .uploadRecipe(
                   userId: user.uid,
                   recipeName: widget.recipeName,
                   username: user.username,
@@ -223,20 +226,13 @@ class _AddPictureState extends State<AddPicture> {
                   recipeSteps: widget.recipeSteps,
                   recipeTimer: widget.recipeTimer,
                   recipeImage: _image!,
-                );
-
-                Fluttertoast.showToast(
-                    msg: "Your recipe was succesfully saved",
-                    toastLength: Toast.LENGTH_SHORT,
-                    gravity: ToastGravity.SNACKBAR,
-                    timeInSecForIosWeb: 1,
-                    backgroundColor: splashScreenBgColor,
-                    textColor: Colors.white,
-                    fontSize: 16.0);
-
-                Navigator.of(context, rootNavigator: true).pushAndRemoveUntil(
-                    MaterialPageRoute(builder: (context) => MainPage()), //should go to "myrecipe tab" not in homepage
-                    (route) => false);
+                ).whenComplete(() {
+                  Navigator.of(context, rootNavigator: true).pushAndRemoveUntil(
+                      MaterialPageRoute(
+                          builder: (context) =>
+                              MainPage()), //should go to "myrecipe tab" not in homepage
+                      (route) => false);
+                });
               },
               child: Text("Save Recipe"),
               style: ElevatedButton.styleFrom(backgroundColor: appBarColor))

@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:elective_project/create_recipe/create_page.dart';
+import 'package:elective_project/edit_recipe/edit_name_picture.dart';
 import 'package:elective_project/resources/manage_recipe.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -18,18 +19,11 @@ class MyRecipesPage extends StatefulWidget {
 }
 
 class _MyRecipesPageState extends State<MyRecipesPage> {
-  bool _private = true;
-  String privacy = "";
+  //String privacy = "";
 
   bool _noRecipeCreated = false;
 
   List myRecipeList = [];
-
-  void TogglePrivacy() {
-    setState(() {
-      _private = !_private;
-    });
-  }
 
   final FirebaseAuth auth = FirebaseAuth.instance;
 
@@ -43,7 +37,7 @@ class _MyRecipesPageState extends State<MyRecipesPage> {
         .collection("MyRecipes");
 
     return Scaffold(
-        backgroundColor: Colors.white,
+        backgroundColor: mBackgroundColor,
         appBar: AppBar(
           backgroundColor: Colors.white,
           title: Text('My Recipes', style: TextStyle(color: appBarColor)),
@@ -112,53 +106,50 @@ class _MyRecipesPageState extends State<MyRecipesPage> {
             itemBuilder: (context, index) {
               final DocumentSnapshot documentSnapshot = items[index];
 
-              if (documentSnapshot["privacy"] == "Private") {
-                _private = true;
-              } else {
-                _private = false;
-              }
+              String privacy = documentSnapshot["privacy"];
 
               return Slidable(
                 // Specify a key if the Slidable is dismissible.
                 key: const ValueKey(0),
+
                 // The start action pane is the one at the left or the top side.
                 startActionPane: ActionPane(
                   // A motion is a widget used to control how the pane animates.
                   motion: const DrawerMotion(),
                   // A pane can dismiss the Slidable.
-                  //dismissible: DismissiblePane(onDismissed: () {}),
                   // All actions are defined in the children parameter.
                   children: [
                     // A SlidableAction can have an icon and/or a label.
                     SlidableAction(
-                      autoClose: true,
+                      autoClose: false,
                       onPressed: (context) {
-                        TogglePrivacy();
+                        setState(() {
+                          if (privacy == "Private") {
+                            privacy = "Public";
+                          } else {
+                            privacy = "Private";
+                          }
+                        });
 
                         final User? user = auth.currentUser;
                         final uid = user!.uid;
 
-                        String recipePrivacy = _private ? "Private" : "Public";
-
                         ManageRecipe toggleRecipePrivacy = ManageRecipe();
                         toggleRecipePrivacy.toggleRecipePrivacy(
-                          uid,
-                          documentSnapshot.id,
-                          recipePrivacy
-                        );
-
-                        print(_private);
+                            uid, documentSnapshot.id, privacy);
+                        print(privacy);
                       },
-                      backgroundColor: Color.fromARGB(255, 0, 122, 6),
+                      backgroundColor: Color.fromARGB(255, 107, 100, 38),
                       foregroundColor: Colors.white,
-                      icon: _private
+                      icon: documentSnapshot["privacy"] == "Private"
                           ? Icons.visibility_off_sharp
                           : Icons.visibility,
-                      label: _private ? 'Private' : 'Public',
+                      label: documentSnapshot["privacy"],
                     ),
+                    // SHARE BUTTON IS NOT YET IMPLEMENTED
                     SlidableAction(
                       onPressed: doNothing,
-                      backgroundColor: Color.fromARGB(255, 98, 74, 136),
+                      backgroundColor: Color.fromARGB(255, 71, 129, 95),
                       foregroundColor: Colors.white,
                       icon: Icons.share,
                       label: 'Share',
@@ -170,7 +161,21 @@ class _MyRecipesPageState extends State<MyRecipesPage> {
                   children: [
                     SlidableAction(
                       onPressed: (context) {
-                        
+                        final User? user = auth.currentUser;
+                        final uid = user!.uid;
+
+                        pushNewScreen(context,
+                            screen: EditNamePicture(
+                                uid,
+                                documentSnapshot.id,
+                                documentSnapshot["imageUrl"],
+                                documentSnapshot["name"],
+                                documentSnapshot["category"],
+                                documentSnapshot["privacy"],
+                                documentSnapshot["ingredients"],
+                                documentSnapshot["steps"],
+                                documentSnapshot["steps-timer"]),
+                            withNavBar: true);
                       },
                       backgroundColor: Color(0xFF0392CF),
                       foregroundColor: Colors.white,
@@ -248,7 +253,8 @@ class _MyRecipesPageState extends State<MyRecipesPage> {
                         ),
                       ),
                       title: Text(documentSnapshot["name"]),
-                      subtitle: Text('Description'),
+                      subtitle: Text(
+                          'Last Modified: ${documentSnapshot["date"].toDate()}'),
                       trailing: Icon(Icons.arrow_right),
                     ),
                   ),
@@ -314,7 +320,9 @@ class _MyRecipesPageState extends State<MyRecipesPage> {
                   .doc(uid)
                   .collection("MyRecipes");
 
-              if (ManageRecipe().deleteRecipe(uid, recipeId) == 'success') {
+              ManageRecipe deleteRecipe = ManageRecipe();
+
+              deleteRecipe.deleteRecipe(uid, recipeId).whenComplete(() {
                 Navigator.pop(myrecipeContext);
                 Fluttertoast.showToast(
                     msg: "Successfully deleted ${recipeName}",
@@ -324,8 +332,7 @@ class _MyRecipesPageState extends State<MyRecipesPage> {
                     backgroundColor: splashScreenBgColor,
                     textColor: Colors.white,
                     fontSize: 16.0);
-              }
-
+              });
               Navigator.of(context).pop();
             },
             child: new Text('Yes'),

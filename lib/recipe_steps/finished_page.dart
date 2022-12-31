@@ -100,7 +100,7 @@ class _FinishedRecipePageState extends State<FinishedRecipePage> {
                 'Well Done',
                 style: GoogleFonts.bebasNeue(
                   fontSize: 50,
-                  color: const Color(0xFF6e3d28),
+                  color: appBarColor,
                 ),
                 textAlign: TextAlign.center,
               ),

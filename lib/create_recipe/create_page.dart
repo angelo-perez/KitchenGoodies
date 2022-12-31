@@ -43,7 +43,7 @@ class _CreatePageState extends State<CreatePage> {
                   'Create Your Own Recipe',
                   style: GoogleFonts.bebasNeue(
                     fontSize: 45,
-                    color: const Color(0xFF6e3d28),
+                    color: appBarColor,
                   ),
                   textAlign: TextAlign.center,
                 ),
@@ -85,9 +85,10 @@ class _CreatePageState extends State<CreatePage> {
                       fit: FlexFit.loose,
                       showSelectedItems: true,
                       menuProps: MenuProps(
-                        backgroundColor: scaffoldBackgroundColor,
+                        backgroundColor: mBackgroundColor,
                         elevation: 16,
                         shadowColor: appBarColor,
+
                       )),
                   items: [
                     'Chicken',
@@ -132,7 +133,7 @@ class _CreatePageState extends State<CreatePage> {
                       fit: FlexFit.loose,
                       showSelectedItems: true,
                       menuProps: MenuProps(
-                        backgroundColor: scaffoldBackgroundColor,
+                        backgroundColor: mBackgroundColor,
                         elevation: 16,
                         shadowColor: appBarColor,
                       )),

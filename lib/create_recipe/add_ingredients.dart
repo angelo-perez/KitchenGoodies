@@ -4,6 +4,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/container.dart';
 import 'package:flutter/src/widgets/framework.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:persistent_bottom_nav_bar/persistent-tab-view.dart';
 
@@ -46,6 +47,7 @@ class _AddIngredientsState extends State<AddIngredients> {
         backgroundColor: appBarColor,
         title: Text('Create Recipe'),
       ),
+      backgroundColor: mBackgroundColor,
       body: SafeArea(
         child: ListView(padding: EdgeInsets.all(10.0), children: [
           Padding(
@@ -55,7 +57,7 @@ class _AddIngredientsState extends State<AddIngredients> {
               'Add the ingredients',
               style: GoogleFonts.bebasNeue(
                 fontSize: 45,
-                color: const Color(0xFF6e3d28),
+                color: appBarColor,
               ),
               textAlign: TextAlign.center,
             ),
@@ -70,7 +72,7 @@ class _AddIngredientsState extends State<AddIngredients> {
             widget.recipeName,
             style: GoogleFonts.bebasNeue(
               fontSize: 40,
-              color: const Color(0xFF6e3d28),
+              color: appBarColor,
             ),
             textAlign: TextAlign.center,
           ),
@@ -126,10 +128,23 @@ class _AddIngredientsState extends State<AddIngredients> {
               print(widget.recipeCategory);
               print(widget.recipePrivacy);
               print(ingredientsList);
-              pushNewScreen(context,
+
+              if(ingredientsList.isEmpty){
+                Fluttertoast.showToast(
+                    msg: "Ingredients should not be empty",
+                    toastLength: Toast.LENGTH_SHORT,
+                    gravity: ToastGravity.SNACKBAR,
+                    timeInSecForIosWeb: 1,
+                    backgroundColor: splashScreenBgColor,
+                    textColor: Colors.white,
+                    fontSize: 16.0);    
+              }
+              else{
+                pushNewScreen(context,
                   screen: AddSteps(widget.recipeName, widget.recipeCategory,
                       widget.recipePrivacy, ingredientsList),
                   withNavBar: true);
+              }
             },
             child: Text("Next"),
             style: ElevatedButton.styleFrom(backgroundColor: appBarColor),
@@ -148,6 +163,8 @@ class _AddIngredientsState extends State<AddIngredients> {
           Expanded(
             child: TextFormField(
               //controller: TextEditingController(),
+              maxLines: 2,
+              minLines: 1,
               textInputAction: TextInputAction.next,
               decoration: InputDecoration(
                 labelText: 'Ingredient ${key + 1}',

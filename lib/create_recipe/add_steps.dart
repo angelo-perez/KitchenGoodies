@@ -4,6 +4,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/container.dart';
 import 'package:flutter/src/widgets/framework.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:persistent_bottom_nav_bar/persistent-tab-view.dart';
 import 'package:flutter_spinbox/flutter_spinbox.dart';
@@ -11,7 +12,8 @@ import 'package:flutter_spinbox/flutter_spinbox.dart';
 import '../util/colors.dart';
 
 class AddSteps extends StatefulWidget {
-  AddSteps(this.recipeName, this.recipeCategory, this.recipePrivacy, this.recipeIngredients);
+  AddSteps(this.recipeName, this.recipeCategory, this.recipePrivacy,
+      this.recipeIngredients);
 
   final String recipeName;
   final String recipeCategory;
@@ -30,6 +32,7 @@ class _AddAddStepsState extends State<AddSteps> {
   late String _timerResult;
   late List stepsArray; //Steps array to be uploaded in the Database
   late List timerArray; //Timer array to be uploaded in the Database
+  double _tempTimer = 0;
 
   List _initialPlaceholders = [
     'Step 1',
@@ -53,23 +56,24 @@ class _AddAddStepsState extends State<AddSteps> {
         backgroundColor: appBarColor,
         title: Text('Create Recipe'),
       ),
+      backgroundColor: mBackgroundColor,
       body: SafeArea(
         child: ListView(padding: EdgeInsets.all(10.0), children: [
           Padding(
             padding:
                 const EdgeInsets.symmetric(horizontal: 15.0, vertical: 15.0),
             child: Text(
-              'Add the steps',
+              'Add the Procedure',
               style: GoogleFonts.bebasNeue(
                 fontSize: 45,
-                color: const Color(0xFF6e3d28),
+                color: appBarColor,
               ),
               textAlign: TextAlign.center,
             ),
           ),
           Padding(padding: EdgeInsets.all(8.0)),
           Text(
-            'Step 3: Next, add the steps of your recipe.',
+            'Step 3: Next, add the procedure of your recipe.',
             style: TextStyle(fontSize: 20),
           ),
           Padding(padding: EdgeInsets.all(8.0)),
@@ -77,7 +81,7 @@ class _AddAddStepsState extends State<AddSteps> {
             widget.recipeName,
             style: GoogleFonts.bebasNeue(
               fontSize: 40,
-              color: const Color(0xFF6e3d28),
+              color: appBarColor,
             ),
             textAlign: TextAlign.center,
           ),
@@ -98,7 +102,8 @@ class _AddAddStepsState extends State<AddSteps> {
                     onPressed: () async {
                       setState(() {
                         _stepCount++;
-                        _initialPlaceholders.add("Ingredient ${_stepCount}");
+                        _initialPlaceholders.add("Step ${_stepCount}");
+                        //_tempTimer = 0; //reset default timer to 0
                       });
                       print(_stepCount);
                       print(_initialPlaceholders);
@@ -135,10 +140,31 @@ class _AddAddStepsState extends State<AddSteps> {
               print(widget.recipeIngredients);
               print(stepsArray);
               print(timerArray);
-              pushNewScreen(context,
-                  screen: AddPicture(widget.recipeName, widget.recipeCategory, widget.recipePrivacy,
-                      widget.recipeIngredients, stepsArray, timerArray),
-                  withNavBar: true);
+
+              if (stepsArray.isEmpty ||
+                  timerArray.isEmpty ||
+                  stepsArray.length < timerArray.length ||
+                  stepsArray.contains("") ||
+                  stepsArray.contains(" ")) {
+                Fluttertoast.showToast(
+                    msg: "A step should not be empty",
+                    toastLength: Toast.LENGTH_SHORT,
+                    gravity: ToastGravity.SNACKBAR,
+                    timeInSecForIosWeb: 1,
+                    backgroundColor: splashScreenBgColor,
+                    textColor: Colors.white,
+                    fontSize: 16.0);
+              } else {
+                pushNewScreen(context,
+                    screen: AddPicture(
+                        widget.recipeName,
+                        widget.recipeCategory,
+                        widget.recipePrivacy,
+                        widget.recipeIngredients,
+                        stepsArray,
+                        timerArray),
+                    withNavBar: true);
+              }
             },
             child: Text("Next"),
             style: ElevatedButton.styleFrom(backgroundColor: appBarColor),
@@ -158,6 +184,8 @@ class _AddAddStepsState extends State<AddSteps> {
             flex: 2,
             child: TextFormField(
               //controller: TextEditingController(),
+              maxLines: 3,
+              minLines: 1,
               textInputAction: TextInputAction.next,
               decoration: InputDecoration(
                 labelText: 'Step ${key + 1}',
@@ -177,7 +205,16 @@ class _AddAddStepsState extends State<AddSteps> {
               ),
               onChanged: (val) {
                 _onStepUpdate(key, val);
-                _onTimerUpdate(key, 0);
+
+                if (_timerValues.length == _stepValues.length) {  //to not reset timer to 0 if it is > 0
+                  if (_timerValues[key]["timer"] > 0) {
+                    _onTimerUpdate(key, _timerValues[key]["timer"]);
+                  } 
+                }
+                else{
+                  _onTimerUpdate(key, 0);
+                }
+
               },
             ),
           ),
@@ -187,7 +224,6 @@ class _AddAddStepsState extends State<AddSteps> {
               min: 0,
               max: 100,
               value: 0,
-              //onChanged: (value) => print(value),
               spacing: 4,
               decoration: InputDecoration(
                 labelText: 'Timer (minutes)',
@@ -206,6 +242,7 @@ class _AddAddStepsState extends State<AddSteps> {
                 ),
               ),
               onChanged: (val) {
+                _tempTimer = val;
                 _onTimerUpdate(key, val.toInt());
               },
             ),
