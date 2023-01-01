@@ -144,6 +144,9 @@ flutter:
         - asset: fonts\Montserrat-Regular.ttf
   #       - asset: fonts/Schyler-Italic.ttf
   #         style: italic
+    - family: Sanford
+      fonts:
+        - asset: fonts\Sanford.ttf
   #   - family: Trajan Pro
   #     fonts:
   #       - asset: fonts/TrajanPro.ttf
