@@ -26,6 +26,7 @@ class RecipeOverview extends StatefulWidget {
 class _RecipeOverviewState extends State<RecipeOverview> {
   @override
   Widget build(BuildContext context) {
+    Color iconTextColor = Colors.white;
     int totalStepsCount = widget.recipe_steps.length;
     int step_index = 0;
     String overviewBG = widget.recipe_image;
@@ -52,7 +53,7 @@ class _RecipeOverviewState extends State<RecipeOverview> {
         centerTitle: true,
       ),
       //extendBodyBehindAppBar: true,
-      backgroundColor: mBackgroundColor,
+      backgroundColor: appBarColor,
       body: Container(
         height: double.infinity,
         width: double.infinity,
@@ -71,13 +72,16 @@ class _RecipeOverviewState extends State<RecipeOverview> {
                 padding: const EdgeInsets.only(top: 15),
                 child: Text(
                   'Ingredients',
-                  style: TextStyle(fontWeight: FontWeight.bold, fontSize: 22),
+                  style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                      fontSize: 22,
+                      color: iconTextColor),
                   textAlign: TextAlign.left,
                 ),
               ),
               BulletedList(
                 style: TextStyle(
-                  color: Colors.black,
+                  color: iconTextColor,
                   fontSize: 18,
                 ),
                 listItems: widget.recipe_ingredients,
@@ -86,12 +90,15 @@ class _RecipeOverviewState extends State<RecipeOverview> {
               Padding(padding: EdgeInsets.only(top: 15)),
               Text(
                 'Procedures',
-                style: TextStyle(fontWeight: FontWeight.bold, fontSize: 22),
+                style: TextStyle(
+                    fontWeight: FontWeight.bold,
+                    fontSize: 22,
+                    color: iconTextColor),
                 textAlign: TextAlign.left,
               ),
               BulletedList(
                 style: TextStyle(
-                  color: Colors.black,
+                  color: iconTextColor,
                   fontSize: 18,
                 ),
                 listItems: widget.recipe_steps,
@@ -122,9 +129,9 @@ class _RecipeOverviewState extends State<RecipeOverview> {
         ),
         label: Text(
           'Start Cooking',
-          style: TextStyle(color: Color(0xFFF2E5D9)),
+          style: TextStyle(color: iconTextColor),
         ),
-        backgroundColor: Color(0xFF12A2726),
+        backgroundColor: appBarColor,
         elevation: 20,
       ),
     );

@@ -26,6 +26,8 @@ class _TimerWidgetState extends State<TimerWidget> {
 
   @override
   Widget build(BuildContext context) {
+    Color iconTextColor = Colors.white;
+
     // int stepDurationSeconds = widget.current_step_duration * (60 / 1).toInt();
     int stepDurationSeconds =
         Duration(minutes: widget.current_step_duration).inSeconds;
@@ -65,18 +67,18 @@ class _TimerWidgetState extends State<TimerWidget> {
                   _isFinished = !_isFinished;
                   FlutterRingtonePlayer.play(
                     fromAsset: "microwave-timer.wav",
-                    looping:  false, // Android only - API >= 28
+                    looping: false, // Android only - API >= 28
                   );
                 }),
               ),
             ),
             Padding(
-              padding: const EdgeInsets.only(bottom: 40, top: 15),
+              padding: const EdgeInsets.only(bottom: 15, top: 15),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Padding(
-                    padding: EdgeInsets.fromLTRB(18, 10, 18, 10),
+                    padding: EdgeInsets.fromLTRB(20, 10, 20, 10),
                     child: IconButton(
                       onPressed: () {
                         setState(() {
@@ -90,11 +92,13 @@ class _TimerWidgetState extends State<TimerWidget> {
                       },
                       icon: Icon(
                         FluentIcons.arrow_reset_24_filled,
+                        color: iconTextColor,
                       ),
+                      iconSize: 35,
                     ),
                   ),
                   Padding(
-                    padding: EdgeInsets.fromLTRB(18, 10, 18, 10),
+                    padding: EdgeInsets.fromLTRB(20, 10, 20, 10),
                     child: IconButton(
                       onPressed: () => setState(() {
                         if (_isRunning) {
@@ -110,14 +114,17 @@ class _TimerWidgetState extends State<TimerWidget> {
                       icon: _isRunning
                           ? Icon(
                               FluentIcons.pause_24_filled,
+                              color: iconTextColor,
                             )
                           : Icon(
                               FluentIcons.play_24_filled,
+                              color: iconTextColor,
                             ),
+                      iconSize: 35,
                     ),
                   ),
                   Padding(
-                    padding: const EdgeInsets.fromLTRB(18, 10, 18, 10),
+                    padding: const EdgeInsets.fromLTRB(20, 10, 20, 10),
                     child: IconButton(
                       onPressed: () {
                         setState(() {
@@ -141,7 +148,9 @@ class _TimerWidgetState extends State<TimerWidget> {
                       },
                       icon: Icon(
                         FluentIcons.timer_2_24_filled,
+                        color: iconTextColor,
                       ),
+                      iconSize: 35,
                     ),
                   ),
                 ],

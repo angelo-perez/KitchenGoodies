@@ -56,6 +56,7 @@ class _FinishedRecipePageState extends State<FinishedRecipePage> {
 
   @override
   Widget build(BuildContext context) {
+    Color iconTextColor = Colors.white;
     FlutterRingtonePlayer.stop();
 
     return Scaffold(
@@ -80,7 +81,7 @@ class _FinishedRecipePageState extends State<FinishedRecipePage> {
         centerTitle: true,
       ),
       //extendBodyBehindAppBar: true,
-      backgroundColor: mBackgroundColor,
+      backgroundColor: appBarColor,
       body: Container(
         width: double.infinity,
         decoration: widget.recipe_image != null
@@ -100,7 +101,7 @@ class _FinishedRecipePageState extends State<FinishedRecipePage> {
                 'Well Done',
                 style: GoogleFonts.bebasNeue(
                   fontSize: 50,
-                  color: appBarColor,
+                  color: iconTextColor,
                 ),
                 textAlign: TextAlign.center,
               ),
@@ -110,7 +111,7 @@ class _FinishedRecipePageState extends State<FinishedRecipePage> {
               child: Text(
                 'Enjoy your meal!',
                 textAlign: TextAlign.center,
-                style: TextStyle(fontSize: 20, fontStyle: FontStyle.italic),
+                style: TextStyle(fontSize: 20, fontStyle: FontStyle.italic, color: iconTextColor),
               ),
             ),
             Padding(
@@ -118,7 +119,7 @@ class _FinishedRecipePageState extends State<FinishedRecipePage> {
               child: Text(
                 'How\'s the ${widget.recipe_name}?',
                 textAlign: TextAlign.center,
-                style: TextStyle(fontSize: 18),
+                style: TextStyle(fontSize: 18, color: iconTextColor),
               ),
             ),
             RatingBar.builder(
@@ -144,24 +145,24 @@ class _FinishedRecipePageState extends State<FinishedRecipePage> {
               child: Text(
                 ratingDisplay,
                 textAlign: TextAlign.center,
-                style: TextStyle(fontSize: 40),
+                style: TextStyle(fontSize: 40, color: iconTextColor),
               ),
             ),
             ElevatedButton(
               style: ElevatedButton.styleFrom(
-                  backgroundColor: Color(0xFF12A2726),
+                  backgroundColor: appBarColor,
                   fixedSize: Size(100, 40)),
               onPressed: () {
                 pushNewScreen(context, screen: CreateDishPost());
               },
               child: Text(
                 'Share',
-                style: TextStyle(color: Color(0xFFF2E5D9), fontSize: 18),
+                style: TextStyle(color: iconTextColor, fontSize: 18),
               ),
             ),
             // ElevatedButton(
             //   style: ElevatedButton.styleFrom(
-            //       backgroundColor: Color(0xFF12A2726),
+            //       backgroundColor: appBarColor,
             //       fixedSize: Size(100, 40)),
             //   onPressed: () {
             //     Navigator.of(context, rootNavigator: true).pushAndRemoveUntil(
@@ -170,12 +171,12 @@ class _FinishedRecipePageState extends State<FinishedRecipePage> {
             //   },
             //   child: Text(
             //     'Recipes',
-            //     style: TextStyle(color: Color(0xFFF2E5D9), fontSize: 18),
+            //     style: TextStyle(color: iconTextColor, fontSize: 18),
             //   ),
             // ),
             ElevatedButton(
               style: ElevatedButton.styleFrom(
-                  backgroundColor: Color(0xFF12A2726),
+                  backgroundColor: appBarColor,
                   fixedSize: Size(100, 40)),
               onPressed: () {
                 Navigator.pushAndRemoveUntil(
@@ -185,7 +186,7 @@ class _FinishedRecipePageState extends State<FinishedRecipePage> {
               },
               child: Text(
                 'Home',
-                style: TextStyle(color: Color(0xFFF2E5D9), fontSize: 18),
+                style: TextStyle(color: iconTextColor, fontSize: 18),
               ),
             )
           ],
