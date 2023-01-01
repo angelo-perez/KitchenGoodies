@@ -3,7 +3,7 @@ import 'package:elective_project/create_recipe/create_page.dart';
 import 'package:elective_project/main_pages/home_page.dart';
 import 'package:elective_project/main_pages/myrecipes_page.dart';
 import 'package:elective_project/main_pages/recipes_page.dart';
-import 'package:elective_project/main_pages/setting_page.dart';
+import 'package:elective_project/main_pages/profile_page.dart';
 import 'package:elective_project/providers/user_provider.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:fluentui_system_icons/fluentui_system_icons.dart';
@@ -30,8 +30,7 @@ class _MainPageState extends State<MainPage> {
 
   Color navBarColor = const Color(0xFF12A2726);
   static Color canvasColor = const Color(0xFFF2E5D9);
-  final PersistentTabController _controller =
-      PersistentTabController(initialIndex: 0);
+  final PersistentTabController _controller = PersistentTabController(initialIndex: 0);
 
   final _screens = [
     HomePage(),
@@ -48,8 +47,7 @@ class _MainPageState extends State<MainPage> {
   }
 
   addData() async {
-    UserProvider _userProvider =
-        Provider.of<UserProvider>(context, listen: false);
+    UserProvider _userProvider = Provider.of<UserProvider>(context, listen: false);
     await _userProvider.refreshUser();
   }
 
@@ -58,7 +56,6 @@ class _MainPageState extends State<MainPage> {
     _precacheImage();
 
     FlutterRingtonePlayer.stop;
-
 
     return Scaffold(
       body: PersistentTabView(
@@ -113,10 +110,8 @@ class _MainPageState extends State<MainPage> {
     precacheImage(AssetImage("images/recipe_categories/pork.jpg"), context);
     precacheImage(AssetImage("images/recipe_categories/beef.jpg"), context);
     precacheImage(AssetImage("images/recipe_categories/fish.jpg"), context);
-    precacheImage(
-        AssetImage("images/recipe_categories/crustacean.jpg"), context);
-    precacheImage(
-        AssetImage("images/recipe_categories/vegetables.jpg"), context);
+    precacheImage(AssetImage("images/recipe_categories/crustacean.jpg"), context);
+    precacheImage(AssetImage("images/recipe_categories/vegetables.jpg"), context);
     precacheImage(AssetImage("images/recipe_categories/dessert.jpg"), context);
     precacheImage(AssetImage("images/recipe_categories/others.jpg"), context);
   }

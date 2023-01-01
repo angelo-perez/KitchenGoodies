@@ -2,10 +2,13 @@ import 'dart:typed_data';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:elective_project/community_page/models/user.dart' as model;
-import 'package:elective_project/main_pages/login_page.dart';
+
 import 'package:elective_project/resources/storage_methods.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+
+import '../providers/user_provider.dart';
 
 class AuthMethods {
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
@@ -82,6 +85,52 @@ class AuthMethods {
     } catch (err) {
       res = err.toString();
     }
+    return res;
+  }
+
+  Future<String> EditUser({
+    required String email,
+    required String username,
+    required String password,
+    required String confirmPassword,
+    required Uint8List file,
+  }) async {
+    String res = 'Some error occured';
+    try {
+      if (email.isNotEmpty ||
+          username.isNotEmpty ||
+          password.isNotEmpty ||
+          confirmPassword.isNotEmpty) {
+        if (password == confirmPassword) {
+          User currentUser = _auth.currentUser!;
+          DocumentSnapshot documentSnapshot =
+              await _firestore.collection('users').doc(currentUser.uid).get();
+
+          String profImage =
+              await StorageMethods().uploadImageToStorage('profilePictures', file, false);
+
+          model.User user = model.User(
+            email: email,
+            username: username,
+            uid: currentUser.uid,
+            profImage: profImage,
+          );
+
+          await FirebaseFirestore.instance
+              .collection('users')
+              .doc(currentUser.uid)
+              .set(user.toJson());
+
+          res = "Success";
+        } else {
+          res = "Password and Confirm Password are not the same";
+        }
+      }
+    } catch (err) {
+      res = err.toString();
+      print(res);
+    }
+
     return res;
   }
 

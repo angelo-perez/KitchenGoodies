@@ -83,6 +83,7 @@ dependencies:
   animated_splash_screen: ^1.3.0
   scaled_list: ^2.0.0
   neon_circular_timer: ^0.0.7
+  line_awesome_flutter: ^2.0.0
 
 dev_dependencies:
   flutter_test:
@@ -124,6 +125,7 @@ flutter:
     - images/test-icons/
     - images/recipe_categories/
     - images/icons/
+    - images/icons/settings/
     - images/logos/
     - audio/
 

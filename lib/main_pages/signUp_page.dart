@@ -62,9 +62,7 @@ class _SignUpPageState extends State<SignUpPage> {
     setState(() {
       _isLoading = true;
     });
-    // if (_image == null) {
-    //   defaultpp();
-    // }
+
     String res = await AuthMethods().signUpUser(
       email: _emailController.text,
       username: _usernameController.text,
