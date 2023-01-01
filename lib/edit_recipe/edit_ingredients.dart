@@ -42,12 +42,6 @@ class _EditIngredientsState extends State<EditIngredients> {
   late String _ingredientResult;
   late List ingredientsList;
 
-  List _initialPlaceholders = [
-    'Ingredient 1',
-    'Ingredient 2',
-    'Ingredient 3',
-  ];
-
   void initState() {
     super.initState();
     _ingredientCount = widget.recipeIngredients.length;
@@ -56,20 +50,13 @@ class _EditIngredientsState extends State<EditIngredients> {
     for (int i = 0; i < widget.recipeIngredients.length; i++) {
       _onUpdate(i, widget.recipeIngredients[i]);
     }
-
-    if (_ingredientCount > _initialPlaceholders.length) {
-      for (int i = _ingredientCount - _initialPlaceholders.length; i >= 0; i--) {
-        _initialPlaceholders
-            .add("Ingredient ${_ingredientCount - i}");
-      }
-    }
   }
 
   final _formKey = GlobalKey<FormState>();
 
   @override
   Widget build(BuildContext context) {
-    print(_initialPlaceholders);
+    // print(_initialPlaceholders);
     return Scaffold(
         appBar: AppBar(
           backgroundColor: appBarColor,
@@ -117,12 +104,25 @@ class _EditIngredientsState extends State<EditIngredients> {
                       IconButton(
                           onPressed: () async {
                             setState(() {
+                              if (_ingredientCount <=
+                                  _ingredientValues.length) {
+                                if (_ingredientCount <
+                                    widget.recipeIngredients.length) {
+                                  _onUpdate(
+                                      _ingredientCount,
+                                      widget
+                                          .recipeIngredients[_ingredientCount]);
+                                } else {
+                                  _onUpdate(_ingredientCount, "");
+                                }
+                              } else {
+                                _onUpdate(_ingredientCount, "");
+                              }
                               _ingredientCount++;
-                              _initialPlaceholders
-                                  .add("Ingredient ${_ingredientCount}");
                             });
                             print(_ingredientCount);
-                            print(_initialPlaceholders);
+                            print(widget.recipeIngredients);
+                            print(_ingredientValues.toList());
                           },
                           icon: Icon(
                             FluentIcons.add_circle_32_filled,
@@ -130,17 +130,18 @@ class _EditIngredientsState extends State<EditIngredients> {
                           )),
                       IconButton(
                           onPressed: () async {
-                            if (_ingredientCount > 0) {
+                            if (widget.recipeIngredients.isNotEmpty) {
                               setState(() {
+                                if (_ingredientCount >=
+                                    _ingredientValues.length) {
+                                  _ingredientValues.removeLast();
+                                }
                                 _ingredientCount--;
-                                _initialPlaceholders
-                                    .removeAt(_ingredientCount - 1);
                               });
-                              _ingredientValues.removeAt(_ingredientCount);
                             }
                             print(_ingredientCount);
-                            print(_initialPlaceholders);
-                            print(_ingredientValues.toString());
+                            print(widget.recipeIngredients);
+                            print(_ingredientValues.toList());
                           },
                           icon: Icon(
                             FluentIcons.subtract_circle_32_filled,
@@ -151,18 +152,9 @@ class _EditIngredientsState extends State<EditIngredients> {
                 ),
                 ElevatedButton(
                   onPressed: () {
-                    // ingredientsList = _ingredientValues.map((item) => item['value']).toList();
-                    // print(widget.recipeName);
-                    // print(widget.recipeCategory);
-                    // print(widget.recipePrivacy);
-                    // print(ingredientsList);
-                    // pushNewScreen(context,
-                    //     screen: AddSteps(widget.recipeName, widget.recipeCategory,
-                    //         widget.recipePrivacy, ingredientsList),
-                    //     withNavBar: true);
-
                     ingredientsList =
-                        _ingredientValues.map((item) => item['value']).toList();
+                        _ingredientValues.map((item) => item['value']).where((element) => element != "").toList(); //converts object to list and filtering it.
+                    
 
                     print(widget.userId);
                     print(widget.recipeId);

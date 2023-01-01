@@ -147,7 +147,7 @@ class _AddAddStepsState extends State<AddSteps> {
                   stepsArray.contains("") ||
                   stepsArray.contains(" ")) {
                 Fluttertoast.showToast(
-                    msg: "A step should not be empty",
+                    msg: "Procedure should not be empty",
                     toastLength: Toast.LENGTH_SHORT,
                     gravity: ToastGravity.SNACKBAR,
                     timeInSecForIosWeb: 1,

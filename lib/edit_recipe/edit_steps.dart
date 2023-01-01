@@ -49,12 +49,6 @@ class _EditStepsState extends State<EditSteps> {
   late List timerArray; //Timer array to be uploaded in the Database
   double _tempTimer = 0; //for resetting the step timer
 
-  List _initialPlaceholders = [
-    'Step 1',
-    'Step 2',
-    'Step 3',
-  ];
-
   void initState() {
     super.initState();
     _stepCount = widget.recipeSteps.length;
@@ -66,13 +60,6 @@ class _EditStepsState extends State<EditSteps> {
     for (int i = 0; i < widget.recipeSteps.length; i++) {
       _onStepUpdate(i, widget.recipeSteps[i]);
       _onTimerUpdate(i, widget.recipeStepTimer[i]);
-    }
-
-    if (_stepCount > _initialPlaceholders.length) {
-      for (int i = _stepCount - _initialPlaceholders.length; i >= 0; i--) {
-        _initialPlaceholders
-            .add("Step ${_stepCount - i}");
-      }
     }
   }
 
@@ -129,38 +116,47 @@ class _EditStepsState extends State<EditSteps> {
                         IconButton(
                             onPressed: () async {
                               setState(() {
-                                _stepCount = _initialPlaceholders.length;
+                                if (_stepCount <= _stepValues.length) {
+                                  if (_stepCount < widget.recipeSteps.length) {
+                                    _onStepUpdate(_stepCount,
+                                        widget.recipeSteps[_stepCount]);
+                                    _onTimerUpdate(_stepCount,
+                                        widget.recipeStepTimer[_stepCount]);
+                                  } else {
+                                    _onStepUpdate(_stepCount, "");
+                                  }
+                                } else {
+                                  _onStepUpdate(_stepCount, "");
+                                }
                                 _stepCount++;
-                                _initialPlaceholders.add("Step ${_initialPlaceholders.length}");
-                            
-                                _tempTimer = 0; //reset default timer to 0
                               });
+
                               print(_stepCount);
-                              print(_initialPlaceholders);
-                              print(_stepValues.toString());
-                              print(_timerValues.toString());
+                              print(widget.recipeSteps);
+                              print(_stepValues.toList());
+                              print(widget.recipeStepTimer);
+                              print(_timerValues.toList());
                             },
                             icon: Icon(
                               FluentIcons.add_circle_32_filled,
                               size: 30.0,
                             )),
                         IconButton(
-                            onPressed: () async {
-                              if (_stepCount > 0) {
+                            onPressed: () {
+                              if (widget.recipeIngredients.isNotEmpty) {
                                 setState(() {
+                                  if (_stepCount >= _stepValues.length) {
+                                    _stepValues.removeLast();
+                                    _timerValues.removeLast();
+                                  }
                                   _stepCount--;
-                                  // _initialPlaceholders.removeAt(_stepCount - 1);
-                                  _initialPlaceholders.removeLast();
                                 });
-                                // _stepValues.removeAt(_stepCount);
-                                // _timerValues.removeAt(_stepCount);
-                                _stepValues.removeLast();
-                                _timerValues.removeLast();
                               }
                               print(_stepCount);
-                              print(_initialPlaceholders);
-                              print(_stepValues.toString());
-                              print(_timerValues.toString());
+                              print(widget.recipeSteps);
+                              print(_stepValues.toList());
+                              print(widget.recipeStepTimer);
+                              print(_timerValues.toList());
                             },
                             icon: Icon(
                               FluentIcons.subtract_circle_32_filled,
@@ -172,7 +168,7 @@ class _EditStepsState extends State<EditSteps> {
                   ElevatedButton(
                     onPressed: () {
                       stepsArray =
-                          _stepValues.map((item) => item['step']).toList();
+                          _stepValues.map((item) => item['step']).where((element) => element != "").toList(); //converts object to list and filtering it.
                       timerArray =
                           _timerValues.map((item) => item['timer']).toList();
 
@@ -182,8 +178,8 @@ class _EditStepsState extends State<EditSteps> {
                       print(widget.recipeName);
                       print(widget.recipeCategory);
                       print(widget.recipePrivacy);
-                      // print(_stepValues.toString());
-                      // print(_timerValues.toString());
+                      print(_stepValues.toString());
+                      print(_timerValues.toString());
                       print(stepsArray);
                       print(timerArray);
 
@@ -202,7 +198,7 @@ class _EditStepsState extends State<EditSteps> {
                             fontSize: 16.0);
                       } else {
                         ManageRecipe updateRecipe = ManageRecipe();
-                        
+
                         Fluttertoast.showToast(
                               msg: "Your recipe is now being saved",
                               toastLength: Toast.LENGTH_SHORT,
@@ -229,8 +225,6 @@ class _EditStepsState extends State<EditSteps> {
                               (route) => false));
                         print("success");
                       }
-
-                      
                     },
                     child: Text("Save Recipe"),
                     style:
