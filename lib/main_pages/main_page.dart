@@ -64,6 +64,7 @@ class _MainPageState extends State<MainPage> {
         screens: _screens,
         items: _navBarsItems(),
         navBarStyle: NavBarStyle.style12,
+        resizeToAvoidBottomInset: true,
         hideNavigationBarWhenKeyboardShows: true,
         confineInSafeArea: true,
       ),
