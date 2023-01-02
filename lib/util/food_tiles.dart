@@ -1,5 +1,6 @@
 // ignore_for_file: prefer_const_constructors
 
+import 'package:elective_project/util/colors.dart';
 import 'package:flutter/material.dart';
 
 class RecipeTile extends StatelessWidget {
@@ -20,7 +21,7 @@ class RecipeTile extends StatelessWidget {
         width: 200,
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(12),
-          color: Colors.black,
+          color: appBarColor,
         ),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,

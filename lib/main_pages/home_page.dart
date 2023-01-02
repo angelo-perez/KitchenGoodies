@@ -8,6 +8,7 @@ import 'package:elective_project/util/food_types.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({Key? key}) : super(key: key);
@@ -53,7 +54,16 @@ class _HomePageState extends State<HomePage> {
         backgroundColor: mBackgroundColor,
         appBar: AppBar(
           elevation: 0,
-          backgroundColor: Colors.transparent,
+          backgroundColor: appBarColor,
+          leading: SvgPicture.asset(
+            'images/logos/kitchen-goodies.svg',
+            color: Colors.white,
+          ),
+          title: Text(
+            'Kitchen Goodies',
+            style: TextStyle(fontFamily: 'Sanford', color: Colors.white),
+          ),
+          titleSpacing: 0,
         ),
         body: Column(
           children: [
