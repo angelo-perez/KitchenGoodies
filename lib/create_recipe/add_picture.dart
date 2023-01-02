@@ -230,7 +230,7 @@ class _AddPictureState extends State<AddPicture> {
                   Navigator.of(context, rootNavigator: true).pushAndRemoveUntil(
                       MaterialPageRoute(
                           builder: (context) =>
-                              MainPage()), //should go to "myrecipe tab" not in homepage
+                              MainPage(2)), //should go to "myrecipe tab" not in homepage
                       (route) => false);
                 });
               },

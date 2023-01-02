@@ -151,7 +151,7 @@ class _FinishedRecipePageState extends State<FinishedRecipePage> {
             ElevatedButton(
               style: ElevatedButton.styleFrom(
                   backgroundColor: appBarColor,
-                  fixedSize: Size(100, 40)),
+                  fixedSize: Size(120, 40)),
               onPressed: () {
                 pushNewScreen(context, screen: CreateDishPost());
               },
@@ -160,28 +160,28 @@ class _FinishedRecipePageState extends State<FinishedRecipePage> {
                 style: TextStyle(color: iconTextColor, fontSize: 18),
               ),
             ),
-            // ElevatedButton(
-            //   style: ElevatedButton.styleFrom(
-            //       backgroundColor: appBarColor,
-            //       fixedSize: Size(100, 40)),
-            //   onPressed: () {
-            //     Navigator.of(context, rootNavigator: true).pushAndRemoveUntil(
-            //         MaterialPageRoute(builder: (context) => FirstPage()),
-            //         (route) => false);
-            //   },
-            //   child: Text(
-            //     'Recipes',
-            //     style: TextStyle(color: iconTextColor, fontSize: 18),
-            //   ),
-            // ),
             ElevatedButton(
               style: ElevatedButton.styleFrom(
                   backgroundColor: appBarColor,
-                  fixedSize: Size(100, 40)),
+                  fixedSize: Size(120, 40)),
+              onPressed: () {
+                Navigator.of(context, rootNavigator: true).pushAndRemoveUntil(
+                    MaterialPageRoute(builder: (context) => MainPage(1)),
+                    (route) => false);
+              },
+              child: Text(
+                'Recipes',
+                style: TextStyle(color: iconTextColor, fontSize: 18),
+              ),
+            ),
+            ElevatedButton(
+              style: ElevatedButton.styleFrom(
+                  backgroundColor: appBarColor,
+                  fixedSize: Size(120, 40)),
               onPressed: () {
                 Navigator.pushAndRemoveUntil(
                     context,
-                    MaterialPageRoute(builder: (context) => MainPage()),
+                    MaterialPageRoute(builder: (context) => MainPage(0)),
                     (route) => false);
               },
               child: Text(

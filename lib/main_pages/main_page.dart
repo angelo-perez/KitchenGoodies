@@ -12,13 +12,15 @@ import 'package:flutter/material.dart';
 import 'package:flutter_ringtone_player/flutter_ringtone_player.dart';
 import 'package:persistent_bottom_nav_bar/persistent-tab-view.dart';
 import 'package:provider/provider.dart';
-
 import '../util/colors.dart';
+import '../community_page/models/user.dart' as model;
 
 //Main Page of the App (w/ Bottom Navigation Bar)
 
 class MainPage extends StatefulWidget {
-  const MainPage({Key? key}) : super(key: key);
+  // const MainPage({Key? key}) : super(key: key);
+  MainPage(this.initialIndex);
+  int initialIndex;
   @override
   State<MainPage> createState() => _MainPageState();
 }
@@ -30,7 +32,6 @@ class _MainPageState extends State<MainPage> {
 
   Color navBarColor = const Color(0xFF12A2726);
   static Color canvasColor = const Color(0xFFF2E5D9);
-  final PersistentTabController _controller = PersistentTabController(initialIndex: 0);
 
   final _screens = [
     HomePage(),
@@ -47,12 +48,15 @@ class _MainPageState extends State<MainPage> {
   }
 
   addData() async {
-    UserProvider _userProvider = Provider.of<UserProvider>(context, listen: false);
+    UserProvider _userProvider =
+        Provider.of<UserProvider>(context, listen: false);
     await _userProvider.refreshUser();
   }
 
   @override
   Widget build(BuildContext context) {
+    final PersistentTabController _controller =
+        PersistentTabController(initialIndex: widget.initialIndex);
     _precacheImage();
 
     FlutterRingtonePlayer.stop;
@@ -72,6 +76,7 @@ class _MainPageState extends State<MainPage> {
   }
 
   List<PersistentBottomNavBarItem> _navBarsItems() {
+    final model.User user = Provider.of<UserProvider>(context).getUser;
     return [
       PersistentBottomNavBarItem(
         icon: Icon(FluentIcons.home_24_filled),
@@ -98,7 +103,12 @@ class _MainPageState extends State<MainPage> {
         inactiveColorPrimary: CupertinoColors.systemGrey,
       ),
       PersistentBottomNavBarItem(
-        icon: Icon(FluentIcons.settings_20_filled),
+        // icon: Icon(FluentIcons.settings_20_filled),
+        icon: CircleAvatar(
+          backgroundImage: NetworkImage(user.profImage),
+          maxRadius: 12,
+          minRadius: 12,
+        ),
         title: ("Settings"),
         activeColorPrimary: appBarColor,
         inactiveColorPrimary: CupertinoColors.systemGrey,
@@ -111,8 +121,10 @@ class _MainPageState extends State<MainPage> {
     precacheImage(AssetImage("images/recipe_categories/pork.jpg"), context);
     precacheImage(AssetImage("images/recipe_categories/beef.jpg"), context);
     precacheImage(AssetImage("images/recipe_categories/fish.jpg"), context);
-    precacheImage(AssetImage("images/recipe_categories/crustacean.jpg"), context);
-    precacheImage(AssetImage("images/recipe_categories/vegetables.jpg"), context);
+    precacheImage(
+        AssetImage("images/recipe_categories/crustacean.jpg"), context);
+    precacheImage(
+        AssetImage("images/recipe_categories/vegetables.jpg"), context);
     precacheImage(AssetImage("images/recipe_categories/dessert.jpg"), context);
     precacheImage(AssetImage("images/recipe_categories/others.jpg"), context);
   }

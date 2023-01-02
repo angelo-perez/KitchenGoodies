@@ -38,7 +38,7 @@ class _SignInPageState extends State<SignInPage> {
       password: _passwordController.text,
     );
     if (res == "Success") {
-      Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (context) => MainPage()));
+      Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (context) => MainPage(0)));
       //Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (context) => VerifyGoogleSignIn()));
     } else {
       showSnackBar(res, context);

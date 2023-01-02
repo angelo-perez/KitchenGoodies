@@ -221,7 +221,7 @@ class _EditStepsState extends State<EditSteps> {
                           .pushAndRemoveUntil(
                               MaterialPageRoute(
                                   builder: (context) =>
-                                      MainPage()), //should go to "myrecipe tab" not in homepage
+                                      MainPage(2)), //should go to "myrecipe tab" not in homepage
                               (route) => false));
                         print("success");
                       }

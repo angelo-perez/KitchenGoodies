@@ -27,7 +27,7 @@ class VerifyGoogleSignIn extends StatelessWidget {
               final provider =
                   Provider.of<GoogleSignInProvider>(context, listen: false);
               provider.saveUserData(); // only works with google accounts
-              return MainPage(); 
+              return MainPage(0); 
             } else if (snapshot.hasError) {
               return Center(
                 child: Text('Something went wrong'),
