@@ -39,7 +39,7 @@ class _MyRecipesPageState extends State<MyRecipesPage> {
     return Scaffold(
         backgroundColor: mBackgroundColor,
         appBar: AppBar(
-          backgroundColor: Colors.white,
+          backgroundColor: mBackgroundColor,
           title: Text('My Recipes', style: TextStyle(color: appBarColor)),
           actions: [
             IconButton(
@@ -50,13 +50,13 @@ class _MyRecipesPageState extends State<MyRecipesPage> {
                 },
                 icon: Icon(
                   Icons.search,
-                  color: Colors.black,
+                  color: appBarColor,
                 )),
             IconButton(
                 onPressed: () {},
                 icon: Icon(
                   Icons.more_vert,
-                  color: Colors.black,
+                  color: appBarColor,
                 ))
           ],
           elevation: 0.0,
