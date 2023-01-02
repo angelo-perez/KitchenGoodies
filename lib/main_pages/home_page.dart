@@ -7,6 +7,7 @@ import 'package:elective_project/util/food_tiles.dart';
 import 'package:elective_project/util/food_types.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({Key? key}) : super(key: key);
@@ -53,17 +54,6 @@ class _HomePageState extends State<HomePage> {
         appBar: AppBar(
           elevation: 0,
           backgroundColor: Colors.transparent,
-          leading: Icon(
-            Icons.menu,
-            color: const Color(0xFF6e3d28),
-          ),
-          actions: [
-            Padding(padding: const EdgeInsets.only(right: 30.0)),
-            Icon(
-              Icons.person,
-              color: const Color(0xFF6e3d28),
-            )
-          ],
         ),
         body: Column(
           children: [
@@ -71,10 +61,11 @@ class _HomePageState extends State<HomePage> {
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 25.0),
               child: Text(
-                'Find the best recipe for you',
-                style: GoogleFonts.bebasNeue(
-                  fontSize: 56,
-                  color: const Color(0xFF6e3d28),
+                'Find the Best Recipe For You',
+                style: TextStyle(
+                  fontFamily: 'Montserrat',
+                  fontSize: 50,
+                  color: Color(0xFF12A2726),
                 ),
               ),
             ),

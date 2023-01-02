@@ -24,8 +24,7 @@ class FoodTypes extends StatelessWidget {
           style: TextStyle(
             fontSize: 18,
             fontWeight: FontWeight.bold,
-            color:
-                isSelected ? Theme.of(context).primaryColor : Color(0xFF6e3d28),
+            color: isSelected ? Theme.of(context).primaryColor : Colors.black,
           ),
         ),
       ),

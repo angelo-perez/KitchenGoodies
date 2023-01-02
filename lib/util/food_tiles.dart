@@ -14,13 +14,13 @@ class RecipeTile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.only(left: 25.0, bottom: 25.0),
+      padding: const EdgeInsets.only(left: 10.0, bottom: 20.0),
       child: Container(
         padding: EdgeInsets.all(12),
         width: 200,
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(12),
-          color: const Color(0xFF6e3d28),
+          color: Colors.black,
         ),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -34,7 +34,7 @@ class RecipeTile extends StatelessWidget {
             //recipe title
             Padding(
               padding:
-                  const EdgeInsets.symmetric(vertical: 12.0, horizontal: 8.0),
+                  const EdgeInsets.symmetric(vertical: 5.0, horizontal: 5.0),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
@@ -42,7 +42,7 @@ class RecipeTile extends StatelessWidget {
                     foodName,
                     style: TextStyle(
                       fontSize: 20,
-                      color: const Color(0xFFFBF6F3),
+                      color: Colors.white,
                     ),
                   ),
                   SizedBox(
