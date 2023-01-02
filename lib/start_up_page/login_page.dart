@@ -1,8 +1,8 @@
 import 'package:elective_project/resources/facebook_sign_in.dart';
 import 'package:elective_project/providers/google_sign_in.dart';
 import 'package:elective_project/main.dart';
-import 'package:elective_project/main_pages/signIn_page.dart';
-import 'package:elective_project/main_pages/signUp_page.dart';
+import 'package:elective_project/start_up_page/signIn_page.dart';
+import 'package:elective_project/start_up_page/signUp_page.dart';
 import 'package:elective_project/resources/verify_sign_in.dart';
 import 'package:elective_project/util/colors.dart';
 import 'package:elective_project/util/utils.dart';
@@ -12,7 +12,7 @@ import 'package:flutter_facebook_auth/flutter_facebook_auth.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:provider/provider.dart';
 
-import 'main_page.dart';
+import '../main_pages/main_page.dart';
 
 class LoginPage extends StatelessWidget {
   LoginPage({Key? key}) : super(key: key);
@@ -33,11 +33,11 @@ class LoginPage extends StatelessWidget {
               const SizedBox(
                 height: 5,
               ),
-              const Text(
+              Text(
                 'Cooking is love\nmade visible!',
                 textAlign: TextAlign.center,
                 style: TextStyle(
-                  color: Color(0xFF6e3d28),
+                  color: mPrimaryTextColor,
                   fontSize: 32,
                   fontWeight: FontWeight.w500,
                 ),
@@ -53,8 +53,8 @@ class LoginPage extends StatelessWidget {
                     Expanded(
                       child: TextButton(
                         onPressed: () {
-                          Navigator.of(context).push(MaterialPageRoute(
-                              builder: (context) => SignUpPage()));
+                          Navigator.of(context)
+                              .push(MaterialPageRoute(builder: (context) => SignUpPage()));
                         },
                         style: TextButton.styleFrom(
                           shape: RoundedRectangleBorder(
@@ -83,8 +83,7 @@ class LoginPage extends StatelessWidget {
                     Expanded(
                       child: TextButton(
                         onPressed: () {
-                          Navigator.push(context,
-                              MaterialPageRoute(builder: (context) {
+                          Navigator.push(context, MaterialPageRoute(builder: (context) {
                             return const SignInPage();
                           }));
                         },
@@ -117,8 +116,7 @@ class LoginPage extends StatelessWidget {
                 padding: const EdgeInsets.symmetric(horizontal: 30),
                 child: TextButton(
                   onPressed: () {
-                    final provider = Provider.of<GoogleSignInProvider>(context,
-                        listen: false);
+                    final provider = Provider.of<GoogleSignInProvider>(context, listen: false);
                     provider.googleLogin();
                     // Navigator.of(context).pushReplacement(MaterialPageRoute(
                     //     builder: (context) => VerifyGoogleSignIn()));
