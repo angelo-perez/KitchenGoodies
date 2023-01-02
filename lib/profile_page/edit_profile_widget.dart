@@ -19,9 +19,9 @@ class EditProfileWidget extends StatefulWidget {
 }
 
 class _EditProfileWidgetState extends State<EditProfileWidget> {
-  final TextEditingController _emailController = TextEditingController();
+  TextEditingController _usernameController = TextEditingController();
+  TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
-  final TextEditingController _usernameController = TextEditingController();
   final TextEditingController _confirmPasswordController = TextEditingController();
   Uint8List? _image;
 
@@ -29,7 +29,6 @@ class _EditProfileWidgetState extends State<EditProfileWidget> {
 
   @override
   void dispose() {
-    // TODO: implement dispose
     super.dispose();
     _emailController.dispose();
     _passwordController.dispose();
@@ -72,6 +71,8 @@ class _EditProfileWidgetState extends State<EditProfileWidget> {
   @override
   Widget build(BuildContext context) {
     final model.User user = Provider.of<UserProvider>(context).getUser;
+    _emailController = TextEditingController(text: user.email);
+    _usernameController = TextEditingController(text: user.username);
 
     return Scaffold(
       appBar: AppBar(
@@ -98,11 +99,9 @@ class _EditProfileWidgetState extends State<EditProfileWidget> {
                   SizedBox(
                     width: 120,
                     height: 120,
-                    child: ClipRRect(
-                      borderRadius: BorderRadius.circular(100),
-                      child: Image(
-                        image: NetworkImage(user.profImage),
-                      ),
+                    child: CircleAvatar(
+                      radius: 64,
+                      backgroundImage: NetworkImage(user.profImage),
                     ),
                   ),
                   Positioned(
@@ -126,40 +125,39 @@ class _EditProfileWidgetState extends State<EditProfileWidget> {
                   ),
                 ],
               ),
-              const SizedBox(height: 50),
-              const Divider(),
-              Container(
-                padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 20),
-                child: Column(
-                  children: <Widget>[
-                    textfieldWidget(
-                      txtController: _usernameController,
-                      labeltxt: "Username",
-                    ),
-                    textfieldWidget(
-                      txtController: _emailController,
-                      labeltxt: "Email",
-                    ),
-                  ],
-                ),
-              ),
               const SizedBox(height: 10),
               const Divider(),
               Container(
                 padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 20),
                 child: Column(
                   children: <Widget>[
-                    textfieldWidget(
+                    textFieldWidget(
+                      txtController: _usernameController,
+                      labeltxt: "Username",
+                    ),
+                    textFieldWidget(
+                      txtController: _emailController,
+                      labeltxt: "Email",
+                    ),
+                  ],
+                ),
+              ),
+              const Divider(),
+              Container(
+                padding: const EdgeInsets.symmetric(horizontal: 30),
+                child: Column(
+                  children: <Widget>[
+                    textFieldWidget(
                       txtController: _passwordController,
                       labeltxt: "Password",
                       obscurebool: true,
                     ),
-                    textfieldWidget(
+                    textFieldWidget(
                       txtController: _confirmPasswordController,
                       labeltxt: "Confirm Password",
                       obscurebool: true,
                     ),
-                    const SizedBox(height: 50),
+                    const SizedBox(height: 30),
                     SizedBox(
                       width: double.infinity,
                       child: ElevatedButton(
@@ -185,8 +183,8 @@ class _EditProfileWidgetState extends State<EditProfileWidget> {
   }
 }
 
-class textfieldWidget extends StatelessWidget {
-  const textfieldWidget({
+class textFieldWidget extends StatelessWidget {
+  const textFieldWidget({
     Key? key,
     required this.txtController,
     required this.labeltxt,
@@ -199,30 +197,28 @@ class textfieldWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return TextField(
-      controller: txtController,
-      keyboardType: TextInputType.text,
-      obscureText: obscurebool,
-      cursorColor: Colors.grey,
-      decoration: InputDecoration(
-        labelText: labeltxt,
-        labelStyle: const TextStyle(color: Colors.grey),
-        border: UnderlineInputBorder(
-          borderSide: BorderSide(
-            color: mPrimaryColor,
-            width: 2,
+    return Padding(
+      padding: const EdgeInsets.only(top: 20.0),
+      child: TextField(
+        controller: txtController,
+        keyboardType: TextInputType.name,
+        textInputAction: TextInputAction.next,
+        obscureText: obscurebool,
+        cursorColor: Colors.grey,
+        decoration: InputDecoration(
+          labelText: labeltxt,
+          labelStyle: const TextStyle(color: Colors.grey),
+          border: OutlineInputBorder(
+            borderSide: BorderSide(
+              color: mPrimaryColor,
+              width: 2,
+            ),
           ),
-        ),
-        focusedBorder: UnderlineInputBorder(
-          borderSide: BorderSide(
-            color: mPrimaryColor,
-            width: 2,
-          ),
-        ),
-        enabledBorder: const UnderlineInputBorder(
-          borderSide: BorderSide(
-            color: Colors.grey,
-            width: 0.5,
+          focusedBorder: OutlineInputBorder(
+            borderSide: BorderSide(
+              color: mPrimaryColor,
+              width: 2,
+            ),
           ),
         ),
       ),

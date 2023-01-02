@@ -36,11 +36,9 @@ class SettingsPage extends StatelessWidget {
               SizedBox(
                 width: 120,
                 height: 120,
-                child: ClipRRect(
-                  borderRadius: BorderRadius.circular(100),
-                  child: Image(
-                    image: NetworkImage(user.profImage),
-                  ),
+                child: CircleAvatar(
+                  radius: 64,
+                  backgroundImage: NetworkImage(user.profImage),
                 ),
               ),
               const SizedBox(height: 10),
