@@ -18,36 +18,6 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  //food types
-  final List foodType = [
-    [
-      'Pork',
-      true,
-    ],
-    [
-      'Beef',
-      false,
-    ],
-    [
-      'Chicken',
-      false,
-    ],
-    [
-      'Dessert',
-      false,
-    ],
-  ];
-
-  // user tapped on food types
-  void foodTypeSelected(int index) {
-    setState(() {
-      for (int i = 0; i < foodType.length; i++) {
-        foodType[i][1] = false;
-      }
-      foodType[index][1] = true;
-    });
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -104,26 +74,6 @@ class _HomePageState extends State<HomePage> {
             ),
             SizedBox(
               height: 25,
-            ),
-            //Horizontal view recipe tiles
-            Padding(
-              padding: const EdgeInsets.only(bottom: 8.0),
-              child: Container(
-                height: 50,
-                child: ListView.builder(
-                  scrollDirection: Axis.horizontal,
-                  itemCount: foodType.length,
-                  itemBuilder: (context, index) {
-                    return FoodTypes(
-                      foodType: foodType[index][0],
-                      isSelected: foodType[index][1],
-                      onTap: () {
-                        foodTypeSelected(index);
-                      },
-                    );
-                  },
-                ),
-              ),
             ),
 
             // Horizontal listview of recipe tiles
