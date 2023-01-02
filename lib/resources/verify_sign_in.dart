@@ -1,5 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:elective_project/main_pages/login_page.dart';
+import 'package:elective_project/start_up_page/login_page.dart';
 import 'package:elective_project/main_pages/main_page.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -24,10 +24,9 @@ class VerifyGoogleSignIn extends StatelessWidget {
                 child: CircularProgressIndicator(),
               );
             } else if (snapshot.hasData) {
-              final provider =
-                  Provider.of<GoogleSignInProvider>(context, listen: false);
+              final provider = Provider.of<GoogleSignInProvider>(context, listen: false);
               provider.saveUserData(); // only works with google accounts
-              return MainPage(0); 
+              return MainPage(0);
             } else if (snapshot.hasError) {
               return Center(
                 child: Text('Something went wrong'),

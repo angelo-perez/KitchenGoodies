@@ -1,4 +1,4 @@
-import 'package:elective_project/main_pages/login_page.dart';
+import 'package:elective_project/start_up_page/login_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 
