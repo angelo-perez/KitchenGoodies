@@ -2,7 +2,7 @@
 import 'dart:typed_data';
 
 import 'package:elective_project/main.dart';
-import 'package:elective_project/main_pages/signIn_page.dart';
+import 'package:elective_project/start_up_page/signIn_page.dart';
 import 'package:elective_project/resources/auth_methods.dart';
 import 'package:elective_project/util/colors.dart';
 import 'package:elective_project/util/utils.dart';

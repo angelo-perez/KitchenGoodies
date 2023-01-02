@@ -1,5 +1,5 @@
 import 'package:elective_project/main.dart';
-import 'package:elective_project/main_pages/signUp_page.dart';
+import 'package:elective_project/start_up_page/signUp_page.dart';
 import 'package:elective_project/resources/auth_methods.dart';
 import 'package:elective_project/util/colors.dart';
 import 'package:elective_project/util/utils.dart';
@@ -7,7 +7,7 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 
 import '../resources/verify_sign_in.dart';
-import 'main_page.dart';
+import '../main_pages/main_page.dart';
 
 class SignInPage extends StatefulWidget {
   const SignInPage({Key? key}) : super(key: key);

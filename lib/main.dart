@@ -2,10 +2,10 @@ import 'dart:ui';
 import 'package:animated_splash_screen/animated_splash_screen.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:page_transition/page_transition.dart';
-import 'package:elective_project/main_pages/login_page.dart';
+import 'package:elective_project/start_up_page/login_page.dart';
 import 'package:elective_project/providers/google_sign_in.dart';
 import 'package:elective_project/main_pages/main_page.dart';
-import 'package:elective_project/main_pages/splash_page.dart';
+import 'package:elective_project/start_up_page/splash_page.dart';
 import 'package:elective_project/providers/user_provider.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -58,8 +58,7 @@ class _MyAppState extends State<MyApp> {
         ),
         home: AnimatedSplashScreen(
           duration: 1500,
-          splash: SvgPicture.asset('images/logos/kitchen-goodies.svg',
-              color: Colors.white),
+          splash: SvgPicture.asset('images/logos/kitchen-goodies.svg', color: Colors.white),
           centered: true,
           splashIconSize: 300,
           splashTransition: SplashTransition.fadeTransition,
@@ -73,8 +72,7 @@ class _MyAppState extends State<MyApp> {
                     child: CircularProgressIndicator(),
                   );
                 } else if (snapshot.hasData) {
-                  final provider =
-                      Provider.of<GoogleSignInProvider>(context, listen: false);
+                  final provider = Provider.of<GoogleSignInProvider>(context, listen: false);
                   provider.saveUserData(); // only works with google accounts
                   return MainPage(0);
                 } else if (snapshot.hasError) {
