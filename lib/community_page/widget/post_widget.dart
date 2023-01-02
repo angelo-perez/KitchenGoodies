@@ -11,6 +11,8 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 
+import '../../profile_page/view_profile.dart';
+
 class PostCard extends StatefulWidget {
   final snap;
   const PostCard({
@@ -95,12 +97,21 @@ class _PostCardState extends State<PostCard> {
                       mainAxisSize: MainAxisSize.min,
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Text(
-                          widget.snap["username"],
-                          style: TextStyle(
-                            fontWeight: FontWeight.bold,
-                            color: mPrimaryTextColor,
-                            fontSize: 16,
+                        InkWell(
+                          onTap: () => Navigator.of(context).push(
+                            MaterialPageRoute(
+                              builder: (context) => ViewProfile(
+                                uid: widget.snap["uid"],
+                              ),
+                            ),
+                          ),
+                          child: Text(
+                            widget.snap["username"],
+                            style: TextStyle(
+                              fontWeight: FontWeight.bold,
+                              color: mPrimaryTextColor,
+                              fontSize: 16,
+                            ),
                           ),
                         ),
                       ],
@@ -114,14 +125,16 @@ class _PostCardState extends State<PostCard> {
                         builder: (BuildContext context) {
                           return SimpleDialog(
                             children: [
-                              SimpleDialogOption(
-                                padding: const EdgeInsets.all(20),
-                                child: const Text("Delete"),
-                                onPressed: () async {
-                                  FirestoreMethods().deletePost(widget.snap['postId']);
-                                  Navigator.pop(context);
-                                },
-                              ),
+                              user.uid == widget.snap['uid']
+                                  ? SimpleDialogOption(
+                                      padding: const EdgeInsets.all(20),
+                                      child: const Text("Delete"),
+                                      onPressed: () async {
+                                        FirestoreMethods().deletePost(widget.snap['postId']);
+                                        Navigator.pop(context);
+                                      },
+                                    )
+                                  : Container(),
                               SimpleDialogOption(
                                   padding: const EdgeInsets.all(20),
                                   child: const Text('Save'),

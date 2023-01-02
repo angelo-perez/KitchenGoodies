@@ -50,6 +50,9 @@ class AuthMethods {
             username: username,
             uid: cred.user!.uid,
             profImage: profImage,
+            description: "Hello!",
+            followers: [],
+            following: [],
           );
 
           await FirebaseFirestore.instance
@@ -93,9 +96,14 @@ class AuthMethods {
     required String username,
     required String password,
     required String confirmPassword,
-    required Uint8List file,
+    required String profImage,
   }) async {
     String res = 'Some error occured';
+
+    List followers = [];
+    List following = [];
+
+    String description = "";
     try {
       if (email.isNotEmpty ||
           username.isNotEmpty ||
@@ -103,17 +111,20 @@ class AuthMethods {
           confirmPassword.isNotEmpty) {
         if (password == confirmPassword) {
           User currentUser = _auth.currentUser!;
-          DocumentSnapshot documentSnapshot =
-              await _firestore.collection('users').doc(currentUser.uid).get();
+          var userSnap = await _firestore.collection('users').doc(currentUser.uid).get();
 
-          String profImage =
-              await StorageMethods().uploadImageToStorage('profilePictures', file, false);
+          description = userSnap.data()!['description'];
+          followers = userSnap.data()!['followers'];
+          following = userSnap.data()!['following'];
 
           model.User user = model.User(
             email: email,
             username: username,
             uid: currentUser.uid,
             profImage: profImage,
+            description: description,
+            followers: followers,
+            following: following,
           );
 
           await FirebaseFirestore.instance
@@ -137,7 +148,20 @@ class AuthMethods {
   Future<String> signOut() async {
     String res = 'signout';
     await FirebaseAuth.instance.signOut();
-
     return res;
+  }
+
+  Future deleteUser() async {
+    User currentUser = _auth.currentUser!;
+    await _firestore
+        .collection('users')
+        .doc(currentUser.uid)
+        .delete()
+        .then((value) => currentUser.delete());
+    print(currentUser.uid);
+
+    // await currentUser.delete();
+
+    signOut();
   }
 }

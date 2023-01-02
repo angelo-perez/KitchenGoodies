@@ -29,6 +29,7 @@ class _MainPageState extends State<MainPage> {
   //int currentNavIndex = 0;
   //int _page = 0;
   //final GlobalKey<CurvedNavigationBarState> _bottomNavigationKey = GlobalKey();
+  bool isLoading = false;
 
   Color navBarColor = const Color(0xFF12A2726);
   static Color canvasColor = const Color(0xFFF2E5D9);
@@ -48,9 +49,14 @@ class _MainPageState extends State<MainPage> {
   }
 
   addData() async {
-    UserProvider _userProvider =
-        Provider.of<UserProvider>(context, listen: false);
+    setState(() {
+      isLoading = true;
+    });
+    UserProvider _userProvider = Provider.of<UserProvider>(context, listen: false);
     await _userProvider.refreshUser();
+    setState(() {
+      isLoading = false;
+    });
   }
 
   @override
@@ -61,18 +67,24 @@ class _MainPageState extends State<MainPage> {
 
     FlutterRingtonePlayer.stop;
 
-    return Scaffold(
-      body: PersistentTabView(
-        context,
-        controller: _controller,
-        screens: _screens,
-        items: _navBarsItems(),
-        navBarStyle: NavBarStyle.style12,
-        resizeToAvoidBottomInset: true,
-        hideNavigationBarWhenKeyboardShows: true,
-        confineInSafeArea: true,
-      ),
-    );
+    return isLoading
+        ? Center(
+            child: CircularProgressIndicator(
+              color: mBackgroundColor,
+            ),
+          )
+        : Scaffold(
+            body: PersistentTabView(
+              context,
+              controller: _controller,
+              screens: _screens,
+              items: _navBarsItems(),
+              navBarStyle: NavBarStyle.style12,
+              resizeToAvoidBottomInset: true,
+              hideNavigationBarWhenKeyboardShows: true,
+              confineInSafeArea: true,
+            ),
+          );
   }
 
   List<PersistentBottomNavBarItem> _navBarsItems() {
@@ -121,10 +133,8 @@ class _MainPageState extends State<MainPage> {
     precacheImage(AssetImage("images/recipe_categories/pork.jpg"), context);
     precacheImage(AssetImage("images/recipe_categories/beef.jpg"), context);
     precacheImage(AssetImage("images/recipe_categories/fish.jpg"), context);
-    precacheImage(
-        AssetImage("images/recipe_categories/crustacean.jpg"), context);
-    precacheImage(
-        AssetImage("images/recipe_categories/vegetables.jpg"), context);
+    precacheImage(AssetImage("images/recipe_categories/crustacean.jpg"), context);
+    precacheImage(AssetImage("images/recipe_categories/vegetables.jpg"), context);
     precacheImage(AssetImage("images/recipe_categories/dessert.jpg"), context);
     precacheImage(AssetImage("images/recipe_categories/others.jpg"), context);
   }

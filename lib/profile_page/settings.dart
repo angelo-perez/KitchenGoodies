@@ -1,21 +1,16 @@
-import 'package:elective_project/util/colors.dart';
-
+import 'package:blurry/blurry.dart';
+import 'package:elective_project/resources/auth_methods.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:quickalert/quickalert.dart';
+import '../start_up_page/login_page.dart';
+import '../util/colors.dart';
 
-import 'package:provider/provider.dart';
-
-import '../providers/user_provider.dart';
-
-import '../community_page/models/user.dart' as model;
-
-class AboutWidget extends StatelessWidget {
-  const AboutWidget({Key? key}) : super(key: key);
+class UserManagementWidget extends StatelessWidget {
+  const UserManagementWidget({super.key});
 
   @override
   Widget build(BuildContext context) {
-    final model.User user = Provider.of<UserProvider>(context).getUser;
-
     return Scaffold(
       appBar: AppBar(
         backgroundColor: mBackgroundColor,
@@ -27,7 +22,7 @@ class AboutWidget extends StatelessWidget {
           onPressed: () => Navigator.pop(context),
         ),
         title: Text(
-          "About",
+          "Settings",
           style: TextStyle(color: mPrimaryTextColor),
         ),
       ),
@@ -43,17 +38,16 @@ class AboutWidget extends StatelessWidget {
               ),
               const Divider(),
               const SizedBox(height: 10),
-              ListTile(
-                title: Text(
-                  "Version",
-                  style: TextStyle(
-                    color: mPrimaryTextColor,
-                  ),
-                ),
-                trailing: const Text("Alpha Testing"),
-              ),
-              SettingMenu(title: "Contact Us", icon: Icons.phone, onPress: (() {})),
-              SettingMenu(title: "Rate Us", icon: Icons.star, onPress: (() {})),
+              SettingMenu(
+                title: "Delete Account",
+                icon: Icons.delete_forever,
+                onPress: () {
+                  _onDeleteAccountPressed(context);
+                },
+                textColor: Colors.red,
+                endIcon: false,
+                iconColor: Colors.red,
+              )
             ],
           ),
         ),
@@ -62,12 +56,48 @@ class AboutWidget extends StatelessWidget {
   }
 }
 
+Future<bool> _onDeleteAccountPressed(BuildContext context) async {
+  bool deleteAccount = await showDialog(
+    context: context,
+    builder: (BuildContext context) {
+      return AlertDialog(
+        title: const Text("Delete Account"),
+        content: const Text("Are you sure? Your account will be lost forever"),
+        actions: <Widget>[
+          TextButton(
+            onPressed: () {
+              AuthMethods().deleteUser();
+              Navigator.of(context, rootNavigator: true).pushAndRemoveUntil(
+                  MaterialPageRoute(builder: (context) => LoginPage()), (route) => false);
+            },
+            child: Text(
+              "Yes",
+              style: TextStyle(color: mPrimaryTextColor),
+            ),
+          ),
+          TextButton(
+            onPressed: () {
+              Navigator.of(context).pop(false);
+            },
+            child: Text(
+              "No",
+              style: TextStyle(color: mPrimaryTextColor),
+            ),
+          ),
+        ],
+      );
+    },
+  );
+  return deleteAccount;
+}
+
 class SettingMenu extends StatelessWidget {
   const SettingMenu({
     Key? key,
     required this.title,
     required this.icon,
     required this.onPress,
+    this.iconColor,
     this.endIcon = true,
     this.textColor,
   }) : super(key: key);
@@ -77,6 +107,7 @@ class SettingMenu extends StatelessWidget {
   final VoidCallback onPress;
   final bool endIcon;
   final Color? textColor;
+  final Color? iconColor;
 
   @override
   Widget build(BuildContext context) {
@@ -91,13 +122,13 @@ class SettingMenu extends StatelessWidget {
         ),
         child: Icon(
           icon,
-          color: mPrimaryColor,
+          color: iconColor == null ? mPrimaryTextColor : textColor,
         ),
       ),
       title: Text(
         title,
         style: TextStyle(
-          color: Color == null ? mPrimaryTextColor : textColor,
+          color: textColor ?? mPrimaryTextColor,
         ),
       ),
       trailing: endIcon

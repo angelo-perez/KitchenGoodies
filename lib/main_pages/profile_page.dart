@@ -1,6 +1,10 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:elective_project/profile_page/about_widget.dart';
 import 'package:elective_project/profile_page/edit_profile_widget.dart';
+import 'package:elective_project/profile_page/settings.dart';
+import 'package:elective_project/profile_page/view_profile.dart';
 import 'package:elective_project/util/colors.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:provider/provider.dart';
@@ -8,19 +12,24 @@ import '../providers/google_sign_in.dart';
 import '../providers/user_provider.dart';
 import '../community_page/models/user.dart' as model;
 
-class SettingsPage extends StatelessWidget {
+class SettingsPage extends StatefulWidget {
   const SettingsPage({Key? key}) : super(key: key);
 
   @override
-  Widget build(BuildContext context) {
-    // final user = FirebaseAuth.instance.currentUser; // access current user's data
-    final model.User user = Provider.of<UserProvider>(context).getUser;
+  State<SettingsPage> createState() => _SettingsPageState();
+}
 
+class _SettingsPageState extends State<SettingsPage> {
+  @override
+  Widget build(BuildContext context) {
+    final model.User user = Provider.of<UserProvider>(context).getUser;
+    // final user = FirebaseAuth.instance.currentUser; // access current user's data
+    String useruid = user.uid;
     return Scaffold(
       appBar: AppBar(
         backgroundColor: mBackgroundColor,
         title: Text(
-          "  Profile",
+          "  Account",
           style: TextStyle(color: mPrimaryTextColor),
         ),
         actions: [
@@ -77,14 +86,18 @@ class SettingsPage extends StatelessWidget {
               const Divider(),
               const SizedBox(height: 10),
               SettingMenu(
-                title: "Settings",
-                icon: Icons.settings,
-                onPress: () {},
+                title: "View Profile",
+                icon: Icons.person,
+                onPress: () => Navigator.of(context).push(MaterialPageRoute(
+                    builder: (context) => ViewProfile(
+                          uid: user.uid,
+                        ))),
               ),
               SettingMenu(
-                title: "User Management",
+                title: "Settings",
                 icon: Icons.settings,
-                onPress: () {},
+                onPress: () => Navigator.of(context)
+                    .push(MaterialPageRoute(builder: (context) => const UserManagementWidget())),
               ),
               const Divider(),
               SettingMenu(
@@ -97,8 +110,9 @@ class SettingsPage extends StatelessWidget {
                 title: "Logout",
                 icon: Icons.logout,
                 onPress: () {
-                  final googleProvider = Provider.of<GoogleSignInProvider>(context, listen: false);
-                  googleProvider.logout(context);
+                  _onDeleteAccountPressed(context);
+                  // final googleProvider = Provider.of<GoogleSignInProvider>(context, listen: false);
+                  // googleProvider.logout(context);
                 },
                 endIcon: false,
                 textColor: Colors.red,
@@ -166,4 +180,38 @@ class SettingMenu extends StatelessWidget {
           : null,
     );
   }
+}
+
+Future<bool> _onDeleteAccountPressed(BuildContext context) async {
+  bool deleteAccount = await showDialog(
+    context: context,
+    builder: (BuildContext context) {
+      return AlertDialog(
+        title: const Text("Logout Account"),
+        content: const Text("Confirm Logout"),
+        actions: <Widget>[
+          TextButton(
+            onPressed: () {
+              final googleProvider = Provider.of<GoogleSignInProvider>(context, listen: false);
+              googleProvider.logout(context);
+            },
+            child: Text(
+              "Yes",
+              style: TextStyle(color: mPrimaryTextColor),
+            ),
+          ),
+          TextButton(
+            onPressed: () {
+              Navigator.of(context).pop(false);
+            },
+            child: Text(
+              "No",
+              style: TextStyle(color: mPrimaryTextColor),
+            ),
+          ),
+        ],
+      );
+    },
+  );
+  return deleteAccount;
 }

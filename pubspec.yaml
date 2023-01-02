@@ -84,6 +84,8 @@ dependencies:
   scaled_list: ^2.0.0
   neon_circular_timer: ^0.0.7
   line_awesome_flutter: ^2.0.0
+  quickalert: ^1.0.1
+  blurry: ^1.4.2
 
 dev_dependencies:
   flutter_test:

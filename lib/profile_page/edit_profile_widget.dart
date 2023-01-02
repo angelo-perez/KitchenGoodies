@@ -1,14 +1,18 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:elective_project/profile_page/about_widget.dart';
 import 'package:elective_project/resources/auth_methods.dart';
 import 'package:elective_project/util/colors.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
+import '../community_page/models/user.dart';
 import '../providers/google_sign_in.dart';
 import '../providers/user_provider.dart';
 import '../community_page/models/user.dart' as model;
+import '../resources/storage_methods.dart';
 import '../util/utils.dart';
 
 class EditProfileWidget extends StatefulWidget {
@@ -23,7 +27,7 @@ class _EditProfileWidgetState extends State<EditProfileWidget> {
   TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
   final TextEditingController _confirmPasswordController = TextEditingController();
-  Uint8List? _image;
+  String _image = "";
 
   bool _isLoading = false;
 
@@ -37,8 +41,24 @@ class _EditProfileWidgetState extends State<EditProfileWidget> {
 
   void selectImage() async {
     Uint8List im = await pickImage(ImageSource.gallery);
+
+    String profImage = await StorageMethods().uploadImageToStorage('profilePictures', im, false);
     setState(() {
-      _image = im;
+      _image = profImage;
+    });
+  }
+
+  @override
+  void initState() {
+    setImage();
+    super.initState();
+  }
+
+  void setImage() async {
+    final model.User user = Provider.of<UserProvider>(context).getUser;
+    setState(() {
+      _image = user.profImage;
+      print("_image");
     });
   }
 
@@ -48,13 +68,12 @@ class _EditProfileWidgetState extends State<EditProfileWidget> {
     });
 
     String res = await AuthMethods().EditUser(
-      email: _emailController.text,
-      username: _usernameController.text,
-      password: _passwordController.text,
-      confirmPassword: _confirmPasswordController.text,
-      file: _image!,
-    );
-
+        email: _emailController.text,
+        username: _usernameController.text,
+        password: _passwordController.text,
+        confirmPassword: _confirmPasswordController.text,
+        profImage: _image);
+    print(_image);
     if (res == 'Success') {
       setState(() {
         _isLoading = false;
