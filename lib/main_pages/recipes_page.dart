@@ -83,38 +83,100 @@ class _RecipesPageState extends State<RecipesPage> {
     );
   }
 
+  // Widget _recipeCategoryItem(BuildContext context, int _index) {
+  //   RecipeCategories recipeCategory = recipeCategoryList[_index];
+  //   return Card(
+  //     elevation: 8,
+  //     child: InkWell(
+  //       splashColor: Colors.black26,
+  //       onTap: () {
+  //         print(recipeCategory.categoryName);
+  //         pushNewScreen(context, screen: CategoryRecipesPage(recipeCategory.categoryName), withNavBar: true);
+  //       },
+  //       child: Ink.image(
+  //         image: AssetImage(recipeCategory.imgPath),
+  //         height: 200,
+  //         width: 200,
+  //         fit: BoxFit.cover,
+  //         child: Center(
+  //           child: Container(
+  //             height: 50,
+  //             width: double.maxFinite,
+  //             color: Color.fromARGB(160, 0, 0, 0),
+  //             child: Center(
+  //               child: Text(
+  //                 recipeCategory.categoryName,
+  //                 textAlign: TextAlign.center,
+  //                 style: TextStyle(
+  //                   fontSize: 23,
+  //                   color: Colors.white,
+  //                 ),
+  //               ),
+  //             ),
+  //           ),
+  //         ),
+  //       ),
+  //     ),
+  //   );
+  // }
   Widget _recipeCategoryItem(BuildContext context, int _index) {
     RecipeCategories recipeCategory = recipeCategoryList[_index];
+
+    final borderRadius = BorderRadius.circular(10);
     return Card(
       elevation: 8,
+      shape: RoundedRectangleBorder(borderRadius: borderRadius),
       child: InkWell(
-        splashColor: Colors.black26,
+        borderRadius: borderRadius,
+        splashColor: appBarColor.withOpacity(0.5), // Splash color
         onTap: () {
           print(recipeCategory.categoryName);
-          pushNewScreen(context, screen: CategoryRecipesPage(recipeCategory.categoryName), withNavBar: true);
+          pushNewScreen(context,
+              screen: CategoryRecipesPage(recipeCategory.categoryName),
+              withNavBar: true);
         },
-        child: Ink.image(
-          image: AssetImage(recipeCategory.imgPath),
-          height: 200,
-          width: 200,
-          fit: BoxFit.cover,
-          child: Center(
-            child: Container(
-              height: 50,
-              width: double.maxFinite,
-              color: Color.fromARGB(160, 0, 0, 0),
-              child: Center(
+        child: Stack(
+          children: [
+            Ink(
+              width: 200,
+              height: 300,
+              decoration: BoxDecoration(
+                borderRadius: borderRadius,
+                image: DecorationImage(
+                  fit: BoxFit.cover,
+                  image: AssetImage(recipeCategory.imgPath), // Background image
+                ),
+              ),
+            ),
+            Positioned(
+              bottom: 0.0,
+              left: 0.0,
+              right: 0.0,
+              child: Container(
                 child: Text(
                   recipeCategory.categoryName,
                   textAlign: TextAlign.center,
                   style: TextStyle(
-                    fontSize: 23,
-                    color: Colors.white,
+                    color: mBackgroundColor,
+                    fontSize: 20.0,
+                    fontWeight: FontWeight.bold,
                   ),
                 ),
+                decoration: BoxDecoration(
+                  borderRadius: borderRadius,
+                  gradient: LinearGradient(
+                    colors: [
+                      Color.fromARGB(255, 0, 0, 0),
+                      Color.fromARGB(0, 0, 0, 0)
+                    ],
+                    begin: FractionalOffset.bottomCenter,
+                    end: FractionalOffset.topCenter,
+                  ),
+                ),
+                padding: EdgeInsets.symmetric(vertical: 20.0, horizontal: 20.0),
               ),
             ),
-          ),
+         ]
         ),
       ),
     );

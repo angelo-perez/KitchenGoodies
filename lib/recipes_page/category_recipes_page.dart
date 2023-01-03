@@ -172,13 +172,9 @@ class _CategoryRecipesPageState extends State<CategoryRecipesPage> {
                 final DocumentSnapshot documentSnapshot = items[index];
                 return Transform.scale(
                     scale: index == _selectedIndex ? 1 : 0.85,
-                    child: Card(
-                        elevation: 8,
-                        color: appBarColor,
-                        child: Card(
-                            elevation: 6,
-                            child: _recipeListItem(
-                                context, documentSnapshot, _selectedIndex))));
+                    child: _recipeListItem(
+                        context, documentSnapshot, _selectedIndex)
+                    );
               },
             ),
           ),
@@ -206,52 +202,91 @@ class _CategoryRecipesPageState extends State<CategoryRecipesPage> {
 
   Widget _recipeListItem(BuildContext context,
       DocumentSnapshot documentSnapshot, int _selectedIndex) {
-    return InkWell(
-      splashColor: Colors.black26,
-      onTap: () {
-        int numFields = (documentSnapshot.data() as Map<String, dynamic>)
-            .keys
-            .toList()
-            .length;
-        if (numFields >= 5) {
-          //6 fields including the source of the recipe
-          //check if number of fields is 5 (complete)
-          pushNewScreen(
-            context,
-            screen: RecipeOverview(
-                documentSnapshot['imageUrl'],
-                documentSnapshot['name'],
-                documentSnapshot['source'],
-                documentSnapshot['ingredients'],
-                documentSnapshot['steps'],
-                documentSnapshot['steps-timer']),
-            withNavBar: false,
-          );
-        } else {
-          const recipeSnackbar =
-              SnackBar(content: Text("Sorry, recipe is not yet available."));
-          ScaffoldMessenger.of(context).showSnackBar(recipeSnackbar);
-        }
-      },
-      child: Ink.image(
-        image: NetworkImage(documentSnapshot['imageUrl']),
-        height: 200,
-        width: 300,
-        fit: BoxFit.cover,
-        child: Center(
-          child: Container(
-            width: double.maxFinite,
-            color: Color.fromARGB(160, 0, 0, 0),
-            child: Text(
-              documentSnapshot['name'],
-              textAlign: TextAlign.center,
-              style: TextStyle(
-                fontSize: 32,
-                color: Colors.white,
+    final borderRadius = BorderRadius.circular(10);
+
+    return Card(
+      elevation: 8,
+      shape: RoundedRectangleBorder(borderRadius: borderRadius),
+      child: InkWell(
+        borderRadius: borderRadius,
+        splashColor: appBarColor.withOpacity(0.5),
+        onTap: () {
+          int numFields = (documentSnapshot.data() as Map<String, dynamic>)
+              .keys
+              .toList()
+              .length;
+          if (numFields >= 5) {
+            //6 fields including the source of the recipe
+            //check if number of fields is 5 (complete)
+            pushNewScreen(
+              context,
+              screen: RecipeOverview(
+                  documentSnapshot['imageUrl'],
+                  documentSnapshot['name'],
+                  documentSnapshot['source'],
+                  documentSnapshot['ingredients'],
+                  documentSnapshot['steps'],
+                  documentSnapshot['steps-timer']),
+              withNavBar: false,
+            );
+          } else {
+            const recipeSnackbar =
+                SnackBar(content: Text("Sorry, recipe is not yet available."));
+            ScaffoldMessenger.of(context).showSnackBar(recipeSnackbar);
+          }
+        },
+        child: Stack(children: [
+          Ink(
+            height: double.infinity,
+            width: double.infinity,
+            decoration: BoxDecoration(
+                borderRadius: borderRadius,
+                image: DecorationImage(
+                    image: NetworkImage(documentSnapshot['imageUrl']),
+                    fit: BoxFit.cover)),
+          ),
+          Positioned(
+            bottom: 0.0,
+            left: 0.0,
+            right: 0.0,
+            child: Container(
+              child: Column(
+                children: [
+                  Text(
+                    documentSnapshot["name"],
+                    textAlign: TextAlign.center,
+                    style: TextStyle(
+                      color: mBackgroundColor,
+                      fontSize: 20.0,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                  Text(
+                    'by ${documentSnapshot["source"]}',
+                    textAlign: TextAlign.center,
+                    style: TextStyle(
+                      color: mBackgroundColor,
+                      fontSize: 14.0,
+                      fontStyle: FontStyle.italic,
+                    ),
+                  ),
+                ],
               ),
+              decoration: BoxDecoration(
+                borderRadius: borderRadius,
+                gradient: LinearGradient(
+                  colors: [
+                    Color.fromARGB(255, 0, 0, 0),
+                    Color.fromARGB(0, 0, 0, 0)
+                  ],
+                  begin: FractionalOffset.bottomCenter,
+                  end: FractionalOffset.topCenter,
+                ),
+              ),
+              padding: EdgeInsets.symmetric(vertical: 25.0, horizontal: 20.0),
             ),
           ),
-        ),
+        ]),
       ),
     );
   }
@@ -321,7 +356,7 @@ class _CategoryRecipesPageState extends State<CategoryRecipesPage> {
                     ),
                     title: Text(documentSnapshot['name']),
                     subtitle: Text(
-                      "Source: ${documentSnapshot['source']}",
+                      "by ${documentSnapshot['source']}",
                       style: TextStyle(fontStyle: FontStyle.italic),
                     ),
                     trailing: Icon(Icons.arrow_right),
