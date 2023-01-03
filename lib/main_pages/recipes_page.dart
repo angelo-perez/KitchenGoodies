@@ -100,14 +100,17 @@ class _RecipesPageState extends State<RecipesPage> {
           fit: BoxFit.cover,
           child: Center(
             child: Container(
+              height: 50,
               width: double.maxFinite,
               color: Color.fromARGB(160, 0, 0, 0),
-              child: Text(
-                recipeCategory.categoryName,
-                textAlign: TextAlign.center,
-                style: TextStyle(
-                  fontSize: 32,
-                  color: Colors.white,
+              child: Center(
+                child: Text(
+                  recipeCategory.categoryName,
+                  textAlign: TextAlign.center,
+                  style: TextStyle(
+                    fontSize: 23,
+                    color: Colors.white,
+                  ),
                 ),
               ),
             ),

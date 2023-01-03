@@ -1,5 +1,6 @@
 import 'dart:typed_data';
 
+import 'package:elective_project/community_page/widget/add_post_widget.dart';
 import 'package:elective_project/main.dart';
 import 'package:elective_project/main_pages/home_page.dart';
 import 'package:elective_project/main_pages/main_page.dart';
@@ -153,7 +154,8 @@ class _FinishedRecipePageState extends State<FinishedRecipePage> {
                   backgroundColor: appBarColor,
                   fixedSize: Size(120, 40)),
               onPressed: () {
-                pushNewScreen(context, screen: CreateDishPost());
+                // pushNewScreen(context, screen: CreateDishPost());
+                pushNewScreen(context, screen: AddPostWidget());
               },
               child: Text(
                 'Share',

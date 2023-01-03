@@ -51,25 +51,25 @@ class _SignInPageState extends State<SignInPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Color(0xFFF2E5D9),
+      backgroundColor: mBackgroundColor,
       resizeToAvoidBottomInset: false,
       appBar: AppBar(
-        backgroundColor: const Color(0xFFF2E5D9),
+        backgroundColor: mBackgroundColor,
         elevation: 0,
         centerTitle: true,
-        title: const Text(
+        title: Text(
           'Sign In',
           style: TextStyle(
-            color: Color(0xFF6e3d28),
+            color: appBarColor,
           ),
         ),
         leading: IconButton(
           onPressed: () {
             Navigator.pop(context);
           },
-          icon: const Icon(
+          icon: Icon(
             Icons.arrow_back_ios,
-            color: Color(0xFF6e3d28),
+            color: appBarColor,
           ),
         ),
       ),
@@ -80,10 +80,10 @@ class _SignInPageState extends State<SignInPage> {
           children: <Widget>[
             Container(
               padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 20),
-              child: const Text(
+              child: Text(
                 'Welcome Back',
                 style:
-                    TextStyle(color: Color(0xFF6e3d28), fontSize: 32, fontWeight: FontWeight.w500),
+                    TextStyle(color: appBarColor, fontSize: 32, fontWeight: FontWeight.w500),
               ),
             ),
             // <--------- EMAIL AND PASSWORD CONTAINER --------->
@@ -156,7 +156,7 @@ class _SignInPageState extends State<SignInPage> {
               alignment: Alignment.centerRight,
               child: Text(
                 'Forgot Password?',
-                style: TextStyle(color: Color(0xFF6e3d28)),
+                style: TextStyle(color: appBarColor),
               ),
             ),
             const SizedBox(
@@ -171,11 +171,11 @@ class _SignInPageState extends State<SignInPage> {
               child: TextButton(
                 onPressed: loginUser,
                 style: TextButton.styleFrom(
-                  backgroundColor: Color(0xFF6e3d28),
+                  backgroundColor: appBarColor,
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(36),
                     side: BorderSide(
-                      color: Color(0xFF6e3d28),
+                      color: appBarColor,
                     ),
                   ),
                 ),
@@ -186,19 +186,19 @@ class _SignInPageState extends State<SignInPage> {
                   width: double.infinity,
                   alignment: Alignment.center,
                   child: _isLoading
-                      ? const SizedBox(
+                      ? SizedBox(
                           width: 20,
                           height: 20,
                           child: Center(
                             child: CircularProgressIndicator(
-                              color: Color(0xFFFFFFFF),
+                              color: mBackgroundColor,
                             ),
                           ),
                         )
-                      : const Text(
+                      : Text(
                           'Sign In',
                           style: TextStyle(
-                            color: Colors.white,
+                            color: mBackgroundColor,
                           ),
                         ),
                 ),
@@ -224,7 +224,7 @@ class _SignInPageState extends State<SignInPage> {
                     TextSpan(
                       text: ' Register',
                       style: TextStyle(
-                        color: Color(0xFF6e3d28),
+                        color: appBarColor,
                         fontSize: 16,
                       ),
                       recognizer: TapGestureRecognizer()

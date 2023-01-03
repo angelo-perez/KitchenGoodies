@@ -52,7 +52,8 @@ class _MainPageState extends State<MainPage> {
     setState(() {
       isLoading = true;
     });
-    UserProvider _userProvider = Provider.of<UserProvider>(context, listen: false);
+    UserProvider _userProvider =
+        Provider.of<UserProvider>(context, listen: false);
     await _userProvider.refreshUser();
     setState(() {
       isLoading = false;
@@ -63,14 +64,16 @@ class _MainPageState extends State<MainPage> {
   Widget build(BuildContext context) {
     final PersistentTabController _controller =
         PersistentTabController(initialIndex: widget.initialIndex);
-    _precacheImage();
 
     FlutterRingtonePlayer.stop;
 
     return isLoading
-        ? Center(
-            child: CircularProgressIndicator(
-              color: mBackgroundColor,
+        ? Scaffold(
+            backgroundColor: splashScreenBgColor,
+            body: Center(
+              child: CircularProgressIndicator(
+                color: mBackgroundColor,
+              ),
             ),
           )
         : Scaffold(
@@ -126,16 +129,5 @@ class _MainPageState extends State<MainPage> {
         inactiveColorPrimary: CupertinoColors.systemGrey,
       ),
     ];
-  }
-
-  void _precacheImage() {
-    precacheImage(AssetImage("images/recipe_categories/chicken.jpg"), context);
-    precacheImage(AssetImage("images/recipe_categories/pork.jpg"), context);
-    precacheImage(AssetImage("images/recipe_categories/beef.jpg"), context);
-    precacheImage(AssetImage("images/recipe_categories/fish.jpg"), context);
-    precacheImage(AssetImage("images/recipe_categories/crustacean.jpg"), context);
-    precacheImage(AssetImage("images/recipe_categories/vegetables.jpg"), context);
-    precacheImage(AssetImage("images/recipe_categories/dessert.jpg"), context);
-    precacheImage(AssetImage("images/recipe_categories/others.jpg"), context);
   }
 }

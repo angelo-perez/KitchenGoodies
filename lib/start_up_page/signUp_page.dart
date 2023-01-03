@@ -87,25 +87,25 @@ class _SignUpPageState extends State<SignUpPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color(0xFFF2E5D9),
+      backgroundColor: mBackgroundColor,
       resizeToAvoidBottomInset: false,
       appBar: AppBar(
-        backgroundColor: const Color(0xFFF2E5D9), //Color(0xFFF2E5D9),
+        backgroundColor: mBackgroundColor, //Color(0xFFF2E5D9),
         elevation: 0,
         centerTitle: true,
-        title: const Text(
+        title: Text(
           'Sign Up',
           style: TextStyle(
-            color: Color(0xFF6e3d28),
+            color: appBarColor,
           ),
         ),
         leading: IconButton(
           onPressed: () {
             Navigator.pop(context);
           },
-          icon: const Icon(
+          icon: Icon(
             Icons.arrow_back_ios,
-            color: Color(0xFF6e3d28),
+            color: appBarColor,
           ),
         ),
       ),
@@ -116,10 +116,10 @@ class _SignUpPageState extends State<SignUpPage> {
           children: <Widget>[
             Container(
               padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 20),
-              child: const Text(
+              child: Text(
                 'Welcome',
                 style:
-                    TextStyle(color: Color(0xFF6e3d28), fontSize: 32, fontWeight: FontWeight.w500),
+                    TextStyle(color: appBarColor, fontSize: 32, fontWeight: FontWeight.w500),
               ),
             ),
             // <--------- DEFAULT PICTURE --------->
@@ -216,18 +216,18 @@ class _SignUpPageState extends State<SignUpPage> {
                     keyboardType: TextInputType.text,
                     obscureText: true,
                     cursorColor: Colors.grey,
-                    decoration: const InputDecoration(
+                    decoration: InputDecoration(
                       labelText: 'Password',
                       labelStyle: const TextStyle(color: Colors.grey),
                       border: UnderlineInputBorder(
                         borderSide: BorderSide(
-                          color: Color(0xFF6e3d28),
+                          color: mPrimaryColor,
                           width: 2,
                         ),
                       ),
                       focusedBorder: UnderlineInputBorder(
                         borderSide: BorderSide(
-                          color: Color(0xFF6e3d28),
+                          color: mPrimaryColor,
                           width: 2,
                         ),
                       ),
@@ -244,18 +244,18 @@ class _SignUpPageState extends State<SignUpPage> {
                     keyboardType: TextInputType.text,
                     obscureText: true,
                     cursorColor: Colors.grey,
-                    decoration: const InputDecoration(
+                    decoration: InputDecoration(
                       labelText: 'Confirm Password',
                       labelStyle: const TextStyle(color: Colors.grey),
                       border: UnderlineInputBorder(
                         borderSide: BorderSide(
-                          color: Color(0xFF6e3d28),
+                          color: mPrimaryColor,
                           width: 2,
                         ),
                       ),
                       focusedBorder: UnderlineInputBorder(
                         borderSide: BorderSide(
-                          color: Color(0xFF6e3d28),
+                          color: mPrimaryColor,
                           width: 2,
                         ),
                       ),
@@ -286,11 +286,11 @@ class _SignUpPageState extends State<SignUpPage> {
                     signUpUser();
                   },
                   style: TextButton.styleFrom(
-                    backgroundColor: Color(0xFF6e3d28),
+                    backgroundColor: mPrimaryColor,
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(36),
                       side: BorderSide(
-                        color: Color(0xFF6e3d28),
+                        color: mPrimaryColor,
                       ),
                     ),
                   ),
@@ -301,19 +301,19 @@ class _SignUpPageState extends State<SignUpPage> {
                     width: double.infinity,
                     alignment: Alignment.center,
                     child: _isLoading
-                        ? const SizedBox(
+                        ? SizedBox(
                             width: 20,
                             height: 20,
                             child: Center(
                               child: CircularProgressIndicator(
-                                color: Color(0xFFFFFFFF),
+                                color: mBackgroundColor,
                               ),
                             ),
                           )
-                        : const Text(
+                        : Text(
                             'Sign Up',
                             style: TextStyle(
-                              color: Color(0xFFF2E5D9),
+                              color: mBackgroundColor,
                             ),
                           ),
                   ),
@@ -340,7 +340,7 @@ class _SignUpPageState extends State<SignUpPage> {
                     TextSpan(
                       text: ' Sign In!',
                       style: TextStyle(
-                        color: Color(0xFF6e3d28),
+                        color: mPrimaryColor,
                         fontSize: 16,
                       ),
                       recognizer: TapGestureRecognizer()

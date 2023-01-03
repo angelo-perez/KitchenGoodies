@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
 
+import '../../main_pages/main_page.dart';
 import '../../resources/firestore_methods.dart';
 import '../../providers/user_provider.dart';
 import '../../util/colors.dart';
@@ -45,7 +46,10 @@ class _AddPostWidgetState extends State<AddPostWidget> {
         });
         showSnackBar('Posted', context);
         clearImage();
-        Navigator.pop(context);
+        // Navigator.pop(context);
+        Navigator.of(context, rootNavigator: true).pushAndRemoveUntil(
+                    MaterialPageRoute(builder: (context) => MainPage(3)),
+                    (route) => false);
       } else {
         showSnackBar(res, context);
       }
@@ -149,7 +153,7 @@ class _AddPostWidgetState extends State<AddPostWidget> {
               ))
         ],
       ),
-      body: Column(
+      body: ListView( //Column 
         children: [
           _isLoading ? const LinearProgressIndicator() : Container(),
           Container(

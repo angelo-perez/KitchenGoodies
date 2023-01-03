@@ -1,5 +1,6 @@
 import 'dart:ui';
 import 'package:animated_splash_screen/animated_splash_screen.dart';
+import 'package:elective_project/util/colors.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:page_transition/page_transition.dart';
 import 'package:elective_project/start_up_page/login_page.dart';
@@ -38,8 +39,10 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
+
   @override
   Widget build(BuildContext context) {
+    _precacheImage();
     return MultiProvider(
       providers: [
         ChangeNotifierProvider(
@@ -53,17 +56,18 @@ class _MyAppState extends State<MyApp> {
         debugShowCheckedModeBanner: false,
         title: 'Kitchen Goodies',
         theme: ThemeData(
-          primaryColor: Color(0xFF12A2726),
+          primaryColor: appBarColor,
           fontFamily: 'Montserrat',
         ),
         home: AnimatedSplashScreen(
           duration: 1500,
-          splash: SvgPicture.asset('images/logos/kitchen-goodies.svg', color: Colors.white),
+          splash: SvgPicture.asset('images/logos/kitchen-goodies.svg',
+              color: mBackgroundColor),
           centered: true,
           splashIconSize: 300,
           splashTransition: SplashTransition.fadeTransition,
           pageTransitionType: PageTransitionType.fade,
-          backgroundColor: Color(0xff2C2C2B),
+          backgroundColor: splashScreenBgColor,
           nextScreen: StreamBuilder(
               stream: FirebaseAuth.instance.authStateChanges(),
               builder: (context, snapshot) {
@@ -72,7 +76,8 @@ class _MyAppState extends State<MyApp> {
                     child: CircularProgressIndicator(),
                   );
                 } else if (snapshot.hasData) {
-                  final provider = Provider.of<GoogleSignInProvider>(context, listen: false);
+                  final provider =
+                      Provider.of<GoogleSignInProvider>(context, listen: false);
                   provider.saveUserData(); // only works with google accounts
                   return MainPage(0);
                 } else if (snapshot.hasError) {
@@ -86,5 +91,33 @@ class _MyAppState extends State<MyApp> {
         ),
       ),
     );
+  }
+
+    void _precacheImage() {
+    List recipeCategoryImages = [
+      "images/recipe_categories/chicken.jpg",
+      "images/recipe_categories/pork.jpg",
+      "images/recipe_categories/beef.jpg",
+      "images/recipe_categories/fish.jpg",
+      "images/recipe_categories/crustacean.jpg",
+      "images/recipe_categories/vegetables.jpg",
+      "images/recipe_categories/dessert.jpg",
+      "images/recipe_categories/others.jpg"
+    ];
+
+    List loginPageVectors = [
+      'images/logos/kitchen-goodies.png',
+      'images/vectors/pan_with_vegetables.jpg',
+      'images/vectors/young-woman-baking-cooking-at-home_.jpg',
+      'images/vectors/recipe-take-picure.jpg'
+    ];
+
+    recipeCategoryImages.forEach((element) {
+      precacheImage(AssetImage(element), context);
+    });
+
+    loginPageVectors.forEach((element) {
+      precacheImage(AssetImage(element), context);
+    });
   }
 }

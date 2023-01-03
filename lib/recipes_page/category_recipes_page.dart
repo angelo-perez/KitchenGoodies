@@ -162,7 +162,7 @@ class _CategoryRecipesPageState extends State<CategoryRecipesPage> {
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           SizedBox(
-            height: 500, // card height
+            height: 400, // card height
             child: PageView.builder(
               itemCount: items.length,
               controller: _controller,

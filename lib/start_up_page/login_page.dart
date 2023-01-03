@@ -1,3 +1,4 @@
+import 'package:carousel_slider/carousel_slider.dart';
 import 'package:elective_project/resources/facebook_sign_in.dart';
 import 'package:elective_project/providers/google_sign_in.dart';
 import 'package:elective_project/main.dart';
@@ -14,38 +15,126 @@ import 'package:provider/provider.dart';
 
 import '../main_pages/main_page.dart';
 
-class LoginPage extends StatelessWidget {
+final List<String> imgList = [
+  'images/logos/kitchen-goodies.png',
+  'images/vectors/pan_with_vegetables.jpg',
+  'images/vectors/young-woman-baking-cooking-at-home_.jpg',
+  'images/vectors/recipe-take-picure.jpg',
+];
+final List<String> titleList = [
+  'Welcome to Kitchen Goodies',
+  'Complete List of Ingredients',
+  'Step-by-step Procedure',
+  'Share your Dish'
+];
+final List<String> descriptionList = [
+  'Cooking is love made visible!',
+  'Complete and detailed list of ingredients for every recipe',
+  'Cooking procedure progress gradually ',
+  'Interact and share your dishes to Kitchen Buddies'
+];
+
+class LoginPage extends StatefulWidget {
   LoginPage({Key? key}) : super(key: key);
 
+  @override
+  State<LoginPage> createState() => _LoginPageState();
+}
+
+class _LoginPageState extends State<LoginPage> {
   bool _isLoggedIn = false;
+
   Map _userObj = {};
+
+  int _current = 0;
+
+  List<Widget> carouselItem = imgList
+      .map(
+        (item) => Container(
+          width: double.infinity,
+          child: Center(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                Container(
+                    child: Image(image: AssetImage(item), fit: BoxFit.contain)),
+                Padding(
+                  padding: const EdgeInsets.fromLTRB(10, 5, 10, 5),
+                  child: Text(
+                    titleList[imgList.indexOf(item)],
+                    style: TextStyle(
+                        color: appBarColor,
+                        fontSize: 20,
+                        fontWeight: FontWeight.w800),
+                  ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.fromLTRB(10, 5, 10, 5),
+                  child: Text(
+                    descriptionList[imgList.indexOf(item)],
+                    textAlign: TextAlign.center,
+                    style: TextStyle(
+                        color: Colors.black54,
+                        fontSize: 15,
+                        fontWeight: FontWeight.w500),
+                  ),
+                )
+              ],
+            ),
+          ),
+        ),
+      )
+      .toList();
 
   @override
   Widget build(BuildContext context) {
+    final CarouselController _controller = CarouselController();
     return Scaffold(
-        backgroundColor: Color(0xFFF2E5D9),
+        backgroundColor: mBackgroundColor,
         resizeToAvoidBottomInset: false,
         body: SafeArea(
           child: Column(
             children: <Widget>[
-              Image.asset('images/test-images/coffee_time.png'),
-              const SliderDot(),
-              const SizedBox(
-                height: 5,
-              ),
-              Text(
-                'Cooking is love\nmade visible!',
-                textAlign: TextAlign.center,
-                style: TextStyle(
-                  color: mPrimaryTextColor,
-                  fontSize: 32,
-                  fontWeight: FontWeight.w500,
+              Container(
+                child: CarouselSlider(
+                  items: carouselItem,
+                  carouselController: _controller,
+                  options: CarouselOptions(
+                      autoPlay: true,
+                      autoPlayInterval: Duration(seconds: 3),
+                      aspectRatio: 0.8,
+                      viewportFraction: 1,
+                      onPageChanged: (index, reason) {
+                        setState(() {
+                          _current = index;
+                        });
+                      }),
                 ),
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: imgList.asMap().entries.map((entry) {
+                  return GestureDetector(
+                    child: Container(
+                      width: 12.0,
+                      height: 12.0,
+                      margin:
+                          EdgeInsets.symmetric(vertical: 8.0, horizontal: 4.0),
+                      decoration: BoxDecoration(
+                          shape: BoxShape.circle,
+                          color: (Theme.of(context).brightness ==
+                                      Brightness.dark
+                                  ? Colors.white
+                                  : appBarColor)
+                              .withOpacity(_current == entry.key ? 0.9 : 0.4)),
+                    ),
+                  );
+                }).toList(),
               ),
               Container(
                 padding: const EdgeInsets.symmetric(
                   horizontal: 30,
-                  vertical: 20,
+                  vertical: 25,
                 ),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.center,
@@ -53,14 +142,14 @@ class LoginPage extends StatelessWidget {
                     Expanded(
                       child: TextButton(
                         onPressed: () {
-                          Navigator.of(context)
-                              .push(MaterialPageRoute(builder: (context) => SignUpPage()));
+                          Navigator.of(context).push(MaterialPageRoute(
+                              builder: (context) => SignUpPage()));
                         },
                         style: TextButton.styleFrom(
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(36),
                           ),
-                          backgroundColor: Color(0xFF6e3d28),
+                          backgroundColor: appBarColor,
                         ),
                         child: Container(
                           padding: const EdgeInsets.symmetric(
@@ -83,7 +172,8 @@ class LoginPage extends StatelessWidget {
                     Expanded(
                       child: TextButton(
                         onPressed: () {
-                          Navigator.push(context, MaterialPageRoute(builder: (context) {
+                          Navigator.push(context,
+                              MaterialPageRoute(builder: (context) {
                             return const SignInPage();
                           }));
                         },
@@ -91,7 +181,7 @@ class LoginPage extends StatelessWidget {
                           shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(36),
                               side: BorderSide(
-                                color: Color(0xFF6e3d28),
+                                color: appBarColor,
                               )),
                         ),
                         child: Container(
@@ -100,10 +190,10 @@ class LoginPage extends StatelessWidget {
                           ),
                           width: double.infinity,
                           alignment: Alignment.center,
-                          child: const Text(
+                          child: Text(
                             "Sign In",
                             style: TextStyle(
-                              color: Color(0xFF6e3d28),
+                              color: appBarColor,
                             ),
                           ),
                         ),
@@ -116,7 +206,8 @@ class LoginPage extends StatelessWidget {
                 padding: const EdgeInsets.symmetric(horizontal: 30),
                 child: TextButton(
                   onPressed: () {
-                    final provider = Provider.of<GoogleSignInProvider>(context, listen: false);
+                    final provider = Provider.of<GoogleSignInProvider>(context,
+                        listen: false);
                     provider.googleLogin();
                     // Navigator.of(context).pushReplacement(MaterialPageRoute(
                     //     builder: (context) => VerifyGoogleSignIn()));
@@ -126,7 +217,7 @@ class LoginPage extends StatelessWidget {
                         borderRadius: BorderRadius.circular(36),
                       ),
                       side: BorderSide(
-                        color: mFacebookColor,
+                        color: appBarColor,
                       )),
                   child: Container(
                     padding: const EdgeInsets.symmetric(vertical: 10),
@@ -144,7 +235,7 @@ class LoginPage extends StatelessWidget {
                         Text(
                           'Sign in with Google',
                           style: TextStyle(
-                            color: mFacebookColor,
+                            color: appBarColor,
                           ),
                         )
                       ],
