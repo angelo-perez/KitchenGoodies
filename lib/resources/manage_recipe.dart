@@ -40,17 +40,16 @@ class ManageRecipe {
         'steps': recipeSteps,
         'steps-timer': recipeTimer,
         'imageUrl': imageURL,
-        'rating': 0, //
+        'rating': [],
         'date': DateTime.now(),
       }).whenComplete(() => Fluttertoast.showToast(
-                msg: "Your recipe was succesfully saved",
-                toastLength: Toast.LENGTH_SHORT,
-                gravity: ToastGravity.SNACKBAR,
-                timeInSecForIosWeb: 1,
-                backgroundColor: splashScreenBgColor,
-                textColor: Colors.white,
-                fontSize: 16.0));
-
+          msg: "Your recipe was succesfully saved",
+          toastLength: Toast.LENGTH_SHORT,
+          gravity: ToastGravity.SNACKBAR,
+          timeInSecForIosWeb: 1,
+          backgroundColor: splashScreenBgColor,
+          textColor: Colors.white,
+          fontSize: 16.0));
     } catch (e) {
       error = e.toString();
     }
@@ -212,10 +211,29 @@ class ManageRecipe {
     return error;
   }
 
-   Future<String?> rateRecipe({
-    String? recipeId,
-    String? collectionName,
-  }) async{
+  Future<String?> rateRecipe(
+    String recipeId,
+    String collectionName,
+    List recipeArray,
+    double recipeRating,
+  ) async {
+    CollectionReference collection =
+        _firebaseInstance.collection(collectionName);
 
+    recipeArray.add(recipeRating);
+
+    await collection.doc(recipeId).update({'rating': recipeArray});
   }
+
+  /// WARNING: Don't enable and call this function 'til necessary as this may overwrite all the data of recipes in Firebase! ////
+  // Future<String?> convertRatingtoArray(
+  //   String? recipeId,
+  //   String collectionName,
+  // ) async {
+
+  //   CollectionReference collection = _firebaseInstance.collection(collectionName);
+  //   await collection.doc(recipeId).update({
+  //     'rating': []
+  //   });
+  // }
 }

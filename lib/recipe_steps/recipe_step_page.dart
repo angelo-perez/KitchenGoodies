@@ -23,7 +23,9 @@ class RecipeStepPage extends StatefulWidget {
       this.total_steps_count,
       this.step_index,
       this.current_step,
-      this.current_step_duration);
+      this.current_step_duration,
+      this.recipe_rating,
+      );
 
   String recipeId;
   String collection_name;
@@ -36,6 +38,7 @@ class RecipeStepPage extends StatefulWidget {
   int step_index;
   String current_step;
   int current_step_duration;
+  List recipe_rating;
 
   @override
   State<RecipeStepPage> createState() => _RecipeStepPageState();
@@ -184,6 +187,7 @@ class _RecipeStepPageState extends State<RecipeStepPage> {
                                     widget.step_index,
                                     widget.steps[widget.step_index],
                                     widget.steps_timer[widget.step_index],
+                                    widget.recipe_rating,
                                   ),
                                   withNavBar: false,
                                   pageTransitionAnimation:
@@ -209,7 +213,9 @@ class _RecipeStepPageState extends State<RecipeStepPage> {
                                         widget.collection_name,
                                         widget.recipe_image,
                                         widget.recipe_name,
-                                        widget.recipe_source),
+                                        widget.recipe_source,
+                                        widget.recipe_rating,  
+                                      ),
                                     withNavBar: false,
                                     pageTransitionAnimation:
                                         PageTransitionAnimation.cupertino,

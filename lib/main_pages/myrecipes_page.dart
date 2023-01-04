@@ -233,7 +233,9 @@ class _MyRecipesPageState extends State<MyRecipesPage> {
                                 documentSnapshot['description'],
                                 documentSnapshot['ingredients'],
                                 documentSnapshot['steps'],
-                                documentSnapshot['steps-timer']),
+                                documentSnapshot['steps-timer'],
+                                documentSnapshot['rating'],
+                            ),
                             withNavBar: false,
                           );
                         } else {

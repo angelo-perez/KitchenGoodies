@@ -18,7 +18,9 @@ class RecipeOverview extends StatefulWidget {
       this.recipe_description,
       this.recipe_ingredients,
       this.recipe_steps,
-      this.recipe_stepstimer);
+      this.recipe_stepstimer,
+      this.recipe_rating,
+    );
 
   final String recipeId;
   final String collection_name;
@@ -29,6 +31,7 @@ class RecipeOverview extends StatefulWidget {
   final List recipe_ingredients;
   final List recipe_steps;
   final List recipe_stepstimer;
+  final List recipe_rating;
 
   @override
   State<RecipeOverview> createState() => _RecipeOverviewState();
@@ -137,6 +140,7 @@ class _RecipeOverviewState extends State<RecipeOverview> {
             step_index,
             widget.recipe_steps[step_index],
             widget.recipe_stepstimer[step_index],
+            widget.recipe_rating,
           ),
           withNavBar: false,
         ),

@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:elective_project/recipes_page/recipe_overview.dart';
+import 'package:elective_project/resources/manage_recipe.dart';
 import 'package:elective_project/util/colors.dart';
 import 'package:fluentui_system_icons/fluentui_system_icons.dart';
 import 'package:flutter/src/foundation/key.dart';
@@ -11,6 +12,7 @@ import 'package:persistent_bottom_nav_bar/persistent-tab-view.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 import '../main_pages/recipes_page.dart';
 import '../main.dart';
+import 'package:collection/collection.dart';
 
 class CategoryRecipesPage extends StatefulWidget {
   CategoryRecipesPage(this.category_name);
@@ -171,6 +173,7 @@ class _CategoryRecipesPageState extends State<CategoryRecipesPage> {
                   setState(() => _selectedIndex = index),
               itemBuilder: (context, index) {
                 final DocumentSnapshot documentSnapshot = items[index];
+
                 return Transform.scale(
                     scale: index == _selectedIndex ? 1 : 0.85,
                     child: _recipeListItem(
@@ -229,7 +232,9 @@ class _CategoryRecipesPageState extends State<CategoryRecipesPage> {
                   documentSnapshot['description'],
                   documentSnapshot['ingredients'],
                   documentSnapshot['steps'],
-                  documentSnapshot['steps-timer']),
+                  documentSnapshot['steps-timer'],
+                  documentSnapshot['rating'],
+                  ),
               withNavBar: false,
             );
           } else {
@@ -273,6 +278,34 @@ class _CategoryRecipesPageState extends State<CategoryRecipesPage> {
                       fontStyle: FontStyle.italic,
                     ),
                   ),
+                  Padding(
+                    padding: EdgeInsets.only(top: 5),
+                    child: documentSnapshot["rating"].length == 0
+                        ? Container()
+                        : Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Padding(
+                                padding: const EdgeInsets.only(top: 2.5),
+                                child: RatingBarIndicator(
+                                  itemSize: 18,
+                                  rating: (documentSnapshot['rating']
+                                              .reduce((a, b) => a + b) /
+                                          documentSnapshot['rating'].length)
+                                      .toDouble(), //get the average of the rating array and convert it to double
+                                  itemBuilder: (context, index) => Icon(
+                                    Icons.star,
+                                    color: Colors.amber,
+                                  ),
+                                ),
+                              ),
+                              Text(
+                                " (${documentSnapshot['rating'].length})",
+                                style: TextStyle(color: mBackgroundColor),
+                              ),
+                            ],
+                          ),
+                  ),
                 ],
               ),
               decoration: BoxDecoration(
@@ -286,7 +319,7 @@ class _CategoryRecipesPageState extends State<CategoryRecipesPage> {
                   end: FractionalOffset.topCenter,
                 ),
               ),
-              padding: EdgeInsets.symmetric(vertical: 25.0, horizontal: 20.0),
+              padding: EdgeInsets.symmetric(vertical: 20.0, horizontal: 20.0),
             ),
           ),
         ]),
@@ -336,7 +369,9 @@ class _CategoryRecipesPageState extends State<CategoryRecipesPage> {
                               documentSnapshot['description'],
                               documentSnapshot['ingredients'],
                               documentSnapshot['steps'],
-                              documentSnapshot['steps-timer']),
+                              documentSnapshot['steps-timer'],
+                              documentSnapshot['rating'],
+                              ),
                           withNavBar: false,
                         );
                       } else {
@@ -370,15 +405,30 @@ class _CategoryRecipesPageState extends State<CategoryRecipesPage> {
                         ),
                         Padding(
                           padding: EdgeInsets.only(top: 12),
-                          child: documentSnapshot["rating"] == 0
+                          child: documentSnapshot["rating"].length == 0
                               ? Container()
-                              : RatingBarIndicator(
-                                  itemSize: 18,
-                                  rating: documentSnapshot['rating'].toDouble(),
-                                  itemBuilder: (context, index) => Icon(
-                                    Icons.star,
-                                    color: Colors.amber,
-                                  ),
+                              : Row(
+                                  children: [
+                                    Padding(
+                                      padding: const EdgeInsets.only(top: 2.5),
+                                      child: RatingBarIndicator(
+                                        itemSize: 18,
+                                        rating: (documentSnapshot['rating']
+                                                    .reduce((a, b) => a + b) /
+                                                documentSnapshot['rating']
+                                                    .length)
+                                            .toDouble(), //get the average of the rating array and convert it to double
+                                        itemBuilder: (context, index) => Icon(
+                                          Icons.star,
+                                          color: Colors.amber,
+                                        ),
+                                      ),
+                                    ),
+                                    Text(
+                                      " (${documentSnapshot['rating'].length})",
+                                      style: TextStyle(color: appBarColor),
+                                    ),
+                                  ],
                                 ),
                         ),
                       ],

@@ -6,6 +6,7 @@ import 'package:elective_project/main_pages/home_page.dart';
 import 'package:elective_project/main_pages/main_page.dart';
 import 'package:elective_project/main_pages/recipes_page.dart';
 import 'package:elective_project/recipes_page/create_dish_post.dart';
+import 'package:elective_project/resources/manage_recipe.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -21,20 +22,22 @@ import '../util/colors.dart';
 import '../util/utils.dart';
 
 class FinishedRecipePage extends StatefulWidget {
-  FinishedRecipePage(this.recipeId, this.collection_name, this.recipe_image, this.recipe_name, this.recipe_source);
+  FinishedRecipePage(this.recipeId, this.collection_name, this.recipe_image,
+      this.recipe_name, this.recipe_source, this.recipe_rating);
   final String recipeId;
   final String collection_name;
   final String recipe_image;
   final String recipe_name;
   final String recipe_source;
+  final List recipe_rating;
 
   @override
   State<FinishedRecipePage> createState() => _FinishedRecipePageState();
 }
 
 class _FinishedRecipePageState extends State<FinishedRecipePage> {
-
   String ratingDisplay = "";
+  double recipeRating = 0;
 
   @override
   Widget build(BuildContext context) {
@@ -123,6 +126,7 @@ class _FinishedRecipePageState extends State<FinishedRecipePage> {
                 setState(() {
                   ratingDisplay = rating.toString();
                   print(ratingDisplay);
+                  recipeRating = rating;
                 });
               },
             ),
@@ -138,8 +142,15 @@ class _FinishedRecipePageState extends State<FinishedRecipePage> {
               style: ElevatedButton.styleFrom(
                   backgroundColor: appBarColor, fixedSize: Size(120, 40)),
               onPressed: () {
+
+                if (recipeRating > 0) {
+                  ManageRecipe rateRecipe = ManageRecipe();
+                  rateRecipe.rateRecipe(widget.recipeId, widget.collection_name, widget.recipe_rating, recipeRating);
+                }
+
                 // pushNewScreen(context, screen: CreateDishPost());
                 pushNewScreen(context, screen: AddPostWidget());
+
               },
               child: Text(
                 'Share',
@@ -150,6 +161,11 @@ class _FinishedRecipePageState extends State<FinishedRecipePage> {
               style: ElevatedButton.styleFrom(
                   backgroundColor: appBarColor, fixedSize: Size(120, 40)),
               onPressed: () {
+
+                if (recipeRating > 0) {
+                  ManageRecipe rateRecipe = ManageRecipe();
+                  rateRecipe.rateRecipe(widget.recipeId, widget.collection_name, widget.recipe_rating, recipeRating);
+                }
                 Navigator.of(context, rootNavigator: true).pushAndRemoveUntil(
                     MaterialPageRoute(builder: (context) => MainPage(1)),
                     (route) => false);
@@ -163,6 +179,11 @@ class _FinishedRecipePageState extends State<FinishedRecipePage> {
               style: ElevatedButton.styleFrom(
                   backgroundColor: appBarColor, fixedSize: Size(120, 40)),
               onPressed: () {
+
+                if (recipeRating > 0) {
+                  ManageRecipe rateRecipe = ManageRecipe();
+                  rateRecipe.rateRecipe(widget.recipeId, widget.collection_name, widget.recipe_rating, recipeRating);
+                }
                 Navigator.pushAndRemoveUntil(
                     context,
                     MaterialPageRoute(builder: (context) => MainPage(0)),
