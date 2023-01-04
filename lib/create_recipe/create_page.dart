@@ -21,7 +21,8 @@ class CreatePage extends StatefulWidget {
 
 class _CreatePageState extends State<CreatePage> {
   TextEditingController recipeName = TextEditingController();
-  String? recipePrivacy = "Private";
+  TextEditingController recipeDescription = TextEditingController();
+  String? recipePrivacy = "private";
   String? recipeCategory = "Select a category";
 
   @override
@@ -88,7 +89,6 @@ class _CreatePageState extends State<CreatePage> {
                         backgroundColor: mBackgroundColor,
                         elevation: 16,
                         shadowColor: appBarColor,
-
                       )),
                   items: [
                     'Chicken',
@@ -126,6 +126,38 @@ class _CreatePageState extends State<CreatePage> {
                   selectedItem: "Select a category",
                 ),
               ),
+              // Padding(padding: EdgeInsets.all(8.0)),
+              // Text(
+              //   'Step 1: Start by entering the name of your recipe, its category, and setting its privacy.',
+              //   style: TextStyle(fontSize: 20),
+              // ),
+              Padding(
+                padding: const EdgeInsets.only(top: 15.0),
+                child: TextField(
+                  maxLines: 3,
+                  minLines: 1,
+                  controller: recipeDescription,
+                  keyboardType: TextInputType.name,
+                  textInputAction: TextInputAction.next,
+                  cursorColor: Colors.grey,
+                  decoration: InputDecoration(
+                    labelText: 'Recipe Description (Optional)',
+                    labelStyle: const TextStyle(color: Colors.grey),
+                    border: OutlineInputBorder(
+                      borderSide: BorderSide(
+                        color: mPrimaryColor,
+                        width: 2,
+                      ),
+                    ),
+                    focusedBorder: OutlineInputBorder(
+                      borderSide: BorderSide(
+                        color: mPrimaryColor,
+                        width: 2,
+                      ),
+                    ),
+                  ),
+                ),
+              ),
               Padding(
                 padding: const EdgeInsets.only(top: 15.0),
                 child: DropdownSearch<String>(
@@ -158,24 +190,26 @@ class _CreatePageState extends State<CreatePage> {
                     ),
                   ),
                   onChanged: (value) {
-                    recipePrivacy = value;
+                    recipePrivacy = value?.toLowerCase();
                     print(recipePrivacy);
                   },
                   selectedItem: "Private",
                 ),
               ),
-              Padding(padding: EdgeInsets.all(8.0)),
+              Padding(padding: EdgeInsets.fromLTRB(8, 3, 8, 8)),
               ElevatedButton(
                 onPressed: () {
                   String recipe_name = recipeName.text;
+                  String recipe_description = recipeDescription.text;
                   String toastMessage = "";
+                  print(recipe_description);
                   print(recipe_name);
                   print(recipePrivacy);
 
                   if (recipeName.text.isEmpty) {
                     toastMessage = "Recipe Name can't be empty";
                     Fluttertoast.showToast(
-                        msg:toastMessage,
+                        msg: toastMessage,
                         toastLength: Toast.LENGTH_SHORT,
                         gravity: ToastGravity.SNACKBAR,
                         timeInSecForIosWeb: 1,
@@ -185,19 +219,18 @@ class _CreatePageState extends State<CreatePage> {
                   } else if (recipeCategory == "Select a category") {
                     toastMessage = "Please select a Recipe Category";
                     Fluttertoast.showToast(
-                          msg: toastMessage,
-                          toastLength: Toast.LENGTH_SHORT,
-                          gravity: ToastGravity.SNACKBAR,
-                          timeInSecForIosWeb: 1,
-                          backgroundColor: splashScreenBgColor,
-                          textColor: Colors.white,
-                          fontSize: 16.0);
-                  }
-                  else{
+                        msg: toastMessage,
+                        toastLength: Toast.LENGTH_SHORT,
+                        gravity: ToastGravity.SNACKBAR,
+                        timeInSecForIosWeb: 1,
+                        backgroundColor: splashScreenBgColor,
+                        textColor: Colors.white,
+                        fontSize: 16.0);
+                  } else {
                     pushNewScreen(context,
-                          screen: AddIngredients(
-                              recipe_name, recipeCategory!, recipePrivacy!),
-                          withNavBar: true);
+                        screen: AddIngredients(recipe_name, recipe_description,
+                            recipeCategory!, recipePrivacy!),
+                        withNavBar: true);
                   }
                 },
                 child: Text("Next"),

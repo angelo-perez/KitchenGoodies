@@ -9,12 +9,23 @@ import 'package:flutter/src/widgets/framework.dart';
 import 'package:persistent_bottom_nav_bar/persistent-tab-view.dart';
 
 class RecipeOverview extends StatefulWidget {
-  RecipeOverview(this.recipe_image, this.recipe_name, this.recipe_source,
-      this.recipe_ingredients, this.recipe_steps, this.recipe_stepstimer);
+  RecipeOverview(
+      this.recipeId,
+      this.collection_name,
+      this.recipe_image,
+      this.recipe_name,
+      this.recipe_source,
+      this.recipe_description,
+      this.recipe_ingredients,
+      this.recipe_steps,
+      this.recipe_stepstimer);
 
+  final String recipeId;
+  final String collection_name;
   final String recipe_image;
   final String recipe_name;
   final String recipe_source;
+  final String recipe_description;
   final List recipe_ingredients;
   final List recipe_steps;
   final List recipe_stepstimer;
@@ -115,6 +126,8 @@ class _RecipeOverviewState extends State<RecipeOverview> {
         onPressed: () => pushNewScreen(
           context,
           screen: RecipeStepPage(
+            widget.recipeId,
+            widget.collection_name,
             widget.recipe_image,
             widget.recipe_name,
             widget.recipe_source,

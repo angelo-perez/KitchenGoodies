@@ -1,10 +1,11 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:elective_project/recipe_steps/recipe_overview.dart';
+import 'package:elective_project/recipes_page/recipe_overview.dart';
 import 'package:elective_project/util/colors.dart';
 import 'package:fluentui_system_icons/fluentui_system_icons.dart';
 import 'package:flutter/src/foundation/key.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:persistent_bottom_nav_bar/persistent-tab-view.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
@@ -173,8 +174,7 @@ class _CategoryRecipesPageState extends State<CategoryRecipesPage> {
                 return Transform.scale(
                     scale: index == _selectedIndex ? 1 : 0.85,
                     child: _recipeListItem(
-                        context, documentSnapshot, _selectedIndex)
-                    );
+                        context, documentSnapshot, _selectedIndex));
               },
             ),
           ),
@@ -221,9 +221,12 @@ class _CategoryRecipesPageState extends State<CategoryRecipesPage> {
             pushNewScreen(
               context,
               screen: RecipeOverview(
+                  documentSnapshot.id,
+                  collection_name,
                   documentSnapshot['imageUrl'],
                   documentSnapshot['name'],
                   documentSnapshot['source'],
+                  documentSnapshot['description'],
                   documentSnapshot['ingredients'],
                   documentSnapshot['steps'],
                   documentSnapshot['steps-timer']),
@@ -325,9 +328,12 @@ class _CategoryRecipesPageState extends State<CategoryRecipesPage> {
                         pushNewScreen(
                           context,
                           screen: RecipeOverview(
+                              documentSnapshot.id,
+                              collection_name,
                               documentSnapshot['imageUrl'],
                               documentSnapshot['name'],
                               documentSnapshot['source'],
+                              documentSnapshot['description'],
                               documentSnapshot['ingredients'],
                               documentSnapshot['steps'],
                               documentSnapshot['steps-timer']),
@@ -355,11 +361,34 @@ class _CategoryRecipesPageState extends State<CategoryRecipesPage> {
                       ),
                     ),
                     title: Text(documentSnapshot['name']),
-                    subtitle: Text(
-                      "by ${documentSnapshot['source']}",
-                      style: TextStyle(fontStyle: FontStyle.italic),
+                    subtitle: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          "by ${documentSnapshot['source']}",
+                          style: TextStyle(fontStyle: FontStyle.italic),
+                        ),
+                        Padding(
+                          padding: EdgeInsets.only(top: 12),
+                          child: documentSnapshot["rating"] == 0
+                              ? Container()
+                              : RatingBarIndicator(
+                                  itemSize: 18,
+                                  rating: documentSnapshot['rating'].toDouble(),
+                                  itemBuilder: (context, index) => Icon(
+                                    Icons.star,
+                                    color: Colors.amber,
+                                  ),
+                                ),
+                        ),
+                      ],
                     ),
-                    trailing: Icon(Icons.arrow_right),
+                    trailing: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Icon(Icons.arrow_right),
+                      ],
+                    ),
                   ),
                 ),
               );

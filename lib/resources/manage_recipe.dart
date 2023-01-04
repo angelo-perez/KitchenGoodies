@@ -14,6 +14,7 @@ class ManageRecipe {
     String? userId,
     String? username,
     String? recipeName,
+    String? recipeDescription,
     String? recipeCategory,
     String? recipePrivacy,
     List? recipeIngredients,
@@ -32,12 +33,14 @@ class ManageRecipe {
       await users.doc(userId).collection("MyRecipes").add({
         'name': recipeName,
         'source': username,
-        'category': recipeCategory,
-        'privacy': recipePrivacy,
+        'collection': recipeCategory?.toLowerCase(),
+        'description': recipeDescription, //
+        'privacy': recipePrivacy?.toLowerCase(),
         'ingredients': recipeIngredients,
         'steps': recipeSteps,
         'steps-timer': recipeTimer,
         'imageUrl': imageURL,
+        'rating': 0, //
         'date': DateTime.now(),
       }).whenComplete(() => Fluttertoast.showToast(
                 msg: "Your recipe was succesfully saved",
@@ -92,7 +95,7 @@ class ManageRecipe {
           .collection("MyRecipes")
           .doc(recipeId)
           .update({
-            'privacy': recipePrivacy,
+            'privacy': recipePrivacy.toLowerCase(),
           })
           .whenComplete(() => Fluttertoast.showToast(
               msg: "Your recipe is now in ${recipePrivacy}",
@@ -121,6 +124,7 @@ class ManageRecipe {
     String? userId,
     String? recipeId,
     String? recipeName,
+    String? recipeDescription,
     String? recipeCategory,
     String? recipePrivacy,
     List? recipeIngredients,
@@ -139,8 +143,9 @@ class ManageRecipe {
             .doc(recipeId)
             .update({
               'name': recipeName,
-              'category': recipeCategory,
-              'privacy': recipePrivacy,
+              'collection': recipeCategory?.toLowerCase(),
+              'privacy': recipePrivacy?.toLowerCase(),
+              'description': recipeDescription,
               'ingredients': recipeIngredients,
               'steps': recipeSteps,
               'steps-timer': recipeTimer,
@@ -205,5 +210,12 @@ class ManageRecipe {
     }
 
     return error;
+  }
+
+   Future<String?> rateRecipe({
+    String? recipeId,
+    String? collectionName,
+  }) async{
+
   }
 }

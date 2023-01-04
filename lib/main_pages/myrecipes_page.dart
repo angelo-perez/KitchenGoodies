@@ -8,7 +8,7 @@ import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:persistent_bottom_nav_bar/persistent-tab-view.dart';
 
-import '../recipe_steps/recipe_overview.dart';
+import '../recipes_page/recipe_overview.dart';
 import '../util/colors.dart';
 
 class MyRecipesPage extends StatefulWidget {
@@ -124,10 +124,10 @@ class _MyRecipesPageState extends State<MyRecipesPage> {
                       autoClose: false,
                       onPressed: (context) {
                         setState(() {
-                          if (privacy == "Private") {
-                            privacy = "Public";
+                          if (privacy == "Private" || privacy == "private") {
+                            privacy = "public";
                           } else {
-                            privacy = "Private";
+                            privacy = "private";
                           }
                         });
 
@@ -141,7 +141,8 @@ class _MyRecipesPageState extends State<MyRecipesPage> {
                       },
                       backgroundColor: Color.fromARGB(255, 107, 100, 38),
                       foregroundColor: Colors.white,
-                      icon: documentSnapshot["privacy"] == "Private"
+                      icon: documentSnapshot["privacy"] == "Private" ||
+                              documentSnapshot["privacy"] == "private"
                           ? Icons.visibility_off_sharp
                           : Icons.visibility,
                       label: documentSnapshot["privacy"],
@@ -170,7 +171,8 @@ class _MyRecipesPageState extends State<MyRecipesPage> {
                                 documentSnapshot.id,
                                 documentSnapshot["imageUrl"],
                                 documentSnapshot["name"],
-                                documentSnapshot["category"],
+                                documentSnapshot["description"],
+                                documentSnapshot["collection"],
                                 documentSnapshot["privacy"],
                                 documentSnapshot["ingredients"],
                                 documentSnapshot["steps"],
@@ -223,9 +225,12 @@ class _MyRecipesPageState extends State<MyRecipesPage> {
                           pushNewScreen(
                             context,
                             screen: RecipeOverview(
+                                documentSnapshot.id,
+                                documentSnapshot['collection'],
                                 documentSnapshot['imageUrl'],
                                 documentSnapshot['name'],
                                 documentSnapshot['source'],
+                                documentSnapshot['description'],
                                 documentSnapshot['ingredients'],
                                 documentSnapshot['steps'],
                                 documentSnapshot['steps-timer']),

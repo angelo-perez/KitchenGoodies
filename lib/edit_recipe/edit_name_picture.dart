@@ -23,6 +23,7 @@ class EditNamePicture extends StatefulWidget {
       this.recipeId,
       this.recipeImage,
       this.recipeName,
+      this.recipeDescription,
       this.recipeCategory,
       this.recipePrivacy,
       this.recipeIngredients,
@@ -33,6 +34,7 @@ class EditNamePicture extends StatefulWidget {
   final String recipeId;
   final String recipeImage;
   final String recipeName;
+  final String recipeDescription;
   final String recipeCategory;
   final String recipePrivacy;
   final List recipeIngredients;
@@ -80,8 +82,10 @@ class _EditNamePictureState extends State<EditNamePicture> {
     print(user.uid);
     print(user.username);
 
-    TextEditingController _textController =
+    TextEditingController _nameController =
         TextEditingController(text: widget.recipeName);
+    TextEditingController _descriptionController =
+        TextEditingController(text: widget.recipeDescription);
     String? recipePrivacy = widget.recipePrivacy;
     String? recipeCategory = widget.recipeCategory;
 
@@ -168,8 +172,8 @@ class _EditNamePictureState extends State<EditNamePicture> {
                             borderRadius: BorderRadius.circular(8.0),
                             child: Image.memory(
                               _image!,
-                              height: 300,
-                              width: 300,
+                              height: 200,
+                              width: 200,
                               fit: BoxFit.cover,
                             )),
                       ),
@@ -181,8 +185,8 @@ class _EditNamePictureState extends State<EditNamePicture> {
                             borderRadius: BorderRadius.circular(8.0),
                             child: Image.network(
                               widget.recipeImage,
-                              height: 300,
-                              width: 300,
+                              height: 200,
+                              width: 200,
                               fit: BoxFit.cover,
                             )),
                         Center(
@@ -201,7 +205,7 @@ class _EditNamePictureState extends State<EditNamePicture> {
           Padding(
             padding: const EdgeInsets.only(top: 20.0),
             child: TextField(
-              controller: _textController,
+              controller: _nameController,
               keyboardType: TextInputType.name,
               textInputAction: TextInputAction.next,
               cursorColor: Colors.grey,
@@ -267,7 +271,36 @@ class _EditNamePictureState extends State<EditNamePicture> {
                 recipeCategory = value;
                 print(recipeCategory);
               },
-              selectedItem: widget.recipeCategory,
+              selectedItem: widget.recipeCategory[0].toUpperCase() +
+                  widget.recipeCategory
+                      .substring(1), //capitalize the first letter
+            ),
+          ),
+          Padding(
+            padding: const EdgeInsets.only(top: 20.0),
+            child: TextField(
+              controller: _descriptionController,
+              maxLines: 3,
+              minLines: 1,
+              keyboardType: TextInputType.name,
+              textInputAction: TextInputAction.next,
+              cursorColor: Colors.grey,
+              decoration: InputDecoration(
+                labelText: 'Recipe Desciption (Optional)',
+                labelStyle: const TextStyle(color: Colors.grey),
+                border: OutlineInputBorder(
+                  borderSide: BorderSide(
+                    color: mPrimaryColor,
+                    width: 2,
+                  ),
+                ),
+                focusedBorder: OutlineInputBorder(
+                  borderSide: BorderSide(
+                    color: mPrimaryColor,
+                    width: 2,
+                  ),
+                ),
+              ),
             ),
           ),
           Padding(
@@ -305,19 +338,23 @@ class _EditNamePictureState extends State<EditNamePicture> {
                 recipePrivacy = value;
                 print(recipePrivacy);
               },
-              selectedItem: widget.recipePrivacy,
+              selectedItem: widget.recipePrivacy[0].toUpperCase() +
+                  widget.recipePrivacy
+                      .substring(1), //capitalize the first letter
             ),
           ),
           Padding(padding: EdgeInsets.all(8.0)),
           ElevatedButton(
             onPressed: () {
-              String recipe_name = _textController.text;
+              String recipe_name = _nameController.text;
+              String recipe_description = _descriptionController.text;
               String toastMessage = "";
               print(recipe_name);
+              print(recipe_description);
               print(recipeCategory);
               print(recipePrivacy);
 
-              if (_textController.text.isEmpty) {
+              if (_nameController.text.isEmpty) {
                 toastMessage = "Recipe Name can't be empty";
                 Fluttertoast.showToast(
                     msg: toastMessage,
@@ -329,9 +366,18 @@ class _EditNamePictureState extends State<EditNamePicture> {
                     fontSize: 16.0);
               } else {
                 pushNewScreen(context,
-                      screen: EditIngredients(
-                          widget.userId, widget.recipeId, _image, recipe_name, recipeCategory!, recipePrivacy!, widget.recipeIngredients, widget.recipeSteps, widget.recipeStepTimer),
-                      withNavBar: true);
+                    screen: EditIngredients(
+                        widget.userId,
+                        widget.recipeId,
+                        _image,
+                        recipe_name,
+                        recipe_description,
+                        recipeCategory!,
+                        recipePrivacy!,
+                        widget.recipeIngredients,
+                        widget.recipeSteps,
+                        widget.recipeStepTimer),
+                    withNavBar: true);
               }
             },
             child: Text("Next"),

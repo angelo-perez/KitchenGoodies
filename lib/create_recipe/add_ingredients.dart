@@ -11,9 +11,10 @@ import 'package:persistent_bottom_nav_bar/persistent-tab-view.dart';
 import '../util/colors.dart';
 
 class AddIngredients extends StatefulWidget {
-  AddIngredients(this.recipeName, this.recipeCategory, this.recipePrivacy);
+  AddIngredients(this.recipeName, this.recipeDescription, this.recipeCategory, this.recipePrivacy);
 
   final String recipeName;
+  final String recipeDescription;
   final String recipeCategory;
   final String recipePrivacy;
 
@@ -129,7 +130,7 @@ class _AddIngredientsState extends State<AddIngredients> {
               print(widget.recipePrivacy);
               print(ingredientsList);
 
-              if(ingredientsList.isEmpty){
+              if (ingredientsList.isEmpty) {
                 Fluttertoast.showToast(
                     msg: "Ingredients should not be empty",
                     toastLength: Toast.LENGTH_SHORT,
@@ -137,13 +138,12 @@ class _AddIngredientsState extends State<AddIngredients> {
                     timeInSecForIosWeb: 1,
                     backgroundColor: splashScreenBgColor,
                     textColor: Colors.white,
-                    fontSize: 16.0);    
-              }
-              else{
+                    fontSize: 16.0);
+              } else {
                 pushNewScreen(context,
-                  screen: AddSteps(widget.recipeName, widget.recipeCategory,
-                      widget.recipePrivacy, ingredientsList),
-                  withNavBar: true);
+                    screen: AddSteps(widget.recipeName, widget.recipeDescription, widget.recipeCategory,
+                        widget.recipePrivacy, ingredientsList),
+                    withNavBar: true);
               }
             },
             child: Text("Next"),

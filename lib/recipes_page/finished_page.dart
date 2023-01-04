@@ -5,7 +5,8 @@ import 'package:elective_project/main.dart';
 import 'package:elective_project/main_pages/home_page.dart';
 import 'package:elective_project/main_pages/main_page.dart';
 import 'package:elective_project/main_pages/recipes_page.dart';
-import 'package:elective_project/recipe_steps/create_dish_post.dart';
+import 'package:elective_project/recipes_page/create_dish_post.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter/src/foundation/key.dart';
@@ -20,7 +21,9 @@ import '../util/colors.dart';
 import '../util/utils.dart';
 
 class FinishedRecipePage extends StatefulWidget {
-  FinishedRecipePage(this.recipe_image, this.recipe_name, this.recipe_source);
+  FinishedRecipePage(this.recipeId, this.collection_name, this.recipe_image, this.recipe_name, this.recipe_source);
+  final String recipeId;
+  final String collection_name;
   final String recipe_image;
   final String recipe_name;
   final String recipe_source;
@@ -30,28 +33,6 @@ class FinishedRecipePage extends StatefulWidget {
 }
 
 class _FinishedRecipePageState extends State<FinishedRecipePage> {
-  // Uint8List? _image;
-
-  // void initState() {
-  //   recipeImgPlaceholder();
-  //   super.initState();
-  // }
-
-  // void recipeImgPlaceholder() async {
-  //   final ByteData bytes = await rootBundle
-  //       .load('images/test-images/recipe-image-placeholder.jpg');
-  //   final Uint8List list = bytes.buffer.asUint8List();
-  //   setState(() {
-  //     _image = list;
-  //   });
-  // }
-
-  // void captureImage() async {
-  //   Uint8List im = await pickImage(ImageSource.camera);
-  //   setState(() {
-  //     _image = im;
-  //   });
-  // }
 
   String ratingDisplay = "";
 
@@ -112,7 +93,10 @@ class _FinishedRecipePageState extends State<FinishedRecipePage> {
               child: Text(
                 'Enjoy your meal!',
                 textAlign: TextAlign.center,
-                style: TextStyle(fontSize: 20, fontStyle: FontStyle.italic, color: iconTextColor),
+                style: TextStyle(
+                    fontSize: 20,
+                    fontStyle: FontStyle.italic,
+                    color: iconTextColor),
               ),
             ),
             Padding(
@@ -129,6 +113,7 @@ class _FinishedRecipePageState extends State<FinishedRecipePage> {
               direction: Axis.horizontal,
               allowHalfRating: true,
               itemCount: 5,
+              unratedColor: CupertinoColors.systemGrey,
               itemPadding: EdgeInsets.symmetric(horizontal: 4.0),
               itemBuilder: (context, _) => Icon(
                 Icons.star,
@@ -151,8 +136,7 @@ class _FinishedRecipePageState extends State<FinishedRecipePage> {
             ),
             ElevatedButton(
               style: ElevatedButton.styleFrom(
-                  backgroundColor: appBarColor,
-                  fixedSize: Size(120, 40)),
+                  backgroundColor: appBarColor, fixedSize: Size(120, 40)),
               onPressed: () {
                 // pushNewScreen(context, screen: CreateDishPost());
                 pushNewScreen(context, screen: AddPostWidget());
@@ -164,8 +148,7 @@ class _FinishedRecipePageState extends State<FinishedRecipePage> {
             ),
             ElevatedButton(
               style: ElevatedButton.styleFrom(
-                  backgroundColor: appBarColor,
-                  fixedSize: Size(120, 40)),
+                  backgroundColor: appBarColor, fixedSize: Size(120, 40)),
               onPressed: () {
                 Navigator.of(context, rootNavigator: true).pushAndRemoveUntil(
                     MaterialPageRoute(builder: (context) => MainPage(1)),
@@ -178,8 +161,7 @@ class _FinishedRecipePageState extends State<FinishedRecipePage> {
             ),
             ElevatedButton(
               style: ElevatedButton.styleFrom(
-                  backgroundColor: appBarColor,
-                  fixedSize: Size(120, 40)),
+                  backgroundColor: appBarColor, fixedSize: Size(120, 40)),
               onPressed: () {
                 Navigator.pushAndRemoveUntil(
                     context,

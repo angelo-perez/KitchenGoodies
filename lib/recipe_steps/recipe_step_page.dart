@@ -9,10 +9,12 @@ import 'package:flutter_ringtone_player/flutter_ringtone_player.dart';
 import 'package:persistent_bottom_nav_bar/persistent-tab-view.dart';
 
 import '../util/colors.dart';
-import 'finished_page.dart';
+import '../recipes_page/finished_page.dart';
 
 class RecipeStepPage extends StatefulWidget {
   RecipeStepPage(
+      this.recipeId,
+      this.collection_name,
       this.recipe_image,
       this.recipe_name,
       this.recipe_source,
@@ -23,6 +25,8 @@ class RecipeStepPage extends StatefulWidget {
       this.current_step,
       this.current_step_duration);
 
+  String recipeId;
+  String collection_name;
   String recipe_image;
   String recipe_name;
   String recipe_source;
@@ -40,7 +44,6 @@ class RecipeStepPage extends StatefulWidget {
 class _RecipeStepPageState extends State<RecipeStepPage> {
   @override
   Widget build(BuildContext context) {
-
     Color iconTextColor = Colors.white;
 
     Future<bool> _onWillPop() async {
@@ -157,13 +160,21 @@ class _RecipeStepPageState extends State<RecipeStepPage> {
                                 ),
                               )
                             : Container(),
-                        widget.step_index > 1 ? SizedBox(width: 170,) : SizedBox(width: 0,),
+                        widget.step_index > 1
+                            ? SizedBox(
+                                width: 170,
+                              )
+                            : SizedBox(
+                                width: 0,
+                              ),
                         widget.step_index < widget.steps.length
                             ? IconButton(
                                 iconSize: 50,
                                 onPressed: () => pushNewScreen(
                                   context,
                                   screen: RecipeStepPage(
+                                    widget.recipeId,
+                                    widget.collection_name,
                                     widget.recipe_image,
                                     widget.recipe_name,
                                     widget.recipe_source,
@@ -194,6 +205,8 @@ class _RecipeStepPageState extends State<RecipeStepPage> {
                                   pushNewScreen(
                                     context,
                                     screen: FinishedRecipePage(
+                                        widget.recipeId,
+                                        widget.collection_name,
                                         widget.recipe_image,
                                         widget.recipe_name,
                                         widget.recipe_source),

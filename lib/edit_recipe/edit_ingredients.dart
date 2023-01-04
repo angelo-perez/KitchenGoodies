@@ -16,6 +16,7 @@ class EditIngredients extends StatefulWidget {
       this.recipeId,
       this.recipeImage,
       this.recipeName,
+      this.recipeDescription,
       this.recipeCategory,
       this.recipePrivacy,
       this.recipeIngredients,
@@ -26,6 +27,7 @@ class EditIngredients extends StatefulWidget {
   final String recipeId;
   final Uint8List? recipeImage;
   final String recipeName;
+  final String recipeDescription;
   final String recipeCategory;
   final String recipePrivacy;
   final List recipeIngredients;
@@ -152,14 +154,16 @@ class _EditIngredientsState extends State<EditIngredients> {
                 ),
                 ElevatedButton(
                   onPressed: () {
-                    ingredientsList =
-                        _ingredientValues.map((item) => item['value']).where((element) => element != "").toList(); //converts object to list and filtering it.
-                    
+                    ingredientsList = _ingredientValues
+                        .map((item) => item['value'])
+                        .where((element) => element != "")
+                        .toList(); //converts object to list and filtering it.
 
                     print(widget.userId);
                     print(widget.recipeId);
                     print(widget.recipeImage.toString());
                     print(widget.recipeName);
+                    print(widget.recipeDescription);
                     print(widget.recipeCategory);
                     print(widget.recipePrivacy);
                     print(_ingredientValues.toString());
@@ -183,6 +187,7 @@ class _EditIngredientsState extends State<EditIngredients> {
                               widget.recipeId,
                               widget.recipeImage,
                               widget.recipeName,
+                              widget.recipeDescription,
                               widget.recipeCategory,
                               widget.recipePrivacy,
                               ingredientsList,

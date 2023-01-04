@@ -19,6 +19,7 @@ class EditSteps extends StatefulWidget {
       this.recipeId,
       this.recipeImage,
       this.recipeName,
+      this.recipeDescription,
       this.recipeCategory,
       this.recipePrivacy,
       this.recipeIngredients,
@@ -29,6 +30,7 @@ class EditSteps extends StatefulWidget {
   final String recipeId;
   final Uint8List? recipeImage;
   final String recipeName;
+  final String recipeDescription;
   final String recipeCategory;
   final String recipePrivacy;
   final List recipeIngredients;
@@ -167,8 +169,10 @@ class _EditStepsState extends State<EditSteps> {
                   ),
                   ElevatedButton(
                     onPressed: () {
-                      stepsArray =
-                          _stepValues.map((item) => item['step']).where((element) => element != "").toList(); //converts object to list and filtering it.
+                      stepsArray = _stepValues
+                          .map((item) => item['step'])
+                          .where((element) => element != "")
+                          .toList(); //converts object to list and filtering it.
                       timerArray =
                           _timerValues.map((item) => item['timer']).toList();
 
@@ -200,29 +204,33 @@ class _EditStepsState extends State<EditSteps> {
                         ManageRecipe updateRecipe = ManageRecipe();
 
                         Fluttertoast.showToast(
-                              msg: "Your recipe is now being saved",
-                              toastLength: Toast.LENGTH_SHORT,
-                              gravity: ToastGravity.SNACKBAR,
-                              timeInSecForIosWeb: 1,
-                              backgroundColor: splashScreenBgColor,
-                              textColor: Colors.white,
-                              fontSize: 16.0);
+                            msg: "Your recipe is now being saved",
+                            toastLength: Toast.LENGTH_SHORT,
+                            gravity: ToastGravity.SNACKBAR,
+                            timeInSecForIosWeb: 1,
+                            backgroundColor: splashScreenBgColor,
+                            textColor: Colors.white,
+                            fontSize: 16.0);
 
-                        updateRecipe.updateRecipe(
-                            userId: widget.userId,
-                            recipeId: widget.recipeId,
-                            recipeName: widget.recipeName,
-                            recipeCategory: widget.recipeCategory,
-                            recipePrivacy: widget.recipePrivacy,
-                            recipeIngredients: widget.recipeIngredients,
-                            recipeSteps: stepsArray,
-                            recipeTimer: timerArray,
-                            recipeImage: widget.recipeImage).whenComplete(() => Navigator.of(context, rootNavigator: true)
-                          .pushAndRemoveUntil(
-                              MaterialPageRoute(
-                                  builder: (context) =>
-                                      MainPage(2)), //should go to "myrecipe tab" not in homepage
-                              (route) => false));
+                        updateRecipe
+                            .updateRecipe(
+                                userId: widget.userId,
+                                recipeId: widget.recipeId,
+                                recipeName: widget.recipeName,
+                                recipeCategory: widget.recipeCategory,
+                                recipePrivacy: widget.recipePrivacy,
+                                recipeDescription: widget.recipeDescription,
+                                recipeIngredients: widget.recipeIngredients,
+                                recipeSteps: stepsArray,
+                                recipeTimer: timerArray,
+                                recipeImage: widget.recipeImage)
+                            .whenComplete(() => Navigator.of(context,
+                                    rootNavigator: true)
+                                .pushAndRemoveUntil(
+                                    MaterialPageRoute(
+                                        builder: (context) => MainPage(
+                                            2)), //should go to "myrecipe tab" not in homepage
+                                    (route) => false));
                         print("success");
                       }
                     },

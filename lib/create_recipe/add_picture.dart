@@ -21,10 +21,11 @@ import '../util/utils.dart';
 import '../community_page/models/user.dart' as model;
 
 class AddPicture extends StatefulWidget {
-  AddPicture(this.recipeName, this.recipeCategory, this.recipePrivacy,
+  AddPicture(this.recipeName, this.recipeDescription, this.recipeCategory, this.recipePrivacy,
       this.recipeIngredients, this.recipeSteps, this.recipeTimer);
 
   final String recipeName;
+  final String recipeDescription;
   final String recipeCategory;
   final String recipePrivacy;
   final List recipeIngredients;
@@ -185,16 +186,16 @@ class _AddPictureState extends State<AddPicture> {
                     borderRadius: BorderRadius.circular(8.0),
                     child: Image.memory(
                       _image!,
-                      height: 400,
-                      width: 150,
+                      height: 330,
+                      width: 100,
                       fit: BoxFit.cover,
                     ))
                 : ClipRRect(
                     borderRadius: BorderRadius.circular(8.0),
                     child: Image.asset(
                       'images/test-images/recipe-image-placeholder.jpg',
-                      height: 400,
-                      width: 150,
+                      height: 330,
+                      width: 100,
                       fit: BoxFit.fill,
                       color: Colors.white,
                       colorBlendMode: BlendMode.darken,
@@ -220,17 +221,19 @@ class _AddPictureState extends State<AddPicture> {
                   userId: user.uid,
                   recipeName: widget.recipeName,
                   username: user.username,
+                  recipeDescription: widget.recipeDescription,
                   recipeCategory: widget.recipeCategory,
                   recipePrivacy: widget.recipePrivacy,
                   recipeIngredients: widget.recipeIngredients,
                   recipeSteps: widget.recipeSteps,
                   recipeTimer: widget.recipeTimer,
                   recipeImage: _image!,
-                ).whenComplete(() {
+                )
+                    .whenComplete(() {
                   Navigator.of(context, rootNavigator: true).pushAndRemoveUntil(
                       MaterialPageRoute(
-                          builder: (context) =>
-                              MainPage(2)), //should go to "myrecipe tab" not in homepage
+                          builder: (context) => MainPage(
+                              2)), //should go to "myrecipe tab" not in homepage
                       (route) => false);
                 });
               },
