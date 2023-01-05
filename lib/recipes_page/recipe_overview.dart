@@ -20,7 +20,7 @@ class RecipeOverview extends StatefulWidget {
       this.recipe_steps,
       this.recipe_stepstimer,
       this.recipe_rating,
-    );
+      [this.recipe_type]); //optional argument to know if it is a premade recipe or a user's created recipe
 
   final String recipeId;
   final String collection_name;
@@ -32,6 +32,7 @@ class RecipeOverview extends StatefulWidget {
   final List recipe_steps;
   final List recipe_stepstimer;
   final List recipe_rating;
+  String? recipe_type;
 
   @override
   State<RecipeOverview> createState() => _RecipeOverviewState();
@@ -44,6 +45,9 @@ class _RecipeOverviewState extends State<RecipeOverview> {
     int totalStepsCount = widget.recipe_steps.length;
     int step_index = 0;
     String overviewBG = widget.recipe_image;
+
+    String recipeType = widget.recipe_type == null ? "recipe" : "myrecipe"; //to know if it is a premade recipe or a user's created recipe
+    print(recipeType);
 
     return Scaffold(
       appBar: AppBar(
@@ -141,6 +145,7 @@ class _RecipeOverviewState extends State<RecipeOverview> {
             widget.recipe_steps[step_index],
             widget.recipe_stepstimer[step_index],
             widget.recipe_rating,
+            recipeType
           ),
           withNavBar: false,
         ),

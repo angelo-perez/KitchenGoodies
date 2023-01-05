@@ -235,6 +235,7 @@ class _MyRecipesPageState extends State<MyRecipesPage> {
                                 documentSnapshot['steps'],
                                 documentSnapshot['steps-timer'],
                                 documentSnapshot['rating'],
+                                'myrecipe'
                             ),
                             withNavBar: false,
                           );

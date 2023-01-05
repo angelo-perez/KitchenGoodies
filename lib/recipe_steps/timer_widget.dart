@@ -28,9 +28,7 @@ class _TimerWidgetState extends State<TimerWidget> {
   Widget build(BuildContext context) {
     Color iconTextColor = Colors.white;
 
-    // int stepDurationSeconds = widget.current_step_duration * (60 / 1).toInt();
-    int stepDurationSeconds =
-        Duration(minutes: widget.current_step_duration).inSeconds;
+    int stepDurationSeconds = widget.current_step_duration;
 
     // FlutterRingtonePlayer.play(
     //   fromAsset: "audio/timer-tiking.wav",

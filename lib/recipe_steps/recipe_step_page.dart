@@ -7,25 +7,25 @@ import 'package:flutter/src/widgets/container.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter_ringtone_player/flutter_ringtone_player.dart';
 import 'package:persistent_bottom_nav_bar/persistent-tab-view.dart';
-
 import '../util/colors.dart';
 import '../recipes_page/finished_page.dart';
 
 class RecipeStepPage extends StatefulWidget {
   RecipeStepPage(
-      this.recipeId,
-      this.collection_name,
-      this.recipe_image,
-      this.recipe_name,
-      this.recipe_source,
-      this.steps,
-      this.steps_timer,
-      this.total_steps_count,
-      this.step_index,
-      this.current_step,
-      this.current_step_duration,
-      this.recipe_rating,
-      );
+    this.recipeId,
+    this.collection_name,
+    this.recipe_image,
+    this.recipe_name,
+    this.recipe_source,
+    this.steps,
+    this.steps_timer,
+    this.total_steps_count,
+    this.step_index,
+    this.current_step,
+    this.current_step_duration,
+    this.recipe_rating,
+    this.recipe_type
+  );
 
   String recipeId;
   String collection_name;
@@ -39,6 +39,7 @@ class RecipeStepPage extends StatefulWidget {
   String current_step;
   int current_step_duration;
   List recipe_rating;
+  String recipe_type;
 
   @override
   State<RecipeStepPage> createState() => _RecipeStepPageState();
@@ -188,6 +189,7 @@ class _RecipeStepPageState extends State<RecipeStepPage> {
                                     widget.steps[widget.step_index],
                                     widget.steps_timer[widget.step_index],
                                     widget.recipe_rating,
+                                    widget.recipe_type
                                   ),
                                   withNavBar: false,
                                   pageTransitionAnimation:
@@ -209,13 +211,14 @@ class _RecipeStepPageState extends State<RecipeStepPage> {
                                   pushNewScreen(
                                     context,
                                     screen: FinishedRecipePage(
-                                        widget.recipeId,
-                                        widget.collection_name,
-                                        widget.recipe_image,
-                                        widget.recipe_name,
-                                        widget.recipe_source,
-                                        widget.recipe_rating,  
-                                      ),
+                                      widget.recipeId,
+                                      widget.collection_name,
+                                      widget.recipe_image,
+                                      widget.recipe_name,
+                                      widget.recipe_source,
+                                      widget.recipe_rating,
+                                      widget.recipe_type,
+                                    ),
                                     withNavBar: false,
                                     pageTransitionAnimation:
                                         PageTransitionAnimation.cupertino,

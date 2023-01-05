@@ -22,14 +22,21 @@ import '../util/colors.dart';
 import '../util/utils.dart';
 
 class FinishedRecipePage extends StatefulWidget {
-  FinishedRecipePage(this.recipeId, this.collection_name, this.recipe_image,
-      this.recipe_name, this.recipe_source, this.recipe_rating);
+  FinishedRecipePage(
+      this.recipeId,
+      this.collection_name,
+      this.recipe_image,
+      this.recipe_name,
+      this.recipe_source,
+      this.recipe_rating,
+      this.recipe_type);
   final String recipeId;
   final String collection_name;
   final String recipe_image;
   final String recipe_name;
   final String recipe_source;
   final List recipe_rating;
+  final String recipe_type;
 
   @override
   State<FinishedRecipePage> createState() => _FinishedRecipePageState();
@@ -102,34 +109,47 @@ class _FinishedRecipePageState extends State<FinishedRecipePage> {
                     color: iconTextColor),
               ),
             ),
-            Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Text(
-                'How\'s the ${widget.recipe_name}?',
-                textAlign: TextAlign.center,
-                style: TextStyle(fontSize: 18, color: iconTextColor),
-              ),
-            ),
-            RatingBar.builder(
-              initialRating: 0,
-              minRating: 1,
-              direction: Axis.horizontal,
-              allowHalfRating: true,
-              itemCount: 5,
-              unratedColor: CupertinoColors.systemGrey,
-              itemPadding: EdgeInsets.symmetric(horizontal: 4.0),
-              itemBuilder: (context, _) => Icon(
-                Icons.star,
-                color: Colors.amber,
-              ),
-              onRatingUpdate: (rating) {
-                setState(() {
-                  ratingDisplay = rating.toString();
-                  print(ratingDisplay);
-                  recipeRating = rating;
-                });
-              },
-            ),
+            widget.recipe_type != "myrecipe"
+                ? Column(
+                    children: [
+                      Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Text(
+                          'How\'s the ${widget.recipe_name}?',
+                          textAlign: TextAlign.center,
+                          style: TextStyle(fontSize: 18, color: iconTextColor),
+                        ),
+                      ),
+                      RatingBar.builder(
+                        initialRating: 0,
+                        minRating: 1,
+                        direction: Axis.horizontal,
+                        allowHalfRating: true,
+                        itemCount: 5,
+                        unratedColor: CupertinoColors.systemGrey,
+                        itemPadding: EdgeInsets.symmetric(horizontal: 4.0),
+                        itemBuilder: (context, _) => Icon(
+                          Icons.star,
+                          color: Colors.amber,
+                        ),
+                        onRatingUpdate: (rating) {
+                          setState(() {
+                            ratingDisplay = rating.toString();
+                            print(ratingDisplay);
+                            recipeRating = rating;
+                          });
+                        },
+                      ),
+                    ],
+                  )
+                : Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Text(
+                      'You made a great recipe!',
+                      textAlign: TextAlign.center,
+                      style: TextStyle(fontSize: 18, color: iconTextColor),
+                    ),
+                  ),
             Padding(
               padding: const EdgeInsets.only(bottom: 50),
               child: Text(
@@ -140,17 +160,16 @@ class _FinishedRecipePageState extends State<FinishedRecipePage> {
             ),
             ElevatedButton(
               style: ElevatedButton.styleFrom(
-                  backgroundColor: appBarColor, fixedSize: Size(120, 40)),
+                  backgroundColor: appBarColor, fixedSize: Size(140, 40)),
               onPressed: () {
-
-                if (recipeRating > 0) {
+                if (recipeRating > 0 && widget.recipe_type != "myrecipe") {
                   ManageRecipe rateRecipe = ManageRecipe();
-                  rateRecipe.rateRecipe(widget.recipeId, widget.collection_name, widget.recipe_rating, recipeRating);
+                  rateRecipe.rateRecipe(widget.recipeId, widget.collection_name,
+                      widget.recipe_rating, recipeRating);
                 }
 
                 // pushNewScreen(context, screen: CreateDishPost());
                 pushNewScreen(context, screen: AddPostWidget());
-
               },
               child: Text(
                 'Share',
@@ -159,30 +178,30 @@ class _FinishedRecipePageState extends State<FinishedRecipePage> {
             ),
             ElevatedButton(
               style: ElevatedButton.styleFrom(
-                  backgroundColor: appBarColor, fixedSize: Size(120, 40)),
+                  backgroundColor: appBarColor, fixedSize: Size(140, 40)),
               onPressed: () {
-
-                if (recipeRating > 0) {
+                if (recipeRating > 0 && widget.recipe_type != "myrecipe") {
                   ManageRecipe rateRecipe = ManageRecipe();
-                  rateRecipe.rateRecipe(widget.recipeId, widget.collection_name, widget.recipe_rating, recipeRating);
+                  rateRecipe.rateRecipe(widget.recipeId, widget.collection_name,
+                      widget.recipe_rating, recipeRating);
                 }
                 Navigator.of(context, rootNavigator: true).pushAndRemoveUntil(
-                    MaterialPageRoute(builder: (context) => MainPage(1)),
+                    MaterialPageRoute(builder: (context) => MainPage(widget.recipe_type != "myrecipe" ? 1 : 2)), //if recipe_type = "recipe", go back to recipe tab, else, myrecipe tab
                     (route) => false);
               },
               child: Text(
-                'Recipes',
+                widget.recipe_type != "myrecipe" ? 'Categories' : 'My Recipes',
                 style: TextStyle(color: iconTextColor, fontSize: 18),
               ),
             ),
             ElevatedButton(
               style: ElevatedButton.styleFrom(
-                  backgroundColor: appBarColor, fixedSize: Size(120, 40)),
+                  backgroundColor: appBarColor, fixedSize: Size(140, 40)),
               onPressed: () {
-
-                if (recipeRating > 0) {
+                if (recipeRating > 0 && widget.recipe_type != "myrecipe") {
                   ManageRecipe rateRecipe = ManageRecipe();
-                  rateRecipe.rateRecipe(widget.recipeId, widget.collection_name, widget.recipe_rating, recipeRating);
+                  rateRecipe.rateRecipe(widget.recipeId, widget.collection_name,
+                      widget.recipe_rating, recipeRating);
                 }
                 Navigator.pushAndRemoveUntil(
                     context,

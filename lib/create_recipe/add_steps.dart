@@ -1,4 +1,5 @@
 import 'package:elective_project/create_recipe/add_picture.dart';
+import 'package:elective_project/resources/timer_functions.dart';
 import 'package:fluentui_system_icons/fluentui_system_icons.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -8,12 +9,14 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:persistent_bottom_nav_bar/persistent-tab-view.dart';
 import 'package:flutter_spinbox/flutter_spinbox.dart';
-
+import '../resources/timer_formatter.dart';
 import '../util/colors.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 class AddSteps extends StatefulWidget {
-  AddSteps(this.recipeName, this.recipeDescription, this.recipeCategory, this.recipePrivacy,
-      this.recipeIngredients);
+  AddSteps(this.recipeName, this.recipeDescription, this.recipeCategory,
+      this.recipePrivacy, this.recipeIngredients);
 
   final String recipeName;
   final String recipeDescription;
@@ -33,7 +36,7 @@ class _AddAddStepsState extends State<AddSteps> {
   late String _timerResult;
   late List stepsArray; //Steps array to be uploaded in the Database
   late List timerArray; //Timer array to be uploaded in the Database
-  double _tempTimer = 0;
+  int _tempTimer = 0;
 
   List _initialPlaceholders = [
     'Step 1',
@@ -221,30 +224,44 @@ class _AddAddStepsState extends State<AddSteps> {
           ),
           Padding(padding: EdgeInsets.only(left: 4.0, right: 4.0)),
           Expanded(
-            child: SpinBox(
-              min: 0,
-              max: 100,
-              value: 0,
-              spacing: 4,
+            child: TextFormField(
+              //initialValue: '00:00:00',
+              // controller: _txtTimeController,
+              keyboardType: TextInputType.numberWithOptions(decimal: false),
               decoration: InputDecoration(
-                labelText: 'Timer (minutes)',
+                hintText: 'hh:mm:ss',
+                label: Text(
+                  'Timer',
+                  textAlign: TextAlign.center,
+                ),
                 labelStyle: const TextStyle(color: Colors.grey),
                 border: OutlineInputBorder(
                   borderSide: BorderSide(
-                    color: mPrimaryColor,
+                    color: appBarColor,
                     width: 2,
                   ),
                 ),
                 focusedBorder: OutlineInputBorder(
                   borderSide: BorderSide(
-                    color: mPrimaryColor,
+                    color: appBarColor,
                     width: 2,
                   ),
                 ),
               ),
-              onChanged: (val) {
-                _tempTimer = val;
-                _onTimerUpdate(key, val.toInt());
+              inputFormatters: <TextInputFormatter>[
+                TimeTextInputFormatter(), // This input formatter will do the job
+              ],
+              onChanged: (value) {
+                value = value != ""
+                    ? value
+                    : "00:00:00"; //sets time to 0 when empty string to avoid error
+                int timerInSecs =
+                    TimerFunctions().timerToSecs(value); //convert the entered time in seconds
+                _tempTimer = timerInSecs;
+                print(value);
+                print(timerInSecs);
+
+                _onTimerUpdate(key, timerInSecs); //updates the 'timer' value in timerValues list of object
               },
             ),
           )
