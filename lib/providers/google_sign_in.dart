@@ -1,3 +1,5 @@
+// import 'dart:html';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:elective_project/start_up_page/login_page.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -42,12 +44,30 @@ class GoogleSignInProvider extends ChangeNotifier {
 
     if (googleSignIn.currentUser != null) {
       //to avoid overwritting data of non-google accounts
-      await FirebaseFirestore.instance.collection('users').doc(cred.user?.uid).set({
+
+      QuerySnapshot<Map<String, dynamic>> newGoogleUser = await FirebaseFirestore.instance.collection('users').where("email", isEqualTo: cred.user?.email).get();
+
+      if(newGoogleUser.docs.length > 0){
+        await FirebaseFirestore.instance.collection('users').doc(cred.user?.uid).set({
         'uid': user?.uid,
         'email': user?.email,
         'username': user?.displayName,
         'profImage': user?.photoURL,
+      }, SetOptions(merge: true));
+      }
+      else{
+        await FirebaseFirestore.instance.collection('users').doc(cred.user?.uid).set({
+        'uid': user?.uid,
+        'email': user?.email,
+        'username': user?.displayName,
+        'profImage': user?.photoURL,
+        'description': "",
+        'followers': [],
+        'following':[]
       });
+      }
+
+      
     }
   }
 
