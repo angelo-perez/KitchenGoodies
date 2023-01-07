@@ -1,4 +1,5 @@
 import 'package:blurry/blurry.dart';
+import 'package:elective_project/profile_page/settings_changePassword.dart';
 import 'package:elective_project/resources/auth_methods.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
@@ -38,6 +39,12 @@ class UserManagementWidget extends StatelessWidget {
               ),
               const Divider(),
               const SizedBox(height: 10),
+              SettingMenu(
+                title: "Change Password",
+                icon: Icons.password,
+                onPress: () => Navigator.of(context)
+                    .push(MaterialPageRoute(builder: (context) => const ChangePassword())),
+              ),
               SettingMenu(
                 title: "Delete Account",
                 icon: Icons.delete_forever,

@@ -39,7 +39,6 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
-
   @override
   Widget build(BuildContext context) {
     _precacheImage();
@@ -61,8 +60,7 @@ class _MyAppState extends State<MyApp> {
         ),
         home: AnimatedSplashScreen(
           duration: 1500,
-          splash: SvgPicture.asset('images/logos/kitchen-goodies.svg',
-              color: mBackgroundColor),
+          splash: SvgPicture.asset('images/logos/kitchen-goodies.svg', color: mBackgroundColor),
           centered: true,
           splashIconSize: 300,
           splashTransition: SplashTransition.fadeTransition,
@@ -72,16 +70,15 @@ class _MyAppState extends State<MyApp> {
               stream: FirebaseAuth.instance.authStateChanges(),
               builder: (context, snapshot) {
                 if (snapshot.connectionState == ConnectionState.waiting) {
-                  return Center(
+                  return const Center(
                     child: CircularProgressIndicator(),
                   );
                 } else if (snapshot.hasData) {
-                  final provider =
-                      Provider.of<GoogleSignInProvider>(context, listen: false);
+                  final provider = Provider.of<GoogleSignInProvider>(context, listen: false);
                   provider.saveUserData(); // only works with google accounts
                   return MainPage(0);
                 } else if (snapshot.hasError) {
-                  return Center(
+                  return const Center(
                     child: Text('Something went wrong'),
                   );
                 } else {
@@ -93,7 +90,7 @@ class _MyAppState extends State<MyApp> {
     );
   }
 
-    void _precacheImage() {
+  void _precacheImage() {
     List recipeCategoryImages = [
       "images/recipe_categories/chicken.jpg",
       "images/recipe_categories/pork.jpg",

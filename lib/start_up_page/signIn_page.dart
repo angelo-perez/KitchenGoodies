@@ -1,4 +1,5 @@
 import 'package:elective_project/main.dart';
+import 'package:elective_project/start_up_page/forgotPassword.dart';
 import 'package:elective_project/start_up_page/signUp_page.dart';
 import 'package:elective_project/resources/auth_methods.dart';
 import 'package:elective_project/util/colors.dart';
@@ -82,8 +83,7 @@ class _SignInPageState extends State<SignInPage> {
               padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 20),
               child: Text(
                 'Welcome Back',
-                style:
-                    TextStyle(color: appBarColor, fontSize: 32, fontWeight: FontWeight.w500),
+                style: TextStyle(color: appBarColor, fontSize: 32, fontWeight: FontWeight.w500),
               ),
             ),
             // <--------- EMAIL AND PASSWORD CONTAINER --------->
@@ -151,12 +151,25 @@ class _SignInPageState extends State<SignInPage> {
             ),
 
             // <--------- FORGOT PASS CONTAINER --------->
-            Container(
-              padding: const EdgeInsets.symmetric(horizontal: 30),
-              alignment: Alignment.centerRight,
-              child: Text(
-                'Forgot Password?',
-                style: TextStyle(color: appBarColor),
+            GestureDetector(
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) {
+                      return ForgotPassword();
+                    },
+                  ),
+                );
+                print("nagana");
+              },
+              child: Container(
+                padding: const EdgeInsets.symmetric(horizontal: 30),
+                alignment: Alignment.centerRight,
+                child: Text(
+                  'Forgot Password?',
+                  style: TextStyle(color: appBarColor),
+                ),
               ),
             ),
             const SizedBox(

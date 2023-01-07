@@ -91,54 +91,91 @@ class AuthMethods {
     return res;
   }
 
-  Future<String> EditUser({
+  Future<String> editUser({
     required String email,
     required String username,
-    required String password,
-    required String confirmPassword,
     required String profImage,
+    required String description,
+    required String password,
+    required context,
   }) async {
     String res = 'Some error occured';
-
     List followers = [];
     List following = [];
-
-    String description = "";
     try {
-      if (email.isNotEmpty ||
-          username.isNotEmpty ||
-          password.isNotEmpty ||
-          confirmPassword.isNotEmpty) {
-        if (password == confirmPassword) {
-          User currentUser = _auth.currentUser!;
-          var userSnap = await _firestore.collection('users').doc(currentUser.uid).get();
+      if (email.isNotEmpty && username.isNotEmpty && description.isNotEmpty) {
+        User currentUser = _auth.currentUser!;
+        var userSnap = await _firestore.collection('users').doc(currentUser.uid).get();
 
-          description = userSnap.data()!['description'];
-          followers = userSnap.data()!['followers'];
-          following = userSnap.data()!['following'];
+        // gets the data in firebase for model user
+        followers = userSnap.data()!['followers'];
+        following = userSnap.data()!['following'];
 
-          model.User user = model.User(
-            email: email,
-            username: username,
-            uid: currentUser.uid,
-            profImage: profImage,
-            description: description,
-            followers: followers,
-            following: following,
-          );
+        model.User user = model.User(
+          email: email,
+          username: username,
+          uid: currentUser.uid,
+          profImage: profImage,
+          description: description,
+          followers: followers,
+          following: following,
+        );
 
-          await FirebaseFirestore.instance
-              .collection('users')
-              .doc(currentUser.uid)
-              .set(user.toJson());
+        await _auth.signInWithEmailAndPassword(
+          email: userSnap.data()!['email'],
+          password: password,
+        );
+        currentUser.updateEmail(email);
 
-          res = "Success";
-        } else {
-          res = "Password and Confirm Password are not the same";
-        }
+        // send the new data to the firebase
+        await FirebaseFirestore.instance
+            .collection('users')
+            .doc(currentUser.uid)
+            .set(user.toJson());
+
+        // updates the data in the User model
+        UserProvider _userProvider = Provider.of<UserProvider>(context, listen: false);
+        await _userProvider.refreshUser();
+        res = "Success";
+      }
+    } on FirebaseAuthException catch (e) {
+      if (e.code == 'wrong-password') {
+        res = 'Wrong password provided for that user.';
       }
     } catch (err) {
       res = err.toString();
+      print(res);
+    }
+
+    return res;
+  }
+
+  Future<String> changeUserPassword({
+    required String password,
+    required String newPassword,
+    required String confirmNewPassword,
+    required context,
+  }) async {
+    String res = "";
+    try {
+      User currentUser = _auth.currentUser!;
+      var userSnap = await _firestore.collection('users').doc(currentUser.uid).get();
+      String emailAddress = userSnap.data()!['email'];
+      await _auth.signInWithEmailAndPassword(
+        email: emailAddress,
+        password: password,
+      );
+
+      if (newPassword == confirmNewPassword) {
+        await currentUser.updatePassword(newPassword);
+        res = "Success";
+      }
+    } on FirebaseAuthException catch (e) {
+      if (e.code == 'wrong-password') {
+        res = 'Wrong password provided for that user.';
+      }
+    } catch (e) {
+      res = e.toString();
       print(res);
     }
 

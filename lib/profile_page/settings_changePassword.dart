@@ -9,28 +9,26 @@ import '../community_page/models/user.dart' as model;
 import '../resources/storage_methods.dart';
 import '../util/utils.dart';
 
-class EditProfileWidget extends StatefulWidget {
-  const EditProfileWidget({super.key});
+class ChangePassword extends StatefulWidget {
+  const ChangePassword({super.key});
 
   @override
-  State<EditProfileWidget> createState() => _EditProfileWidgetState();
+  State<ChangePassword> createState() => _ChangePasswordState();
 }
 
-class _EditProfileWidgetState extends State<EditProfileWidget> {
-  TextEditingController _usernameController = TextEditingController();
-  TextEditingController _emailController = TextEditingController();
-  TextEditingController _descriptionController = TextEditingController();
+class _ChangePasswordState extends State<ChangePassword> {
   TextEditingController _passwordController = TextEditingController();
-  String _image = "";
+  TextEditingController _confirmPasswordController = TextEditingController();
+  TextEditingController _newConfirmPasswordController = TextEditingController();
+
   bool _isLoading = false;
 
-  void selectImage() async {
-    Uint8List im = await pickImage(ImageSource.gallery);
-
-    String profImage = await StorageMethods().uploadImageToStorage('profilePictures', im, false);
-    setState(() {
-      _image = profImage;
-    });
+  @override
+  void dispose() {
+    super.dispose();
+    _passwordController.dispose();
+    _confirmPasswordController.dispose();
+    _newConfirmPasswordController.dispose();
   }
 
   void editUser() async {
@@ -38,15 +36,13 @@ class _EditProfileWidgetState extends State<EditProfileWidget> {
       _isLoading = true;
     });
 
-    String res = await AuthMethods().editUser(
-      email: _emailController.text,
-      username: _usernameController.text,
-      profImage: _image,
-      description: _descriptionController.text,
+    String res = await AuthMethods().changeUserPassword(
       password: _passwordController.text,
+      confirmNewPassword: _confirmPasswordController.text,
+      newPassword: _newConfirmPasswordController.text,
       context: context,
     );
-    print(_image);
+
     if (res == 'Success') {
       setState(() {
         _isLoading = false;
@@ -62,12 +58,6 @@ class _EditProfileWidgetState extends State<EditProfileWidget> {
 
   @override
   Widget build(BuildContext context) {
-    final model.User user = Provider.of<UserProvider>(context).getUser;
-    _emailController = TextEditingController(text: user.email);
-    _usernameController = TextEditingController(text: user.username);
-    _descriptionController = TextEditingController(text: user.description);
-    _image = user.profImage;
-
     return Scaffold(
       appBar: AppBar(
         backgroundColor: mBackgroundColor,
@@ -79,7 +69,7 @@ class _EditProfileWidgetState extends State<EditProfileWidget> {
           onPressed: () => Navigator.pop(context),
         ),
         title: Text(
-          "Edit Profile",
+          "Change Password",
           style: TextStyle(color: mPrimaryTextColor),
         ),
       ),
@@ -91,71 +81,46 @@ class _EditProfileWidgetState extends State<EditProfileWidget> {
               padding: const EdgeInsets.all(20),
               child: Column(
                 children: [
-                  Stack(
-                    children: [
-                      SizedBox(
-                        width: 120,
-                        height: 120,
-                        child: CircleAvatar(
-                          radius: 64,
-                          backgroundImage: NetworkImage(_image),
-                        ),
-                      ),
-                      Positioned(
-                        bottom: 0,
-                        right: 0,
-                        child: Container(
-                          width: 35,
-                          height: 35,
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(100),
-                            color: mPrimaryColor,
-                          ),
-                          child: IconButton(
-                              onPressed: () => selectImage(),
-                              icon: const Icon(
-                                Icons.edit,
-                                color: Colors.white,
-                                size: 20,
-                              )),
-                        ),
-                      ),
-                    ],
+                  const SizedBox(height: 10),
+                  const Text(
+                    "We recommend that you periodically update your password to help prevent unauthorized access to your account.",
+                    textAlign: TextAlign.justify,
+                    style: TextStyle(
+                      fontWeight: FontWeight.w500,
+                      fontSize: 16,
+                    ),
                   ),
                   const SizedBox(height: 10),
                   const Divider(),
                   Container(
-                    padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 5),
+                    padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 20),
                     child: Column(
                       children: <Widget>[
                         textFieldWidget(
-                          txtController: _usernameController,
-                          labeltxt: "Username",
-                        ),
-                        textFieldWidget(
-                          txtController: _emailController,
-                          labeltxt: "Email",
-                        ),
-                        textFieldWidget(
-                          txtController: _descriptionController,
-                          labeltxt: "Description",
-                          maxlines: 3,
-                        ),
-                        textFieldWidget(
                           txtController: _passwordController,
-                          labeltxt: "Password",
+                          labeltxt: "Current Password",
+                          obscurebool: true,
+                        ),
+                        textFieldWidget(
+                          txtController: _confirmPasswordController,
+                          labeltxt: "New Password",
+                          obscurebool: true,
+                        ),
+                        textFieldWidget(
+                          txtController: _newConfirmPasswordController,
+                          labeltxt: "Confirm New Password",
                           obscurebool: true,
                         ),
                       ],
                     ),
                   ),
-                  const SizedBox(height: 15),
+                  const SizedBox(height: 30),
                   const Divider(),
                   Container(
                     padding: const EdgeInsets.symmetric(horizontal: 30),
                     child: Column(
                       children: <Widget>[
-                        const SizedBox(height: 20),
+                        const SizedBox(height: 30),
                         SizedBox(
                           width: double.infinity,
                           child: ElevatedButton(
@@ -168,7 +133,7 @@ class _EditProfileWidgetState extends State<EditProfileWidget> {
                               shape: const StadiumBorder(),
                             ),
                             child: const Text(
-                              "Edit Profile",
+                              "Save changes",
                             ),
                           ),
                         ),

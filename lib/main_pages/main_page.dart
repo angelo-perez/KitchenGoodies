@@ -52,8 +52,7 @@ class _MainPageState extends State<MainPage> {
     setState(() {
       isLoading = true;
     });
-    UserProvider _userProvider =
-        Provider.of<UserProvider>(context, listen: false);
+    UserProvider _userProvider = Provider.of<UserProvider>(context, listen: false);
     await _userProvider.refreshUser();
     setState(() {
       isLoading = false;
