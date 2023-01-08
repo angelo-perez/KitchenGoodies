@@ -90,6 +90,13 @@ class _RecipeStepPageState extends State<RecipeStepPage> {
       child: Scaffold(
         appBar: AppBar(
           backgroundColor: appBarColor,
+          leading: IconButton(
+          icon: Icon(
+            Icons.arrow_back_ios,
+            color: mBackgroundColor,
+          ),
+          onPressed: () => _onWillPop(),
+        ),
           title: Column(
             crossAxisAlignment: CrossAxisAlignment.center,
             mainAxisAlignment: MainAxisAlignment.center,

@@ -54,6 +54,20 @@ class _FinishedRecipePageState extends State<FinishedRecipePage> {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: appBarColor,
+        leading: IconButton(
+          icon: Icon(
+            Icons.arrow_back_ios,
+            color: mBackgroundColor,
+          ),
+          onPressed: () {
+            if (recipeRating > 0 && widget.recipe_type != "myrecipe") {
+              ManageRecipe rateRecipe = ManageRecipe();
+              rateRecipe.rateRecipe(widget.recipeId, widget.collection_name,
+                  widget.recipe_rating, recipeRating);
+            }
+            Navigator.pop(context);
+          },
+        ),
         title: Column(
           crossAxisAlignment: CrossAxisAlignment.center,
           mainAxisAlignment: MainAxisAlignment.center,
@@ -186,7 +200,11 @@ class _FinishedRecipePageState extends State<FinishedRecipePage> {
                       widget.recipe_rating, recipeRating);
                 }
                 Navigator.of(context, rootNavigator: true).pushAndRemoveUntil(
-                    MaterialPageRoute(builder: (context) => MainPage(widget.recipe_type != "myrecipe" ? 1 : 2)), //if recipe_type = "recipe", go back to recipe tab, else, myrecipe tab
+                    MaterialPageRoute(
+                        builder: (context) => MainPage(widget.recipe_type !=
+                                "myrecipe"
+                            ? 1
+                            : 2)), //if recipe_type = "recipe", go back to recipe tab, else, myrecipe tab
                     (route) => false);
               },
               child: Text(

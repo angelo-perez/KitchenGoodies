@@ -1,5 +1,6 @@
 // import 'package:flutter/src/foundation/key.dart';
 // import 'package:flutter/src/widgets/framework.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:elective_project/recipes_page/category_recipes_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -47,6 +48,10 @@ class _RecipesPageState extends State<RecipesPage> {
 
   @override
   Widget build(BuildContext context) {
+
+  final CollectionReference _publicCollection = FirebaseFirestore.instance
+        .collection('public-recipes');
+
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.white,

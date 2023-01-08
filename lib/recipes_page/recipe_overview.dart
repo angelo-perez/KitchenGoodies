@@ -52,6 +52,13 @@ class _RecipeOverviewState extends State<RecipeOverview> {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: appBarColor,
+        leading: IconButton(
+          icon: Icon(
+            Icons.arrow_back_ios,
+            color: mBackgroundColor,
+          ),
+          onPressed: () => Navigator.pop(context),
+        ),
         title: Column(
           crossAxisAlignment: CrossAxisAlignment.center,
           mainAxisAlignment: MainAxisAlignment.center,
