@@ -1,14 +1,11 @@
-import 'package:elective_project/main.dart';
 import 'package:elective_project/start_up_page/forgotPassword.dart';
 import 'package:elective_project/start_up_page/signUp_page.dart';
 import 'package:elective_project/resources/auth_methods.dart';
+import 'package:elective_project/start_up_page/verifyEmail.dart';
 import 'package:elective_project/util/colors.dart';
 import 'package:elective_project/util/utils.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
-
-import '../resources/verify_sign_in.dart';
-import '../main_pages/main_page.dart';
 
 class SignInPage extends StatefulWidget {
   const SignInPage({Key? key}) : super(key: key);
@@ -39,7 +36,7 @@ class _SignInPageState extends State<SignInPage> {
       password: _passwordController.text,
     );
     if (res == "Success") {
-      Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (context) => MainPage(0)));
+      Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (context) => VerifyEmail()));
       //Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (context) => VerifyGoogleSignIn()));
     } else {
       showSnackBar(res, context);
@@ -157,11 +154,10 @@ class _SignInPageState extends State<SignInPage> {
                   context,
                   MaterialPageRoute(
                     builder: (context) {
-                      return ForgotPassword();
+                      return const ForgotPassword();
                     },
                   ),
                 );
-                print("nagana");
               },
               child: Container(
                 padding: const EdgeInsets.symmetric(horizontal: 30),

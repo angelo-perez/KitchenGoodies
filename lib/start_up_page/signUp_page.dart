@@ -1,12 +1,11 @@
 //import 'dart:ffi';
-import 'dart:typed_data';
 
-import 'package:elective_project/main.dart';
 import 'package:elective_project/start_up_page/signIn_page.dart';
 import 'package:elective_project/resources/auth_methods.dart';
+import 'package:elective_project/start_up_page/verifyEmail.dart';
 import 'package:elective_project/util/colors.dart';
 import 'package:elective_project/util/utils.dart';
-import 'package:firebase_storage/firebase_storage.dart';
+
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -30,7 +29,6 @@ class _SignUpPageState extends State<SignUpPage> {
 
   @override
   void dispose() {
-    // TODO: implement dispose
     super.dispose();
     _emailController.dispose();
     _passwordController.dispose();
@@ -75,7 +73,9 @@ class _SignUpPageState extends State<SignUpPage> {
       setState(() {
         _isLoading = false;
       });
-      Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (context) => SignInPage()));
+
+      Navigator.of(context)
+          .pushReplacement(MaterialPageRoute(builder: (context) => const VerifyEmail()));
     } else {
       showSnackBar(res, context);
       setState(() {
@@ -118,8 +118,7 @@ class _SignUpPageState extends State<SignUpPage> {
               padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 20),
               child: Text(
                 'Welcome',
-                style:
-                    TextStyle(color: appBarColor, fontSize: 32, fontWeight: FontWeight.w500),
+                style: TextStyle(color: appBarColor, fontSize: 32, fontWeight: FontWeight.w500),
               ),
             ),
             // <--------- DEFAULT PICTURE --------->
@@ -231,7 +230,7 @@ class _SignUpPageState extends State<SignUpPage> {
                           width: 2,
                         ),
                       ),
-                      enabledBorder: UnderlineInputBorder(
+                      enabledBorder: const UnderlineInputBorder(
                         borderSide: BorderSide(
                           color: Colors.grey,
                           width: 0.5,
@@ -259,7 +258,7 @@ class _SignUpPageState extends State<SignUpPage> {
                           width: 2,
                         ),
                       ),
-                      enabledBorder: UnderlineInputBorder(
+                      enabledBorder: const UnderlineInputBorder(
                         borderSide: BorderSide(
                           color: Colors.grey,
                           width: 0.5,
@@ -346,7 +345,7 @@ class _SignUpPageState extends State<SignUpPage> {
                       recognizer: TapGestureRecognizer()
                         ..onTap = () {
                           Navigator.of(context).pushReplacement(
-                              MaterialPageRoute(builder: (context) => SignInPage()));
+                              MaterialPageRoute(builder: (context) => const SignInPage()));
                         },
                     ),
                   ],

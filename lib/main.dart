@@ -1,12 +1,12 @@
 import 'dart:ui';
 import 'package:animated_splash_screen/animated_splash_screen.dart';
+import 'package:elective_project/start_up_page/verifyEmail.dart';
 import 'package:elective_project/util/colors.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:page_transition/page_transition.dart';
 import 'package:elective_project/start_up_page/login_page.dart';
 import 'package:elective_project/providers/google_sign_in.dart';
-import 'package:elective_project/main_pages/main_page.dart';
-import 'package:elective_project/start_up_page/splash_page.dart';
+
 import 'package:elective_project/providers/user_provider.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -76,7 +76,7 @@ class _MyAppState extends State<MyApp> {
                 } else if (snapshot.hasData) {
                   final provider = Provider.of<GoogleSignInProvider>(context, listen: false);
                   provider.saveUserData(); // only works with google accounts
-                  return MainPage(0);
+                  return const VerifyEmail();
                 } else if (snapshot.hasError) {
                   return const Center(
                     child: Text('Something went wrong'),
