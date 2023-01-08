@@ -48,8 +48,7 @@ class _AddPostWidgetState extends State<AddPostWidget> {
         clearImage();
         // Navigator.pop(context);
         Navigator.of(context, rootNavigator: true).pushAndRemoveUntil(
-                    MaterialPageRoute(builder: (context) => MainPage(3)),
-                    (route) => false);
+            MaterialPageRoute(builder: (context) => MainPage(3)), (route) => false);
       } else {
         showSnackBar(res, context);
       }
@@ -126,7 +125,7 @@ class _AddPostWidgetState extends State<AddPostWidget> {
         backgroundColor: mBackgroundColor,
         leading: IconButton(
           icon: Icon(
-            Icons.arrow_back,
+            Icons.arrow_back_ios,
             color: mPrimaryColor,
           ),
           onPressed: () => Navigator.pop(context),
@@ -153,7 +152,8 @@ class _AddPostWidgetState extends State<AddPostWidget> {
               ))
         ],
       ),
-      body: ListView( //Column 
+      body: ListView(
+        //Column
         children: [
           _isLoading ? const LinearProgressIndicator() : Container(),
           Container(

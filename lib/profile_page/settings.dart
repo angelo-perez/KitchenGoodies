@@ -17,7 +17,7 @@ class UserManagementWidget extends StatelessWidget {
         backgroundColor: mBackgroundColor,
         leading: IconButton(
           icon: Icon(
-            Icons.arrow_back,
+            Icons.arrow_back_ios,
             color: mPrimaryColor,
           ),
           onPressed: () => Navigator.pop(context),
