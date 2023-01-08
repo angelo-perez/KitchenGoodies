@@ -87,6 +87,7 @@ dependencies:
   quickalert: ^1.0.1
   blurry: ^1.4.2
   csc_picker: ^0.2.6
+  floating_tabbar: ^0.0.6
 
 dev_dependencies:
   flutter_test:
