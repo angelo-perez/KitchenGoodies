@@ -1,7 +1,10 @@
+import 'package:carousel_slider/carousel_slider.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:elective_project/recipes_page/recipe_overview.dart';
 import 'package:elective_project/resources/manage_recipe.dart';
 import 'package:elective_project/util/colors.dart';
+import 'package:floating_tabbar/Models/tab_item.dart';
+import 'package:floating_tabbar/floating_tabbar.dart';
 import 'package:fluentui_system_icons/fluentui_system_icons.dart';
 import 'package:flutter/src/foundation/key.dart';
 import 'package:flutter/src/widgets/framework.dart';
@@ -24,183 +27,192 @@ class CategoryRecipesPage extends StatefulWidget {
 }
 
 class _CategoryRecipesPageState extends State<CategoryRecipesPage> {
-  int _index = 0;
   PageController _controller = PageController(viewportFraction: 0.75);
+  CarouselController _carouselController = CarouselController();
   late String collection_name;
   int _selectedIndex = 0;
+  int _current = 0;
   bool _listview = false;
   late List recipeList;
 
   void ToggleView() {
     setState(() {
       _listview = !_listview;
-      _selectedIndex = 0;
+      // _selectedIndex = 0;
+      _current = 0;
     });
   }
 
   @override
   Widget build(BuildContext context) {
-    try {
-      String categoryName = widget.category_name;
+    String categoryName = widget.category_name;
 
-      switch (categoryName) {
-        case 'Chicken':
-          {
-            collection_name = 'chicken-recipe';
-          }
-          break;
-        case 'Pork':
-          {
-            collection_name = 'pork-recipe';
-          }
-          break;
-        case 'Beef':
-          {
-            collection_name = 'beef-recipe';
-          }
-          break;
-        case 'Fish':
-          {
-            collection_name = 'fish-recipe';
-          }
-          break;
-        case 'Crustacean':
-          {
-            collection_name = 'crustacean-recipe';
-          }
-          break;
-        case 'Vegetables':
-          {
-            collection_name = 'vegetables-recipe';
-          }
-          break;
-        case 'Dessert':
-          {
-            collection_name = 'dessert-recipe';
-          }
-          break;
-        case 'Others':
-          {
-            collection_name = 'others-recipe';
-          }
-          break;
-        default:
-          {
-            collection_name = 'chicken-recipe';
-          }
-          break;
-      }
-
-      final CollectionReference _categoryRecipes =
-          FirebaseFirestore.instance.collection(collection_name);
-
-      return Scaffold(
-        appBar: AppBar(
-          backgroundColor: Colors.white,
-          // leading: SvgPicture.asset(
-          //   'images/logos/kitchen-goodies.svg',
-          //   color: Colors.black,
-          // ),
-          iconTheme: IconThemeData(color: appBarColor),
-          title: Text(
-            '${categoryName} Recipes',
-            style: TextStyle(color: Colors.black),
-          ),
-          elevation: 0.0,
-          titleSpacing: 0,
-          actions: [
-            IconButton(
-                onPressed: () {
-                  showSearch(
-                      context: context,
-                      delegate: RecipesSearchDelegate(recipeList));
-                },
-                icon: Icon(
-                  Icons.search,
-                  color: Colors.black,
-                )),
-            IconButton(
-                onPressed: () {
-                  ToggleView();
-                  print(_listview);
-                },
-                icon: !_listview
-                    ? Icon(
-                        FluentIcons.apps_list_detail_20_filled,
-                        color: Colors.black,
-                      )
-                    : Icon(
-                        FluentIcons.app_recent_20_filled,
-                        color: Colors.black,
-                      ))
-          ],
-        ),
-        backgroundColor: mBackgroundColor,
-        body: StreamBuilder(
-            stream: _categoryRecipes.snapshots(),
-            builder: (context, AsyncSnapshot<QuerySnapshot> streamSnapshot) {
-              if (streamSnapshot.hasData) {
-                recipeList = streamSnapshot.data!.docs;
-                return _listview
-                    ? _listView(context, streamSnapshot.data!.docs)
-                    : _carouselView(context, streamSnapshot.data!.docs);
-              }
-              return const Center(
-                child: CircularProgressIndicator(),
-              );
-            }),
-      );
-    } catch (e) {
-      print(e.toString());
-      print("Work still in progress...");
-      return const Center(
-        child: CircularProgressIndicator(),
-      );
+    switch (categoryName) {
+      case 'Chicken':
+        {
+          collection_name = 'chicken-recipe';
+        }
+        break;
+      case 'Pork':
+        {
+          collection_name = 'pork-recipe';
+        }
+        break;
+      case 'Beef':
+        {
+          collection_name = 'beef-recipe';
+        }
+        break;
+      case 'Fish':
+        {
+          collection_name = 'fish-recipe';
+        }
+        break;
+      case 'Crustacean':
+        {
+          collection_name = 'crustacean-recipe';
+        }
+        break;
+      case 'Vegetables':
+        {
+          collection_name = 'vegetables-recipe';
+        }
+        break;
+      case 'Dessert':
+        {
+          collection_name = 'dessert-recipe';
+        }
+        break;
+      case 'Others':
+        {
+          collection_name = 'others-recipe';
+        }
+        break;
+      default:
+        {
+          collection_name = 'chicken-recipe';
+        }
+        break;
     }
+
+    String searchIn = "Premade";
+
+    final CollectionReference _premadeCollection =
+        FirebaseFirestore.instance.collection(collection_name);
+
+    return Scaffold(
+      appBar: AppBar(
+        backgroundColor: Colors.white,
+        leading: IconButton(
+          icon: Icon(
+            Icons.arrow_back_ios,
+            color: mPrimaryColor,
+          ),
+          onPressed: () => Navigator.pop(context),
+        ),
+        iconTheme: IconThemeData(color: appBarColor),
+        title: Text(
+          '${categoryName} Recipes',
+          style: TextStyle(color: Colors.black),
+        ),
+        elevation: 0.0,
+        titleSpacing: 0,
+        actions: [
+          IconButton(
+              onPressed: () {
+                showSearch(
+                    context: context,
+                    delegate: RecipesSearchDelegate(recipeList, searchIn));
+              },
+              icon: Icon(
+                Icons.search,
+                color: Colors.black,
+              )),
+          IconButton(
+              onPressed: () {
+                ToggleView();
+                print(_listview);
+              },
+              icon: !_listview
+                  ? Icon(
+                      FluentIcons.apps_list_detail_20_filled,
+                      color: Colors.black,
+                    )
+                  : Icon(
+                      FluentIcons.app_recent_20_filled,
+                      color: Colors.black,
+                    ))
+        ],
+      ),
+      backgroundColor: mBackgroundColor,
+      body: recipeStreamBuilder(context, _premadeCollection),
+    );
+  }
+
+  Widget recipeStreamBuilder(
+      BuildContext context, CollectionReference collectionReference) {
+    return StreamBuilder(
+        stream: collectionReference.snapshots(),
+        builder: (context, AsyncSnapshot<QuerySnapshot> streamSnapshot) {
+          if (streamSnapshot.hasData) {
+            recipeList = streamSnapshot.data!.docs;
+            return _listview
+                ? _listView(context, streamSnapshot.data!.docs)
+                : _carouselView(context, streamSnapshot.data!.docs);
+          }
+          return const Center(
+            child: CircularProgressIndicator(),
+          );
+        });
   }
 
   Widget _carouselView(BuildContext context, List items) {
     return Column(
-        crossAxisAlignment: CrossAxisAlignment.center,
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          SizedBox(
-            height: 400, // card height
-            child: PageView.builder(
-              itemCount: items.length,
-              controller: _controller,
-              onPageChanged: (int index) =>
-                  setState(() => _selectedIndex = index),
-              itemBuilder: (context, index) {
-                final DocumentSnapshot documentSnapshot = items[index];
-
-                return Transform.scale(
-                    scale: index == _selectedIndex ? 1 : 0.85,
-                    child: _recipeListItem(
-                        context, documentSnapshot, _selectedIndex));
-              },
-            ),
+      crossAxisAlignment: CrossAxisAlignment.center,
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        CarouselSlider.builder(
+          carouselController: _carouselController,
+          itemCount: items.length,
+          itemBuilder: ((context, index, realIndex) {
+            final DocumentSnapshot documentSnapshot = items[index];
+            _selectedIndex = index;
+            return _recipeListItem(context, documentSnapshot, index);
+          }),
+          options: CarouselOptions(
+            aspectRatio: 0.9,
+            enlargeCenterPage: true,
+            onPageChanged: (index, reason) {
+              setState(() {
+                _current = index;
+              });
+            },
           ),
-          Padding(
-            padding: EdgeInsets.all(10.0),
-          ),
-          SmoothPageIndicator(
-            controller: _controller,
-            count: items.length,
-            effect: ScaleEffect(
-              activePaintStyle: PaintingStyle.stroke,
-              scale: 1.7,
-              activeStrokeWidth: 1.5,
-              dotHeight: 10.0,
-              dotWidth: 10.0,
-              dotColor: appBarColor,
-              activeDotColor: Color.fromARGB(255, 10, 1, 1),
-            ),
-            // onDotClicked: (index) {
-            //   setState(() => _selectedIndex = index);
-            // },
-          )
-        ]);
+        ),
+        Padding(
+          padding: EdgeInsets.all(10.0),
+        ),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: items.asMap().entries.map((entry) {
+            return GestureDetector(
+              onTap: () => _carouselController.animateToPage(entry.key),
+              child: Container(
+                width: 13.0,
+                height: 13.0,
+                margin: EdgeInsets.symmetric(vertical: 8.0, horizontal: 4.0),
+                decoration: BoxDecoration(
+                    shape: BoxShape.circle,
+                    color: (Theme.of(context).brightness == Brightness.dark
+                            ? Colors.white
+                            : mPrimaryColor)
+                        .withOpacity(_current == entry.key ? 0.9 : 0.4)),
+              ),
+            );
+          }).toList(),
+        ),
+      ],
+    );
   }
 
   Widget _recipeListItem(BuildContext context,
@@ -224,17 +236,17 @@ class _CategoryRecipesPageState extends State<CategoryRecipesPage> {
             pushNewScreen(
               context,
               screen: RecipeOverview(
-                  documentSnapshot.id,
-                  collection_name,
-                  documentSnapshot['imageUrl'],
-                  documentSnapshot['name'],
-                  documentSnapshot['source'],
-                  documentSnapshot['description'],
-                  documentSnapshot['ingredients'],
-                  documentSnapshot['steps'],
-                  documentSnapshot['steps-timer'],
-                  documentSnapshot['rating'],
-                  ),
+                documentSnapshot.id,
+                collection_name,
+                documentSnapshot['imageUrl'],
+                documentSnapshot['name'],
+                documentSnapshot['source'],
+                documentSnapshot['description'],
+                documentSnapshot['ingredients'],
+                documentSnapshot['steps'],
+                documentSnapshot['steps-timer'],
+                documentSnapshot['rating'],
+              ),
               withNavBar: false,
             );
           } else {
@@ -361,17 +373,17 @@ class _CategoryRecipesPageState extends State<CategoryRecipesPage> {
                         pushNewScreen(
                           context,
                           screen: RecipeOverview(
-                              documentSnapshot.id,
-                              collection_name,
-                              documentSnapshot['imageUrl'],
-                              documentSnapshot['name'],
-                              documentSnapshot['source'],
-                              documentSnapshot['description'],
-                              documentSnapshot['ingredients'],
-                              documentSnapshot['steps'],
-                              documentSnapshot['steps-timer'],
-                              documentSnapshot['rating'],
-                              ),
+                            documentSnapshot.id,
+                            collection_name,
+                            documentSnapshot['imageUrl'],
+                            documentSnapshot['name'],
+                            documentSnapshot['source'],
+                            documentSnapshot['description'],
+                            documentSnapshot['ingredients'],
+                            documentSnapshot['steps'],
+                            documentSnapshot['steps-timer'],
+                            documentSnapshot['rating'],
+                          ),
                           withNavBar: false,
                         );
                       } else {
@@ -449,9 +461,15 @@ class _CategoryRecipesPageState extends State<CategoryRecipesPage> {
   }
 }
 
+////FOR THE SEARCH BAR////
+
 class RecipesSearchDelegate extends SearchDelegate {
-  RecipesSearchDelegate(this.items);
+  RecipesSearchDelegate(this.items, this.searchIn);
   List items;
+  String searchIn;
+
+  @override
+  String get searchFieldLabel => 'Search in ${searchIn} Recipes';
 
   @override
   List<Widget>? buildActions(BuildContext context) => [
