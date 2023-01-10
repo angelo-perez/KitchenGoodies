@@ -107,7 +107,7 @@ class _RecipeStepPageState extends State<RecipeStepPage> {
               ),
               Text(
                 "by ${widget.recipe_source}",
-                style: TextStyle(fontSize: 12, fontStyle: FontStyle.italic),
+                style: TextStyle(fontSize: 12, fontStyle: FontStyle.normal),
               ),
             ],
           ),

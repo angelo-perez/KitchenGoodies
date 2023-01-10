@@ -20,7 +20,7 @@ class RecipeOverview extends StatefulWidget {
       this.recipe_steps,
       this.recipe_stepstimer,
       this.recipe_rating,
-      [this.recipe_type]); //optional argument to know if it is a premade recipe or a user's created recipe
+      this.recipe_type); //optional argument to know if it is a premade recipe or a user's created recipe
 
   final String recipeId;
   final String collection_name;
@@ -32,7 +32,7 @@ class RecipeOverview extends StatefulWidget {
   final List recipe_steps;
   final List recipe_stepstimer;
   final List recipe_rating;
-  String? recipe_type;
+  String recipe_type;
 
   @override
   State<RecipeOverview> createState() => _RecipeOverviewState();
@@ -46,7 +46,8 @@ class _RecipeOverviewState extends State<RecipeOverview> {
     int step_index = 0;
     String overviewBG = widget.recipe_image;
 
-    String recipeType = widget.recipe_type == null ? "recipe" : "myrecipe"; //to know if it is a premade recipe or a user's created recipe
+    String recipeType = widget
+        .recipe_type; //to know if it is a "premade", "public", or "myrecipe"
     print(recipeType);
 
     return Scaffold(
@@ -69,7 +70,7 @@ class _RecipeOverviewState extends State<RecipeOverview> {
             ),
             Text(
               "by ${widget.recipe_source}",
-              style: TextStyle(fontSize: 12, fontStyle: FontStyle.italic),
+              style: TextStyle(fontSize: 12, fontStyle: FontStyle.normal),
             ),
           ],
         ),
@@ -130,38 +131,42 @@ class _RecipeOverviewState extends State<RecipeOverview> {
                 listOrder: ListOrder.unordered,
                 bulletType: BulletType.numbered,
               ),
-              Padding(padding: EdgeInsets.only(bottom: 65)),
+              Padding(
+                padding: EdgeInsets.only(bottom: 90),
+              ),
             ],
           ),
         ),
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
-      floatingActionButton: FloatingActionButton.extended(
-        onPressed: () => pushNewScreen(
-          context,
-          screen: RecipeStepPage(
-            widget.recipeId,
-            widget.collection_name,
-            widget.recipe_image,
-            widget.recipe_name,
-            widget.recipe_source,
-            widget.recipe_steps,
-            widget.recipe_stepstimer,
-            totalStepsCount,
-            step_index,
-            widget.recipe_steps[step_index],
-            widget.recipe_stepstimer[step_index],
-            widget.recipe_rating,
-            recipeType
+      floatingActionButton: Padding(
+        padding: const EdgeInsets.only(bottom: 15),
+        child: FloatingActionButton.extended(
+          onPressed: () => pushNewScreen(
+            context,
+            screen: RecipeStepPage(
+                widget.recipeId,
+                widget.collection_name,
+                widget.recipe_image,
+                widget.recipe_name,
+                widget.recipe_source,
+                widget.recipe_steps,
+                widget.recipe_stepstimer,
+                totalStepsCount,
+                step_index,
+                widget.recipe_steps[step_index],
+                widget.recipe_stepstimer[step_index],
+                widget.recipe_rating,
+                recipeType),
+            withNavBar: false,
           ),
-          withNavBar: false,
+          label: Text(
+            'Start Cooking',
+            style: TextStyle(color: iconTextColor),
+          ),
+          backgroundColor: appBarColor,
+          elevation: 20,
         ),
-        label: Text(
-          'Start Cooking',
-          style: TextStyle(color: iconTextColor),
-        ),
-        backgroundColor: appBarColor,
-        elevation: 20,
       ),
     );
   }

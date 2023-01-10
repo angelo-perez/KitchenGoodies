@@ -31,10 +31,9 @@ class _MyRecipesPageState extends State<MyRecipesPage> {
   Widget build(BuildContext context) {
     final User? user = auth.currentUser;
     final uid = user!.uid;
-    final CollectionReference _myRecipes = FirebaseFirestore.instance
-        .collection("users")
-        .doc(uid)
-        .collection("MyRecipes");
+
+    final Query<Map<String, dynamic>> _myRecipes = FirebaseFirestore.instance
+        .collection("user-recipes").where('uid', isEqualTo: uid);
 
     return Scaffold(
         backgroundColor: mBackgroundColor,
@@ -145,7 +144,7 @@ class _MyRecipesPageState extends State<MyRecipesPage> {
                               documentSnapshot["privacy"] == "private"
                           ? Icons.visibility_off_sharp
                           : Icons.visibility,
-                      label: documentSnapshot["privacy"],
+                      label: documentSnapshot["privacy"][0].toUpperCase() + documentSnapshot['privacy'].substring(1),
                     ),
                     // SHARE BUTTON IS NOT YET IMPLEMENTED
                     SlidableAction(
@@ -190,7 +189,7 @@ class _MyRecipesPageState extends State<MyRecipesPage> {
                         final uid = user!.uid;
 
                         deleteRecipeDialog(context, uid, documentSnapshot.id,
-                            documentSnapshot['name']);
+                            documentSnapshot['name'], documentSnapshot['imageUrl']);
                       },
                       backgroundColor: Color(0xFFFE4A49),
                       foregroundColor: Colors.white,
@@ -300,7 +299,7 @@ class _MyRecipesPageState extends State<MyRecipesPage> {
   void doNothing(BuildContext context) {}
 
   void deleteRecipeDialog(BuildContext myrecipeContext, String uid,
-      String recipeId, String recipeName) {
+      String recipeId, String recipeName, String recipeImage) {
     showDialog(
       context: context,
       builder: (context) => new AlertDialog(
@@ -323,14 +322,10 @@ class _MyRecipesPageState extends State<MyRecipesPage> {
           ),
           TextButton(
             onPressed: () {
-              final CollectionReference _myRecipes = FirebaseFirestore.instance
-                  .collection("users")
-                  .doc(uid)
-                  .collection("MyRecipes");
 
               ManageRecipe deleteRecipe = ManageRecipe();
 
-              deleteRecipe.deleteRecipe(uid, recipeId).whenComplete(() {
+              deleteRecipe.deleteRecipe(uid, recipeId, recipeImage).whenComplete(() {
                 Navigator.pop(myrecipeContext);
                 Fluttertoast.showToast(
                     msg: "Successfully deleted ${recipeName}",

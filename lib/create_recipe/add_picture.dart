@@ -15,14 +15,21 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
 import 'package:star_menu/star_menu.dart';
+import 'package:uuid/uuid.dart';
 
 import '../providers/user_provider.dart';
 import '../util/utils.dart';
 import '../community_page/models/user.dart' as model;
 
 class AddPicture extends StatefulWidget {
-  AddPicture(this.recipeName, this.recipeDescription, this.recipeCategory, this.recipePrivacy,
-      this.recipeIngredients, this.recipeSteps, this.recipeTimer);
+  AddPicture(
+      this.recipeName,
+      this.recipeDescription,
+      this.recipeCategory,
+      this.recipePrivacy,
+      this.recipeIngredients,
+      this.recipeSteps,
+      this.recipeTimer);
 
   final String recipeName;
   final String recipeDescription;
@@ -205,30 +212,33 @@ class _AddPictureState extends State<AddPicture> {
           Padding(padding: EdgeInsets.all(8.0)),
           ElevatedButton(
               onPressed: () {
-                print(widget.recipeName);
-                print(widget.recipeCategory);
-                print(widget.recipePrivacy);
-                print(widget.recipeIngredients);
-                print(widget.recipeSteps);
-                print(widget.recipeTimer);
-                print(_image);
-                print(user.uid);
-                print(user.username);
+                String publicId = const Uuid().v1();
+
+                // print(widget.recipeName);
+                // print(widget.recipeCategory);
+                // print(widget.recipePrivacy);
+                // print(widget.recipeIngredients);
+                // print(widget.recipeSteps);
+                // print(widget.recipeTimer);
+                // print(_image);
+                // print(user.uid);
+                // print(user.username);
+                print(publicId);
 
                 ManageRecipe uploadRecipe = ManageRecipe();
                 uploadRecipe
                     .uploadRecipe(
-                  userId: user.uid,
-                  recipeName: widget.recipeName,
-                  username: user.username,
-                  recipeDescription: widget.recipeDescription,
-                  recipeCategory: widget.recipeCategory,
-                  recipePrivacy: widget.recipePrivacy,
-                  recipeIngredients: widget.recipeIngredients,
-                  recipeSteps: widget.recipeSteps,
-                  recipeTimer: widget.recipeTimer,
-                  recipeImage: _image!,
-                )
+                        userId: user.uid,
+                        profImage: user.profImage,
+                        recipeName: widget.recipeName,
+                        username: user.username,
+                        recipeDescription: widget.recipeDescription,
+                        recipeCategory: widget.recipeCategory,
+                        recipePrivacy: widget.recipePrivacy,
+                        recipeIngredients: widget.recipeIngredients,
+                        recipeSteps: widget.recipeSteps,
+                        recipeTimer: widget.recipeTimer,
+                        recipeImage: _image!)
                     .whenComplete(() {
                   Navigator.of(context, rootNavigator: true).pushAndRemoveUntil(
                       MaterialPageRoute(

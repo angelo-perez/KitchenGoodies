@@ -246,6 +246,7 @@ class _CategoryRecipesPageState extends State<CategoryRecipesPage> {
                 documentSnapshot['steps'],
                 documentSnapshot['steps-timer'],
                 documentSnapshot['rating'],
+                'premade'
               ),
               withNavBar: false,
             );
@@ -287,7 +288,7 @@ class _CategoryRecipesPageState extends State<CategoryRecipesPage> {
                     style: TextStyle(
                       color: mBackgroundColor,
                       fontSize: 14.0,
-                      fontStyle: FontStyle.italic,
+                      fontStyle: FontStyle.normal,
                     ),
                   ),
                   Padding(
@@ -383,6 +384,7 @@ class _CategoryRecipesPageState extends State<CategoryRecipesPage> {
                             documentSnapshot['steps'],
                             documentSnapshot['steps-timer'],
                             documentSnapshot['rating'],
+                            'premade'
                           ),
                           withNavBar: false,
                         );
@@ -413,7 +415,7 @@ class _CategoryRecipesPageState extends State<CategoryRecipesPage> {
                       children: [
                         Text(
                           "by ${documentSnapshot['source']}",
-                          style: TextStyle(fontStyle: FontStyle.italic),
+                          style: TextStyle(fontStyle: FontStyle.normal),
                         ),
                         Padding(
                           padding: EdgeInsets.only(top: 12),

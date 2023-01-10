@@ -78,7 +78,7 @@ class _FinishedRecipePageState extends State<FinishedRecipePage> {
             ),
             Text(
               "by ${widget.recipe_source}",
-              style: TextStyle(fontSize: 12, fontStyle: FontStyle.italic),
+              style: TextStyle(fontSize: 12, fontStyle: FontStyle.normal),
             ),
           ],
         ),
@@ -119,11 +119,11 @@ class _FinishedRecipePageState extends State<FinishedRecipePage> {
                 textAlign: TextAlign.center,
                 style: TextStyle(
                     fontSize: 20,
-                    fontStyle: FontStyle.italic,
+                    fontStyle: FontStyle.normal,
                     color: iconTextColor),
               ),
             ),
-            widget.recipe_type != "myrecipe"
+            widget.recipe_type != "myrecipe" //A condition will be added so the user will not able to rate his own recipe
                 ? Column(
                     children: [
                       Padding(

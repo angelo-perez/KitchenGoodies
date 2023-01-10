@@ -1,36 +1,44 @@
+// import 'dart:html';
 import 'dart:typed_data';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:elective_project/resources/storage_methods.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:provider/provider.dart';
+import 'package:uuid/uuid.dart';
 import '../providers/user_provider.dart';
 import '../util/colors.dart';
 
 class ManageRecipe {
   final FirebaseFirestore _firebaseInstance = FirebaseFirestore.instance;
 
-  Future<String?> uploadRecipe({
-    String? userId,
-    String? username,
-    String? recipeName,
-    String? recipeDescription,
-    String? recipeCategory,
-    String? recipePrivacy,
-    List? recipeIngredients,
-    List? recipeSteps,
-    List? recipeTimer,
-    Uint8List? recipeImage,
-  }) async {
-    CollectionReference users = _firebaseInstance.collection("users");
+  Future<String?> uploadRecipe(
+      {String? userId,
+      String? profImage,
+      String? username,
+      String? recipeName,
+      String? recipeDescription,
+      String? recipeCategory,
+      String? recipePrivacy,
+      List? recipeIngredients,
+      List? recipeSteps,
+      List? recipeTimer,
+      Uint8List? recipeImage}) async {
+    CollectionReference userRecipes =
+        _firebaseInstance.collection("user-recipes");
 
-    String imageURL = await StorageMethods()
-        .uploadImageToStorage('recipePictures', recipeImage!, true);
+    String recipeImageUrl = await StorageMethods()
+        .uploadImageToStorage('userRecipePictures', recipeImage!, true);
 
     String error = "";
 
+    String recipeId = const Uuid().v1();
+
     try {
-      await users.doc(userId).collection("MyRecipes").add({
+      await userRecipes.doc(recipeId).set({
+        'uid': userId,
+        'profImage': profImage,
         'name': recipeName,
         'source': username,
         'collection': recipeCategory?.toLowerCase(),
@@ -39,17 +47,20 @@ class ManageRecipe {
         'ingredients': recipeIngredients,
         'steps': recipeSteps,
         'steps-timer': recipeTimer,
-        'imageUrl': imageURL,
+        'imageUrl': recipeImageUrl,
         'rating': [],
         'date': DateTime.now(),
-      }).whenComplete(() => Fluttertoast.showToast(
-          msg: "Your recipe was succesfully saved",
-          toastLength: Toast.LENGTH_SHORT,
-          gravity: ToastGravity.SNACKBAR,
-          timeInSecForIosWeb: 1,
-          backgroundColor: splashScreenBgColor,
-          textColor: Colors.white,
-          fontSize: 16.0));
+        'recipeId': recipeId,
+      }).whenComplete(() {
+        Fluttertoast.showToast(
+            msg: "Your recipe was succesfully saved",
+            toastLength: Toast.LENGTH_SHORT,
+            gravity: ToastGravity.SNACKBAR,
+            timeInSecForIosWeb: 1,
+            backgroundColor: splashScreenBgColor,
+            textColor: Colors.white,
+            fontSize: 16.0);
+      });
     } catch (e) {
       error = e.toString();
     }
@@ -57,18 +68,16 @@ class ManageRecipe {
     return error;
   }
 
-  Future<String> deleteRecipe(String userId, String recipeId) async {
-    CollectionReference users = _firebaseInstance.collection("users");
+  Future<String> deleteRecipe(
+      String userId, String recipeId, String recipeImage) async {
+    CollectionReference userRecipes =
+        _firebaseInstance.collection("user-recipes");
 
     String error = "";
 
     try {
-      await users
-          .doc(userId)
-          .collection('MyRecipes')
-          .doc(recipeId)
-          .delete()
-          .onError((error, stackTrace) => Fluttertoast.showToast(
+      await userRecipes.doc(recipeId).delete().onError((error, stackTrace) =>
+          Fluttertoast.showToast(
               msg: "Something went wrong",
               toastLength: Toast.LENGTH_SHORT,
               gravity: ToastGravity.SNACKBAR,
@@ -76,6 +85,8 @@ class ManageRecipe {
               backgroundColor: splashScreenBgColor,
               textColor: Colors.white,
               fontSize: 16.0));
+
+      await FirebaseStorage.instance.refFromURL(recipeImage).delete();
     } catch (err) {
       error = err.toString();
     }
@@ -84,20 +95,20 @@ class ManageRecipe {
 
   Future<String> toggleRecipePrivacy(
       String userId, String recipeId, String recipePrivacy) async {
-    CollectionReference users = _firebaseInstance.collection("users");
+    CollectionReference userRecipes =
+        _firebaseInstance.collection("user-recipes");
 
     String error = "";
 
     try {
-      await users
-          .doc(userId)
-          .collection("MyRecipes")
+      await userRecipes
           .doc(recipeId)
           .update({
             'privacy': recipePrivacy.toLowerCase(),
           })
           .whenComplete(() => Fluttertoast.showToast(
-              msg: "Your recipe is now in ${recipePrivacy}",
+              msg:
+                  "Your recipe is now in ${recipePrivacy[0].toUpperCase() + recipePrivacy.substring(1)}",
               toastLength: Toast.LENGTH_SHORT,
               gravity: ToastGravity.SNACKBAR,
               timeInSecForIosWeb: 1,
@@ -131,14 +142,13 @@ class ManageRecipe {
     List? recipeTimer,
     Uint8List? recipeImage,
   }) async {
-    CollectionReference users = _firebaseInstance.collection("users");
+    CollectionReference userRecipes =
+        _firebaseInstance.collection("user-recipes");
     String error = "";
 
-    if (recipeImage == null) {
-      try {
-        await users
-            .doc(userId)
-            .collection("MyRecipes")
+    try {
+      if (recipeImage == null) {
+        await userRecipes
             .doc(recipeId)
             .update({
               'name': recipeName,
@@ -166,20 +176,14 @@ class ManageRecipe {
                 backgroundColor: splashScreenBgColor,
                 textColor: Colors.white,
                 fontSize: 16.0));
-      } catch (e) {
-        error = e.toString();
-      }
-    } else {
-      try {
+      } else {
         String imageURL = await StorageMethods()
-            .uploadImageToStorage('recipePictures', recipeImage, false);
-        await users
-            .doc(userId)
-            .collection("MyRecipes")
+            .uploadImageToStorage('userRecipePictures', recipeImage, false);
+        await userRecipes
             .doc(recipeId)
             .update({
               'name': recipeName,
-              'category': recipeCategory,
+              'collection': recipeCategory,
               'privacy': recipePrivacy,
               'ingredients': recipeIngredients,
               'steps': recipeSteps,
@@ -203,9 +207,9 @@ class ManageRecipe {
                 backgroundColor: splashScreenBgColor,
                 textColor: Colors.white,
                 fontSize: 16.0));
-      } catch (e) {
-        error = e.toString();
       }
+    } catch (e) {
+      error = e.toString();
     }
 
     return error;
