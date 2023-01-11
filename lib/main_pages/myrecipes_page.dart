@@ -33,7 +33,8 @@ class _MyRecipesPageState extends State<MyRecipesPage> {
     final uid = user!.uid;
 
     final Query<Map<String, dynamic>> _myRecipes = FirebaseFirestore.instance
-        .collection("user-recipes").where('uid', isEqualTo: uid);
+        .collection("user-recipes")
+        .where('uid', isEqualTo: uid);
 
     return Scaffold(
         backgroundColor: mBackgroundColor,
@@ -144,7 +145,8 @@ class _MyRecipesPageState extends State<MyRecipesPage> {
                               documentSnapshot["privacy"] == "private"
                           ? Icons.visibility_off_sharp
                           : Icons.visibility,
-                      label: documentSnapshot["privacy"][0].toUpperCase() + documentSnapshot['privacy'].substring(1),
+                      label: documentSnapshot["privacy"][0].toUpperCase() +
+                          documentSnapshot['privacy'].substring(1),
                     ),
                     // SHARE BUTTON IS NOT YET IMPLEMENTED
                     SlidableAction(
@@ -188,8 +190,12 @@ class _MyRecipesPageState extends State<MyRecipesPage> {
                         final User? user = auth.currentUser;
                         final uid = user!.uid;
 
-                        deleteRecipeDialog(context, uid, documentSnapshot.id,
-                            documentSnapshot['name'], documentSnapshot['imageUrl']);
+                        deleteRecipeDialog(
+                            context,
+                            uid,
+                            documentSnapshot.id,
+                            documentSnapshot['name'],
+                            documentSnapshot['imageUrl']);
                       },
                       backgroundColor: Color(0xFFFE4A49),
                       foregroundColor: Colors.white,
@@ -234,8 +240,7 @@ class _MyRecipesPageState extends State<MyRecipesPage> {
                                 documentSnapshot['steps'],
                                 documentSnapshot['steps-timer'],
                                 documentSnapshot['rating'],
-                                'myrecipe'
-                            ),
+                                'myrecipe'),
                             withNavBar: false,
                           );
                         } else {
@@ -322,10 +327,11 @@ class _MyRecipesPageState extends State<MyRecipesPage> {
           ),
           TextButton(
             onPressed: () {
-
               ManageRecipe deleteRecipe = ManageRecipe();
 
-              deleteRecipe.deleteRecipe(uid, recipeId, recipeImage).whenComplete(() {
+              deleteRecipe
+                  .deleteRecipe(uid, recipeId, recipeImage)
+                  .whenComplete(() {
                 Navigator.pop(myrecipeContext);
                 Fluttertoast.showToast(
                     msg: "Successfully deleted ${recipeName}",
@@ -349,6 +355,9 @@ class _MyRecipesPageState extends State<MyRecipesPage> {
 class MyRecipeSearchDelegate extends SearchDelegate {
   MyRecipeSearchDelegate(this.items);
   List items;
+
+  var filteredList;
+
   @override
   List<Widget>? buildActions(BuildContext context) => [
         // TODO: implement buildActions
@@ -376,16 +385,13 @@ class MyRecipeSearchDelegate extends SearchDelegate {
   @override
   Widget buildResults(BuildContext context) {
     // TODO: implement buildResults
-    return Container();
+    return filteredList;
   }
 
   @override
   Widget buildSuggestions(BuildContext context) {
     // TODO: implement buildSuggestions
-    // if (items.length == 0 || items != null) {
-    //   return _MyRecipesPageState()._emptyMyRecipe(context);
-    // }
-
+    
     List suggestions = items.where((item) {
       final result = item["name"].toLowerCase();
       final input = query.toLowerCase();
@@ -396,6 +402,9 @@ class MyRecipeSearchDelegate extends SearchDelegate {
     for (int i = 0; i < suggestions.length; i++) {
       print(suggestions[i]["name"]);
     }
-    return _MyRecipesPageState()._myRecipeListViewBuilder(context, suggestions);
+
+    filteredList =
+        _MyRecipesPageState()._myRecipeListViewBuilder(context, suggestions);
+    return filteredList;
   }
 }

@@ -2,10 +2,13 @@
 // import 'package:flutter/src/widgets/framework.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:elective_project/recipes_page/category_recipes_page.dart';
+import 'package:filter_list/filter_list.dart';
+import 'package:fluentui_system_icons/fluentui_system_icons.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:persistent_bottom_nav_bar/persistent-tab-view.dart';
+import 'package:tab_indicator_styler/tab_indicator_styler.dart';
 
 import '../recipes_page/recipe_overview.dart';
 import '../util/colors.dart';
@@ -18,6 +21,8 @@ class RecipeCategories {
 
   RecipeCategories(this.id, this.imgPath, this.categoryName, this.description);
 }
+
+bool _isSearchButtonVisible = true;
 
 List<RecipeCategories> recipeCategoryList = [
   RecipeCategories(
@@ -51,6 +56,7 @@ class _RecipesPageState extends State<RecipesPage> {
       .instance
       .collection('user-recipes')
       .where('privacy', isEqualTo: 'public');
+  late List<QueryDocumentSnapshot<Object?>> publicRecipeList;
 
   @override
   Widget build(BuildContext context) {
@@ -86,6 +92,9 @@ class _RecipesPageState extends State<RecipesPage> {
                 text: 'Public',
               )
             ],
+            onTap: (value) {
+              _isSearchButtonVisible = true;
+            },
           ),
         ),
         backgroundColor: mBackgroundColor,
@@ -105,11 +114,11 @@ class _RecipesPageState extends State<RecipesPage> {
         stream: _publicCollection.snapshots(),
         builder: (context, AsyncSnapshot<QuerySnapshot> publicRecipeSnapshot) {
           if (publicRecipeSnapshot.hasData) {
+            publicRecipeList = publicRecipeSnapshot.data!.docs;
             return publicRecipesBuilder(
                 context, publicRecipeSnapshot.data!.docs); //temporary listview
           } else if (publicRecipeSnapshot.connectionState ==
               ConnectionState.waiting) {
-            print("loading");
             return Center(
               child: CircularProgressIndicator(),
             );
@@ -209,159 +218,293 @@ class _RecipesPageState extends State<RecipesPage> {
     );
   }
 
+  List<QueryDocumentSnapshot<Object?>> selectedUserList = [];
+  Future<void> _openFilterDialog() async {
+    await FilterListDialog.display<QueryDocumentSnapshot<Object?>>(
+      context,
+      hideSelectedTextCount: true,
+      themeData: FilterListThemeData(context),
+      headlineText: 'Search Public Recipes',
+      height: 500,
+      listData: publicRecipeList,
+      selectedListData: selectedUserList,
+      choiceChipLabel: (recipe) => recipe!["name"],
+      validateSelectedItem: (list, val) => list!.contains(val["name"]),
+      controlButtons: [ControlButtonType.All, ControlButtonType.Reset],
+      onItemSearch: (recipe, query) {
+        /// When search query change in search bar then this method will be called
+        ///
+        /// Check if items contains query
+        return recipe["name"].toLowerCase().contains(query.toLowerCase());
+      },
+
+      onApplyButtonClick: (list) {
+        setState(() {
+          selectedUserList = List.from(list!);
+          // publicRecipesBuilder(context, selectedUserList);
+        });
+        Navigator.pop(context);
+      },
+
+      /// uncomment below code to create custom choice chip
+      /* choiceChipBuilder: (context, item, isSelected) {
+        return Container(
+          padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+          margin: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
+          decoration: BoxDecoration(
+              border: Border.all(
+            color: isSelected! ? Colors.blue[300]! : Colors.grey[300]!,
+          )),
+          child: Text(
+            item.name,
+            style: TextStyle(
+                color: isSelected ? Colors.blue[300] : Colors.grey[500]),
+          ),
+        );
+      }, */
+    );
+  }
+
   Widget publicRecipesBuilder(BuildContext context, List items) {
-    return GridView.builder(
-      // Needed when wrapping inside ListView
-      // physics:
-      //     NeverScrollableScrollPhysics(), // to disable GridView's scrolling
-      // shrinkWrap: true, // You won't see infinite size error
-      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-        crossAxisCount: 2,
-        mainAxisSpacing: 8,
-        crossAxisSpacing: 8,
-        mainAxisExtent: 262
-        // childAspectRatio: 0.7,
+    return Scaffold(
+      floatingActionButton: Visibility(
+        visible: _isSearchButtonVisible,
+        child: FloatingActionButton(
+          backgroundColor: appBarColor,
+          mini: true,
+          onPressed: (() {
+            showSearch(
+                context: context,
+                delegate:
+                    PublicRecipeSearchDelegate(publicRecipeList, "Public"));
+          }),
+          child: Icon(FluentIcons.search_20_regular),
+        ),
       ),
-      primary: false,
-      padding: const EdgeInsets.all(10),
-      itemCount: items.length,
-      itemBuilder: (context, index) {
-        final DocumentSnapshot documentSnapshot = items[index];
-        final borderRadius = BorderRadius.circular(15);
-        return Card(
-          elevation: 8,
-          shape: RoundedRectangleBorder(borderRadius: borderRadius),
-          child: InkWell(
-            child: ListView(
-              children: [
-                Stack(
-                  children: [
-                    Container(
-                      height: 150,
-                      width: double.infinity,
-                      child: ClipRRect(
-                        borderRadius: BorderRadius.only(
-                          topRight: Radius.circular(10),
-                          topLeft: Radius.circular(10),
-                        ),
-                        child: Image(
-                          image: NetworkImage(
-                            documentSnapshot['imageUrl'],
+      body: ListView(
+        children: [
+          GridView.builder(
+            // Needed when wrapping inside ListView
+            physics:
+                NeverScrollableScrollPhysics(), // to disable GridView's scrolling
+            shrinkWrap: true, // You won't see infinite size error
+            gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                crossAxisCount: 2,
+                mainAxisSpacing: 8,
+                crossAxisSpacing: 8,
+                mainAxisExtent: 262),
+            primary: false,
+            padding: const EdgeInsets.all(10),
+            itemCount: items.length,
+            itemBuilder: (context, index) {
+              final DocumentSnapshot documentSnapshot = items[index];
+              final borderRadius = BorderRadius.circular(15);
+              return Card(
+                elevation: 8,
+                shape: RoundedRectangleBorder(borderRadius: borderRadius),
+                child: InkWell(
+                  child: ListView(
+                    physics: NeverScrollableScrollPhysics(),
+                    children: [
+                      Stack(
+                        children: [
+                          Container(
+                            height: 150,
+                            width: double.infinity,
+                            child: ClipRRect(
+                              borderRadius: BorderRadius.only(
+                                topRight: Radius.circular(10),
+                                topLeft: Radius.circular(10),
+                              ),
+                              child: Image(
+                                image: NetworkImage(
+                                  documentSnapshot['imageUrl'],
+                                ),
+                                fit: BoxFit.cover,
+                              ),
+                            ),
                           ),
-                          fit: BoxFit.cover,
-                        ),
-                      ),
-                    ),
-                    Align(
-                      heightFactor: 4.65,
-                      // widthFactor: 4.6,
-                      alignment: Alignment.bottomRight,
-                      child: Padding(
-                        padding: const EdgeInsets.only(right: 10),
-                        child: CircleAvatar(
-                          minRadius: 18,
-                          maxRadius: 18,
-                          backgroundImage: NetworkImage(
-                            documentSnapshot['profImage'],
-                          ),
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-                Padding(
-                  padding: const EdgeInsets.fromLTRB(8, 5, 8, 0),
-                  child: Text(
-                    documentSnapshot["name"],
-                    maxLines: 1,
-                    overflow: TextOverflow.ellipsis,
-                    style: TextStyle(
-                        color: mPrimaryColor,
-                        fontSize: 14,
-                        fontWeight: FontWeight.bold),
-                    textAlign: TextAlign.justify,
-                  ),
-                ),
-                Padding(
-                  padding: const EdgeInsets.fromLTRB(8, 5, 8, 0),
-                  child: Text(
-                    'by ${documentSnapshot["source"]}',
-                    maxLines: 1,
-                    overflow: TextOverflow.ellipsis,
-                    style: TextStyle(
-                      color: mPrimaryColor,
-                      fontSize: 12,
-                    ),
-                    textAlign: TextAlign.justify,
-                  ),
-                ),
-                Padding(
-                  padding: const EdgeInsets.fromLTRB(6, 5, 6, 5),
-                  child: documentSnapshot["rating"].length == 0
-                      ? Container()
-                      : Row(
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          children: [
-                            Padding(
-                              padding: const EdgeInsets.only(top: 2.5),
-                              child: RatingBarIndicator(
-                                itemSize: 18,
-                                rating: (documentSnapshot['rating']
-                                            .reduce((a, b) => a + b) /
-                                        documentSnapshot['rating'].length)
-                                    .toDouble(), //get the average of the rating array and convert it to double
-                                itemBuilder: (context, index) => Icon(
-                                  Icons.star,
-                                  color: Colors.amber,
+                          Align(
+                            heightFactor: 4.65,
+                            // widthFactor: 4.6,
+                            alignment: Alignment.bottomRight,
+                            child: Padding(
+                              padding: const EdgeInsets.only(right: 10),
+                              child: CircleAvatar(
+                                minRadius: 18,
+                                maxRadius: 18,
+                                backgroundImage: NetworkImage(
+                                  documentSnapshot['profImage'],
                                 ),
                               ),
                             ),
-                            Text(
-                              " (${documentSnapshot['rating'].length})",
-                              style: TextStyle(color: appBarColor),
-                            ),
-                          ],
+                          ),
+                        ],
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.fromLTRB(8, 5, 8, 0),
+                        child: Text(
+                          documentSnapshot["name"],
+                          maxLines: 1,
+                          overflow: TextOverflow.ellipsis,
+                          style: TextStyle(
+                              color: mPrimaryColor,
+                              fontSize: 14,
+                              fontWeight: FontWeight.bold),
+                          textAlign: TextAlign.justify,
                         ),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.fromLTRB(8, 5, 8, 0),
+                        child: Text(
+                          'by ${documentSnapshot["source"]}',
+                          maxLines: 1,
+                          overflow: TextOverflow.ellipsis,
+                          style: TextStyle(
+                            color: mPrimaryColor,
+                            fontSize: 12,
+                          ),
+                          textAlign: TextAlign.justify,
+                        ),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.fromLTRB(6, 5, 6, 5),
+                        child: documentSnapshot["rating"].length == 0
+                            ? Container()
+                            : Row(
+                                mainAxisAlignment: MainAxisAlignment.start,
+                                children: [
+                                  Padding(
+                                    padding: const EdgeInsets.only(top: 2.5),
+                                    child: RatingBarIndicator(
+                                      itemSize: 18,
+                                      rating: (documentSnapshot['rating']
+                                                  .reduce((a, b) => a + b) /
+                                              documentSnapshot['rating'].length)
+                                          .toDouble(), //get the average of the rating array and convert it to double
+                                      itemBuilder: (context, index) => Icon(
+                                        Icons.star,
+                                        color: Colors.amber,
+                                      ),
+                                    ),
+                                  ),
+                                  Text(
+                                    " (${documentSnapshot['rating'].length})",
+                                    style: TextStyle(color: appBarColor),
+                                  ),
+                                ],
+                              ),
+                      ),
+                    ],
+                  ),
+                  onTap: () {
+                    String collection_name = 'user-recipes';
+                    int numFields =
+                        (documentSnapshot.data() as Map<String, dynamic>)
+                            .keys
+                            .toList()
+                            .length;
+                    if (numFields >= 5) {
+                      //6 fields including the source of the recipe
+                      //check if number of fields is 5 (complete)
+                      pushNewScreen(
+                        context,
+                        screen: RecipeOverview(
+                            documentSnapshot.id,
+                            collection_name,
+                            documentSnapshot['imageUrl'],
+                            documentSnapshot['name'],
+                            documentSnapshot['source'],
+                            documentSnapshot['description'],
+                            documentSnapshot['ingredients'],
+                            documentSnapshot['steps'],
+                            documentSnapshot['steps-timer'],
+                            documentSnapshot['rating'],
+                            'public'),
+                        withNavBar: false,
+                      );
+                    } else {
+                      const recipeSnackbar = SnackBar(
+                          content: Text("Sorry, recipe is not yet available."));
+                      ScaffoldMessenger.of(context)
+                          .showSnackBar(recipeSnackbar);
+                    }
+                  },
                 ),
-              ],
-            ),
-            onTap: () {
-              String collection_name = 'user-recipes';
-                      int numFields =
-                          (documentSnapshot.data() as Map<String, dynamic>)
-                              .keys
-                              .toList()
-                              .length;
-                      if (numFields >= 5) {
-                        //6 fields including the source of the recipe
-                        //check if number of fields is 5 (complete)
-                        pushNewScreen(
-                          context,
-                          screen: RecipeOverview(
-                              documentSnapshot.id,
-                              collection_name,
-                              documentSnapshot['imageUrl'],
-                              documentSnapshot['name'],
-                              documentSnapshot['source'],
-                              documentSnapshot['description'],
-                              documentSnapshot['ingredients'],
-                              documentSnapshot['steps'],
-                              documentSnapshot['steps-timer'],
-                              documentSnapshot['rating'],
-                              'public'),
-                          withNavBar: false,
-                        );
-                      } else {
-                        const recipeSnackbar = SnackBar(
-                            content:
-                                Text("Sorry, recipe is not yet available."));
-                        ScaffoldMessenger.of(context)
-                            .showSnackBar(recipeSnackbar);
-                      }
+              );
             },
           ),
-        );
-      },
+        ],
+      ),
     );
+  }
+}
+
+////FOR THE SEARCH BAR////
+
+class PublicRecipeSearchDelegate extends SearchDelegate {
+  PublicRecipeSearchDelegate(this.items, this.searchIn);
+  List items;
+  String searchIn;
+
+  var filteredList;
+
+  @override
+  String get searchFieldLabel => 'Search in ${searchIn} Recipes';
+
+  @override
+  List<Widget>? buildActions(BuildContext context) => [
+        // TODO: implement buildActions
+        IconButton(
+          icon: Icon(Icons.clear),
+          onPressed: () {
+            if (query.isEmpty) {
+              close(context, null);
+            } else {
+              query = '';
+            }
+          },
+        ),
+      ];
+
+  @override
+  Widget? buildLeading(BuildContext context) {
+    // TODO: implement buildLeading
+    return IconButton(
+      icon: Icon(Icons.arrow_back_ios),
+      onPressed: () {
+        close(context, null);
+        _isSearchButtonVisible = false;
+      }, //close searchbar
+    );
+  }
+
+  @override
+  Widget buildResults(BuildContext context) {
+    // TODO: implement buildResults
+    return filteredList;
+  }
+
+  @override
+  Widget buildSuggestions(BuildContext context) {
+    // TODO: implement buildSuggestions
+
+    _isSearchButtonVisible = false;
+
+    List suggestions = items.where((item) {
+      final result = item["name"].toLowerCase();
+      final input = query.toLowerCase();
+
+      return result.contains(input);
+    }).toList();
+
+    for (int i = 0; i < suggestions.length; i++) {
+      print(suggestions[i]["name"]);
+    }
+
+    filteredList =
+        _RecipesPageState().publicRecipesBuilder(context, suggestions);
+
+    return filteredList;
   }
 }

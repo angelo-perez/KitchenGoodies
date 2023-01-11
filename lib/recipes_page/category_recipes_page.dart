@@ -95,8 +95,6 @@ class _CategoryRecipesPageState extends State<CategoryRecipesPage> {
         break;
     }
 
-    String searchIn = "Premade";
-
     final CollectionReference _premadeCollection =
         FirebaseFirestore.instance.collection(collection_name);
 
@@ -122,7 +120,7 @@ class _CategoryRecipesPageState extends State<CategoryRecipesPage> {
               onPressed: () {
                 showSearch(
                     context: context,
-                    delegate: RecipesSearchDelegate(recipeList, searchIn));
+                    delegate: RecipesSearchDelegate(recipeList, categoryName));
               },
               icon: Icon(
                 Icons.search,
@@ -236,18 +234,17 @@ class _CategoryRecipesPageState extends State<CategoryRecipesPage> {
             pushNewScreen(
               context,
               screen: RecipeOverview(
-                documentSnapshot.id,
-                collection_name,
-                documentSnapshot['imageUrl'],
-                documentSnapshot['name'],
-                documentSnapshot['source'],
-                documentSnapshot['description'],
-                documentSnapshot['ingredients'],
-                documentSnapshot['steps'],
-                documentSnapshot['steps-timer'],
-                documentSnapshot['rating'],
-                'premade'
-              ),
+                  documentSnapshot.id,
+                  collection_name,
+                  documentSnapshot['imageUrl'],
+                  documentSnapshot['name'],
+                  documentSnapshot['source'],
+                  documentSnapshot['description'],
+                  documentSnapshot['ingredients'],
+                  documentSnapshot['steps'],
+                  documentSnapshot['steps-timer'],
+                  documentSnapshot['rating'],
+                  'premade'),
               withNavBar: false,
             );
           } else {
@@ -374,18 +371,17 @@ class _CategoryRecipesPageState extends State<CategoryRecipesPage> {
                         pushNewScreen(
                           context,
                           screen: RecipeOverview(
-                            documentSnapshot.id,
-                            collection_name,
-                            documentSnapshot['imageUrl'],
-                            documentSnapshot['name'],
-                            documentSnapshot['source'],
-                            documentSnapshot['description'],
-                            documentSnapshot['ingredients'],
-                            documentSnapshot['steps'],
-                            documentSnapshot['steps-timer'],
-                            documentSnapshot['rating'],
-                            'premade'
-                          ),
+                              documentSnapshot.id,
+                              collection_name,
+                              documentSnapshot['imageUrl'],
+                              documentSnapshot['name'],
+                              documentSnapshot['source'],
+                              documentSnapshot['description'],
+                              documentSnapshot['ingredients'],
+                              documentSnapshot['steps'],
+                              documentSnapshot['steps-timer'],
+                              documentSnapshot['rating'],
+                              'premade'),
                           withNavBar: false,
                         );
                       } else {
@@ -470,6 +466,8 @@ class RecipesSearchDelegate extends SearchDelegate {
   List items;
   String searchIn;
 
+  var filteredList;
+
   @override
   String get searchFieldLabel => 'Search in ${searchIn} Recipes';
 
@@ -500,7 +498,7 @@ class RecipesSearchDelegate extends SearchDelegate {
   @override
   Widget buildResults(BuildContext context) {
     // TODO: implement buildResults
-    return Container();
+    return filteredList;
   }
 
   @override
@@ -518,6 +516,8 @@ class RecipesSearchDelegate extends SearchDelegate {
       print(suggestions[i]["name"]);
     }
 
-    return _CategoryRecipesPageState()._listView(context, suggestions);
+    filteredList = _CategoryRecipesPageState()._listView(context, suggestions);
+
+    return filteredList;
   }
 }
