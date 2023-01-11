@@ -89,6 +89,8 @@ dependencies:
   csc_picker: ^0.2.6
   floating_tabbar: ^0.0.6
   tab_indicator_styler: ^2.0.0
+  filter_list: ^1.0.2
+  flutter_speed_dial: ^6.2.0
 
 dev_dependencies:
   flutter_test:

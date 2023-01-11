@@ -212,7 +212,15 @@ class _AddPictureState extends State<AddPicture> {
           Padding(padding: EdgeInsets.all(8.0)),
           ElevatedButton(
               onPressed: () {
-                String publicId = const Uuid().v1();
+                Fluttertoast.showToast(
+                    msg: "Saving Recipe...",
+                    toastLength: Toast.LENGTH_SHORT,
+                    gravity: ToastGravity.SNACKBAR,
+                    timeInSecForIosWeb: 1,
+                    backgroundColor: splashScreenBgColor,
+                    textColor: Colors.white,
+                    fontSize: 16.0);
+                String recipeId = const Uuid().v1();
 
                 // print(widget.recipeName);
                 // print(widget.recipeCategory);
@@ -223,7 +231,7 @@ class _AddPictureState extends State<AddPicture> {
                 // print(_image);
                 // print(user.uid);
                 // print(user.username);
-                print(publicId);
+                print(recipeId);
 
                 ManageRecipe uploadRecipe = ManageRecipe();
                 uploadRecipe

@@ -203,7 +203,18 @@ class _EditStepsState extends State<EditSteps> {
                             backgroundColor: splashScreenBgColor,
                             textColor: Colors.white,
                             fontSize: 16.0);
+                            
                       } else {
+
+                        Fluttertoast.showToast(
+                            msg: "Saving Recipe...",
+                            toastLength: Toast.LENGTH_SHORT,
+                            gravity: ToastGravity.SNACKBAR,
+                            timeInSecForIosWeb: 1,
+                            backgroundColor: splashScreenBgColor,
+                            textColor: Colors.white,
+                            fontSize: 16.0);
+
                         ManageRecipe updateRecipe = ManageRecipe();
 
                         Fluttertoast.showToast(
@@ -290,7 +301,8 @@ class _EditStepsState extends State<EditSteps> {
           Expanded(
             child: TextFormField(
               initialValue: key < widget.recipeStepTimer.length
-                  ? TimerFunctions().timerToDisplay(widget.recipeStepTimer[key]) : '', //display the saved time as initial value, if 0, displays '00:00:00'
+                  ? TimerFunctions().timerToDisplay(widget.recipeStepTimer[key])
+                  : '', //display the saved time as initial value, if 0, displays '00:00:00'
               // controller: _txtTimeController,
               keyboardType: TextInputType.numberWithOptions(decimal: false),
               decoration: InputDecoration(
@@ -320,13 +332,14 @@ class _EditStepsState extends State<EditSteps> {
                 value = value != ""
                     ? value
                     : "00:00:00"; //sets time to 0 when empty string to avoid error
-                int timerInSecs =
-                    TimerFunctions().timerToSecs(value); //convert the entered time in seconds
+                int timerInSecs = TimerFunctions()
+                    .timerToSecs(value); //convert the entered time in seconds
                 _tempTimer = timerInSecs;
                 print(value);
                 print(timerInSecs);
 
-                _onTimerUpdate(key, timerInSecs); //updates the 'timer' value in timerValues list of object
+                _onTimerUpdate(key,
+                    timerInSecs); //updates the 'timer' value in timerValues list of object
               },
             ),
           )
