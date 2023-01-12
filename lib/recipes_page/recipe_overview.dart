@@ -41,6 +41,107 @@ class RecipeOverview extends StatefulWidget {
 }
 
 class _RecipeOverviewState extends State<RecipeOverview> {
+  TextEditingController _reportTextController = TextEditingController();
+
+  String reportTextCurrentValue = "";
+  late String reportTextFinal;
+
+  Future<void> _displayTextInputDialog(BuildContext context) async {
+    return showDialog(
+        context: context,
+        builder: (context) {
+          return AlertDialog(
+            title: Text(
+              "Report ${widget.recipe_name}",
+              maxLines: 1,
+              style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+            ),
+            content: TextField(
+              maxLines: 5,
+              minLines: 1,
+              onChanged: (value) {
+                setState(() {
+                  reportTextCurrentValue = value;
+                });
+              },
+              cursorColor: Colors.grey,
+              controller: _reportTextController,
+              decoration: InputDecoration(
+                hintText: "Submit your report...",
+                border: OutlineInputBorder(
+                  borderSide: BorderSide(
+                    color: mPrimaryColor,
+                    width: 2,
+                  ),
+                ),
+                focusedBorder: OutlineInputBorder(
+                  borderSide: BorderSide(
+                    color: mPrimaryColor,
+                    width: 2,
+                  ),
+                ),
+              ),
+            ),
+            actions: <Widget>[
+              TextButton(
+                child: Text(
+                  'Submit',
+                  style: TextStyle(color: mPrimaryColor),
+                ),
+                style: ButtonStyle(
+                  overlayColor: MaterialStateProperty.all(
+                    Color.fromARGB(51, 42, 39, 38),
+                  ),
+                ),
+                onPressed: () {
+                  setState(() {
+                    reportTextFinal = reportTextCurrentValue;
+                    if (reportTextFinal == "") {
+                      Fluttertoast.showToast(
+                          msg: "Please enter your report",
+                          toastLength: Toast.LENGTH_SHORT,
+                          gravity: ToastGravity.SNACKBAR,
+                          timeInSecForIosWeb: 1,
+                          backgroundColor: splashScreenBgColor,
+                          textColor: Colors.white,
+                          fontSize: 16.0);
+                    } else {
+                      Navigator.pop(context);
+                      _reportTextController.clear();
+                      Fluttertoast.showToast(
+                          msg: "Successfully reported ${widget.recipe_name}",
+                          toastLength: Toast.LENGTH_SHORT,
+                          gravity: ToastGravity.SNACKBAR,
+                          timeInSecForIosWeb: 1,
+                          backgroundColor: splashScreenBgColor,
+                          textColor: Colors.white,
+                          fontSize: 16.0);
+                    }
+                  });
+                },
+              ),
+              TextButton(
+                child: Text(
+                  'Cancel',
+                  style: TextStyle(color: mPrimaryColor),
+                ),
+                style: ButtonStyle(
+                  overlayColor: MaterialStateProperty.all(
+                    Color.fromARGB(51, 42, 39, 38),
+                  ),
+                ),
+                onPressed: () {
+                  setState(() {
+                    _reportTextController.clear();
+                    Navigator.pop(context);
+                  });
+                },
+              ),
+            ],
+          );
+        });
+  }
+
   @override
   Widget build(BuildContext context) {
     Color iconTextColor = Colors.white;
@@ -77,40 +178,14 @@ class _RecipeOverviewState extends State<RecipeOverview> {
           ],
         ),
         actions: [
-          recipeType == "public" ? IconButton(
-            onPressed: () {
-              showDialog(
-                context: context,
-                builder: (context) => new AlertDialog(
-                  content:
-                      new Text('Do you want to report ${widget.recipe_name}?'),
-                  actions: <Widget>[
-                    TextButton(
-                      onPressed: () {
-                        Navigator.of(context).pop();
-                        Fluttertoast.showToast(
-                            msg: "Successfully reported ${widget.recipe_name}",
-                            toastLength: Toast.LENGTH_SHORT,
-                            gravity: ToastGravity.SNACKBAR,
-                            timeInSecForIosWeb: 1,
-                            backgroundColor: splashScreenBgColor,
-                            textColor: Colors.white,
-                            fontSize: 16.0);
-                      },
-                      child: new Text('Yes'),
-                    ),
-                    TextButton(
-                      onPressed: () {
-                        Navigator.of(context).pop();
-                      },
-                      child: new Text('No'),
-                    ),
-                  ],
-                ),
-              );
-            },
-            icon: Icon(Icons.report),
-          ) : Container(),
+          recipeType == "public"
+              ? IconButton(
+                  onPressed: () {
+                    _displayTextInputDialog(context);
+                  },
+                  icon: Icon(Icons.report),
+                )
+              : Container(),
         ],
         elevation: 0,
         foregroundColor: mBackgroundColor,
