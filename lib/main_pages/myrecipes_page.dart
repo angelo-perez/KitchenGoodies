@@ -313,20 +313,6 @@ class _MyRecipesPageState extends State<MyRecipesPage> {
         actions: <Widget>[
           TextButton(
             onPressed: () {
-              Navigator.of(context).pop();
-              Fluttertoast.showToast(
-                  msg: "${recipeName} was not deleted",
-                  toastLength: Toast.LENGTH_SHORT,
-                  gravity: ToastGravity.SNACKBAR,
-                  timeInSecForIosWeb: 1,
-                  backgroundColor: splashScreenBgColor,
-                  textColor: Colors.white,
-                  fontSize: 16.0);
-            },
-            child: new Text('No'),
-          ),
-          TextButton(
-            onPressed: () {
               ManageRecipe deleteRecipe = ManageRecipe();
 
               deleteRecipe
@@ -345,6 +331,20 @@ class _MyRecipesPageState extends State<MyRecipesPage> {
               Navigator.of(context).pop();
             },
             child: new Text('Yes'),
+          ),
+          TextButton(
+            onPressed: () {
+              Navigator.of(context).pop();
+              Fluttertoast.showToast(
+                  msg: "${recipeName} was not deleted",
+                  toastLength: Toast.LENGTH_SHORT,
+                  gravity: ToastGravity.SNACKBAR,
+                  timeInSecForIosWeb: 1,
+                  backgroundColor: splashScreenBgColor,
+                  textColor: Colors.white,
+                  fontSize: 16.0);
+            },
+            child: new Text('No'),
           ),
         ],
       ),

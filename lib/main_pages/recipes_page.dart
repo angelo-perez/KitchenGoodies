@@ -218,67 +218,19 @@ class _RecipesPageState extends State<RecipesPage> {
     );
   }
 
-  List<QueryDocumentSnapshot<Object?>> selectedUserList = [];
-  Future<void> _openFilterDialog() async {
-    await FilterListDialog.display<QueryDocumentSnapshot<Object?>>(
-      context,
-      hideSelectedTextCount: true,
-      themeData: FilterListThemeData(context),
-      headlineText: 'Search Public Recipes',
-      height: 500,
-      listData: publicRecipeList,
-      selectedListData: selectedUserList,
-      choiceChipLabel: (recipe) => recipe!["name"],
-      validateSelectedItem: (list, val) => list!.contains(val["name"]),
-      controlButtons: [ControlButtonType.All, ControlButtonType.Reset],
-      onItemSearch: (recipe, query) {
-        /// When search query change in search bar then this method will be called
-        ///
-        /// Check if items contains query
-        return recipe["name"].toLowerCase().contains(query.toLowerCase());
-      },
-
-      onApplyButtonClick: (list) {
-        setState(() {
-          selectedUserList = List.from(list!);
-          // publicRecipesBuilder(context, selectedUserList);
-        });
-        Navigator.pop(context);
-      },
-
-      /// uncomment below code to create custom choice chip
-      /* choiceChipBuilder: (context, item, isSelected) {
-        return Container(
-          padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
-          margin: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
-          decoration: BoxDecoration(
-              border: Border.all(
-            color: isSelected! ? Colors.blue[300]! : Colors.grey[300]!,
-          )),
-          child: Text(
-            item.name,
-            style: TextStyle(
-                color: isSelected ? Colors.blue[300] : Colors.grey[500]),
-          ),
-        );
-      }, */
-    );
-  }
-
   Widget publicRecipesBuilder(BuildContext context, List items) {
     return Scaffold(
       floatingActionButton: Visibility(
         visible: _isSearchButtonVisible,
         child: FloatingActionButton(
           backgroundColor: appBarColor,
-          mini: true,
           onPressed: (() {
             showSearch(
                 context: context,
                 delegate:
                     PublicRecipeSearchDelegate(publicRecipeList, "Public"));
           }),
-          child: Icon(FluentIcons.search_20_regular),
+          child: Icon(FluentIcons.search_48_filled, size: 30),
         ),
       ),
       body: ListView(
@@ -456,6 +408,34 @@ class PublicRecipeSearchDelegate extends SearchDelegate {
   List<Widget>? buildActions(BuildContext context) => [
         // TODO: implement buildActions
         IconButton(
+          onPressed: () {
+            showMenu(
+              context: context,
+              position: RelativeRect.fromLTRB(25.0, 25.0, 0.0, 0.0),
+              items: [
+                PopupMenuItem<String>(
+                    child: const Text('Chicken'), value: 'chicken'),
+                PopupMenuItem<String>(child: const Text('Pork'), value: 'pork'),
+                PopupMenuItem<String>(child: const Text('Beef'), value: 'beef'),
+                PopupMenuItem<String>(child: const Text('Fish'), value: 'fish'),
+                PopupMenuItem<String>(
+                    child: const Text('Crustacean'), value: 'crustacean'),
+                PopupMenuItem<String>(
+                    child: const Text('Vegetables'), value: 'vegetables'),
+                PopupMenuItem<String>(
+                    child: const Text('Dessert'), value: 'dessert'),
+                PopupMenuItem<String>(
+                    child: const Text('Others'), value: 'others'),
+              ],
+              elevation: 8.0,
+            ).then((value) {
+              if (value == null) return;
+              query = value;
+            });
+          },
+          icon: Icon(Icons.filter_list_alt),
+        ),
+        IconButton(
           icon: Icon(Icons.clear),
           onPressed: () {
             if (query.isEmpty) {
@@ -492,10 +472,14 @@ class PublicRecipeSearchDelegate extends SearchDelegate {
     _isSearchButtonVisible = false;
 
     List suggestions = items.where((item) {
-      final result = item["name"].toLowerCase();
+      final nameResult = item["name"].toLowerCase();
+      final sourceResult = item["source"].toLowerCase();
+      final collectionResult = item["collection"].toLowerCase();
       final input = query.toLowerCase();
 
-      return result.contains(input);
+      return nameResult.contains(input) ||
+          sourceResult.contains(input) ||
+          collectionResult.contains(input);
     }).toList();
 
     for (int i = 0; i < suggestions.length; i++) {

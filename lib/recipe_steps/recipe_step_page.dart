@@ -58,10 +58,6 @@ class _RecipeStepPageState extends State<RecipeStepPage> {
               content: new Text('Do you want to exit the recipe\'s procedure?'),
               actions: <Widget>[
                 TextButton(
-                  onPressed: () => Navigator.of(context).pop(false),
-                  child: new Text('No'),
-                ),
-                TextButton(
                   onPressed: () {
                     FlutterRingtonePlayer.stop();
                     for (int i = widget.step_index; i >= 0; i--) {
@@ -70,6 +66,10 @@ class _RecipeStepPageState extends State<RecipeStepPage> {
                     }
                   },
                   child: new Text('Yes'),
+                ),
+                TextButton(
+                  onPressed: () => Navigator.of(context).pop(false),
+                  child: new Text('No'),
                 ),
               ],
             ),

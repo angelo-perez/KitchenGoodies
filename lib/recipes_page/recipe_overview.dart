@@ -3,9 +3,11 @@ import 'dart:ffi';
 import 'package:bulleted_list/bulleted_list.dart';
 import 'package:elective_project/recipe_steps/recipe_step_page.dart';
 import 'package:elective_project/util/colors.dart';
+import 'package:fluentui_system_icons/fluentui_system_icons.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/container.dart';
 import 'package:flutter/src/widgets/framework.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:persistent_bottom_nav_bar/persistent-tab-view.dart';
 
 class RecipeOverview extends StatefulWidget {
@@ -74,6 +76,42 @@ class _RecipeOverviewState extends State<RecipeOverview> {
             ),
           ],
         ),
+        actions: [
+          recipeType == "public" ? IconButton(
+            onPressed: () {
+              showDialog(
+                context: context,
+                builder: (context) => new AlertDialog(
+                  content:
+                      new Text('Do you want to report ${widget.recipe_name}?'),
+                  actions: <Widget>[
+                    TextButton(
+                      onPressed: () {
+                        Navigator.of(context).pop();
+                        Fluttertoast.showToast(
+                            msg: "Successfully reported ${widget.recipe_name}",
+                            toastLength: Toast.LENGTH_SHORT,
+                            gravity: ToastGravity.SNACKBAR,
+                            timeInSecForIosWeb: 1,
+                            backgroundColor: splashScreenBgColor,
+                            textColor: Colors.white,
+                            fontSize: 16.0);
+                      },
+                      child: new Text('Yes'),
+                    ),
+                    TextButton(
+                      onPressed: () {
+                        Navigator.of(context).pop();
+                      },
+                      child: new Text('No'),
+                    ),
+                  ],
+                ),
+              );
+            },
+            icon: Icon(Icons.report),
+          ) : Container(),
+        ],
         elevation: 0,
         foregroundColor: mBackgroundColor,
         centerTitle: true,
