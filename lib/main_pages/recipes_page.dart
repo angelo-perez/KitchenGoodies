@@ -64,24 +64,20 @@ class _RecipesPageState extends State<RecipesPage> {
       length: 2,
       child: Scaffold(
         appBar: AppBar(
-          backgroundColor: Colors.white,
-          leading: SvgPicture.asset(
-            'images/logos/kitchen-goodies.svg',
-            color: appBarColor,
-          ),
+          backgroundColor: mBackgroundColor,
           title: Text(
-            'Categories',
-            style: TextStyle(color: appBarColor),
+            'Recipes',
+            style: TextStyle(color: appBarColor, fontWeight: FontWeight.w900, fontSize: 22),
           ),
           elevation: 0.0,
-          titleSpacing: 0,
+          
           bottom: TabBar(
             labelColor: mPrimaryColor,
             indicatorColor: mPrimaryColor,
             labelStyle: TextStyle(
                 fontWeight: FontWeight.w500,
                 color: mPrimaryColor,
-                fontSize: 16),
+                fontSize: 17),
             indicatorSize: TabBarIndicatorSize.label,
             indicatorWeight: 3.0,
             tabs: [

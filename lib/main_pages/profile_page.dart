@@ -29,13 +29,14 @@ class _SettingsPageState extends State<SettingsPage> {
       appBar: AppBar(
         backgroundColor: mBackgroundColor,
         title: Text(
-          "  Account",
-          style: TextStyle(color: mPrimaryTextColor),
+          'Account',
+          style: TextStyle(color: appBarColor, fontWeight: FontWeight.w900, fontSize: 22),
         ),
         actions: [
           IconButton(
               onPressed: () {}, icon: SvgPicture.asset('images/icons/settings/night-mode.svg'))
         ],
+        elevation: 0,
       ),
       body: SingleChildScrollView(
         child: Container(

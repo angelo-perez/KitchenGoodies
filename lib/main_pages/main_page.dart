@@ -111,7 +111,7 @@ class _MainPageState extends State<MainPage> {
         inactiveColorPrimary: CupertinoColors.systemGrey,
       ),
       PersistentBottomNavBarItem(
-        icon: Icon(FluentIcons.people_24_filled),
+        icon: Icon(FluentIcons.people_community_24_filled),
         title: ("Community"),
         activeColorPrimary: appBarColor,
         inactiveColorPrimary: CupertinoColors.systemGrey,

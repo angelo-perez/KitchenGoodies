@@ -40,7 +40,7 @@ class _MyRecipesPageState extends State<MyRecipesPage> {
         backgroundColor: mBackgroundColor,
         appBar: AppBar(
           backgroundColor: mBackgroundColor,
-          title: Text('My Recipes', style: TextStyle(color: appBarColor)),
+          title: Text('My Recipes', style: TextStyle(color: appBarColor, fontWeight: FontWeight.w900, fontSize: 22),),
           actions: [
             IconButton(
                 onPressed: () {
@@ -52,12 +52,6 @@ class _MyRecipesPageState extends State<MyRecipesPage> {
                   Icons.search,
                   color: appBarColor,
                 )),
-            IconButton(
-                onPressed: () {},
-                icon: Icon(
-                  Icons.more_vert,
-                  color: appBarColor,
-                ))
           ],
           elevation: 0.0,
         ),
