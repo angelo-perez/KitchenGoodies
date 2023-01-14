@@ -3,6 +3,7 @@ import 'package:elective_project/util/utils.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
 
@@ -44,21 +45,41 @@ class _AddPostWidgetState extends State<AddPostWidget> {
         setState(() {
           _isLoading = false;
         });
-        showSnackBar('Posted', context);
+        Fluttertoast.showToast(
+            msg: "Posted",
+            toastLength: Toast.LENGTH_SHORT,
+            gravity: ToastGravity.SNACKBAR,
+            timeInSecForIosWeb: 1,
+            backgroundColor: splashScreenBgColor,
+            textColor: Colors.white,
+            fontSize: 16.0);
         clearImage();
         // Navigator.pop(context);
         Navigator.of(context, rootNavigator: true).pushAndRemoveUntil(
             MaterialPageRoute(builder: (context) => MainPage(3)), (route) => false);
       } else {
-        showSnackBar(res, context);
+        Fluttertoast.showToast(
+            msg: res,
+            toastLength: Toast.LENGTH_SHORT,
+            gravity: ToastGravity.SNACKBAR,
+            timeInSecForIosWeb: 1,
+            backgroundColor: splashScreenBgColor,
+            textColor: Colors.white,
+            fontSize: 16.0);
       }
-
-      //res == "success" ? showSnackBar('Posted', context) : showSnackBar(res, context);
     } catch (e) {
       setState(() {
         _isLoading = false;
       });
-      showSnackBar(e.toString(), context);
+
+      Fluttertoast.showToast(
+          msg: "Something went wrong",
+          toastLength: Toast.LENGTH_SHORT,
+          gravity: ToastGravity.SNACKBAR,
+          timeInSecForIosWeb: 1,
+          backgroundColor: splashScreenBgColor,
+          textColor: Colors.white,
+          fontSize: 16.0);
     }
   }
 
