@@ -1,11 +1,13 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:elective_project/community_page/models/user.dart' as model;
+import 'package:elective_project/profile_page/edit_profile_widget.dart';
 import 'package:elective_project/profile_page/widget/follow_button.dart';
 import 'package:elective_project/resources/firestore_methods.dart';
 import 'package:elective_project/util/colors.dart';
 import 'package:elective_project/util/utils.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:persistent_bottom_nav_bar/persistent-tab-view.dart';
 import 'package:provider/provider.dart';
 
 import '../providers/user_provider.dart';
@@ -122,9 +124,11 @@ class _ViewProfileState extends State<ViewProfile> {
                                         ? FollowButton(
                                             backgroundColor: mBackgroundColor,
                                             borderColor: mPrimaryColor,
-                                            text: 'Edit Description',
+                                            text: 'Edit Profile',
                                             textColor: Colors.grey,
-                                            function: () {},
+                                            function: () => pushNewScreen(context,
+                                                screen: const EditProfileWidget(),
+                                                withNavBar: true),
                                           )
                                         : isFollowing
                                             ? FollowButton(

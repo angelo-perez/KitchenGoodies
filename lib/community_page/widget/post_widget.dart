@@ -142,10 +142,23 @@ class _PostCardState extends State<PostCard> {
                                         Navigator.pop(context);
                                       },
                                     )
-                                  : Container(),
+                                  : SimpleDialogOption(
+                                      padding: const EdgeInsets.all(20),
+                                      child: const Text("Report"),
+                                      onPressed: () async {
+                                        Fluttertoast.showToast(
+                                            msg: "Report Successful",
+                                            toastLength: Toast.LENGTH_SHORT,
+                                            gravity: ToastGravity.SNACKBAR,
+                                            timeInSecForIosWeb: 1,
+                                            backgroundColor: splashScreenBgColor,
+                                            textColor: Colors.white,
+                                            fontSize: 16.0);
+                                      },
+                                    ),
                               SimpleDialogOption(
                                   padding: const EdgeInsets.all(20),
-                                  child: const Text('Save'),
+                                  child: const Text('Save Image'),
                                   onPressed: () async {
                                     Navigator.pop(context);
                                   }),

@@ -52,18 +52,19 @@ class _EditProfileWidgetState extends State<EditProfileWidget> {
       setState(() {
         _isLoading = false;
       });
-
       Fluttertoast.showToast(
-          msg: "res",
+          msg: res,
           toastLength: Toast.LENGTH_SHORT,
           gravity: ToastGravity.SNACKBAR,
           timeInSecForIosWeb: 1,
           backgroundColor: splashScreenBgColor,
           textColor: Colors.white,
           fontSize: 16.0);
+      // ignore: use_build_context_synchronously
+      Navigator.pop(context);
     } else {
       Fluttertoast.showToast(
-          msg: "res",
+          msg: "Something went wrong",
           toastLength: Toast.LENGTH_SHORT,
           gravity: ToastGravity.SNACKBAR,
           timeInSecForIosWeb: 1,

@@ -2,6 +2,7 @@ import 'package:elective_project/util/colors.dart';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 
 import 'package:provider/provider.dart';
 
@@ -52,8 +53,32 @@ class AboutWidget extends StatelessWidget {
                 ),
                 trailing: const Text("Alpha Testing"),
               ),
-              SettingMenu(title: "Contact Us", icon: Icons.phone, onPress: (() {})),
-              SettingMenu(title: "Rate Us", icon: Icons.star, onPress: (() {})),
+              SettingMenu(
+                  title: "Contact Us",
+                  icon: Icons.phone,
+                  onPress: (() {
+                    Fluttertoast.showToast(
+                        msg: "App is not yet deployed",
+                        toastLength: Toast.LENGTH_SHORT,
+                        gravity: ToastGravity.SNACKBAR,
+                        timeInSecForIosWeb: 1,
+                        backgroundColor: splashScreenBgColor,
+                        textColor: Colors.white,
+                        fontSize: 16.0);
+                  })),
+              SettingMenu(
+                  title: "Rate Us",
+                  icon: Icons.star,
+                  onPress: (() {
+                    Fluttertoast.showToast(
+                        msg: "App is not yet deployed",
+                        toastLength: Toast.LENGTH_SHORT,
+                        gravity: ToastGravity.SNACKBAR,
+                        timeInSecForIosWeb: 1,
+                        backgroundColor: splashScreenBgColor,
+                        textColor: Colors.white,
+                        fontSize: 16.0);
+                  })),
             ],
           ),
         ),
