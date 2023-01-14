@@ -9,6 +9,7 @@ import 'package:elective_project/util/utils.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:image_picker/image_picker.dart';
 
 class SignUpPage extends StatefulWidget {
@@ -77,7 +78,14 @@ class _SignUpPageState extends State<SignUpPage> {
       Navigator.of(context)
           .pushReplacement(MaterialPageRoute(builder: (context) => const VerifyEmail()));
     } else {
-      showSnackBar(res, context);
+      Fluttertoast.showToast(
+          msg: res,
+          toastLength: Toast.LENGTH_SHORT,
+          gravity: ToastGravity.SNACKBAR,
+          timeInSecForIosWeb: 1,
+          backgroundColor: splashScreenBgColor,
+          textColor: Colors.white,
+          fontSize: 16.0);
       setState(() {
         _isLoading = false;
       });

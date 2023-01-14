@@ -2,6 +2,7 @@ import 'package:elective_project/resources/auth_methods.dart';
 import 'package:elective_project/util/colors.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
 import '../providers/user_provider.dart';
@@ -47,9 +48,23 @@ class _ChangePasswordState extends State<ChangePassword> {
       setState(() {
         _isLoading = false;
       });
-      showSnackBar(res, context);
+      Fluttertoast.showToast(
+          msg: res,
+          toastLength: Toast.LENGTH_SHORT,
+          gravity: ToastGravity.SNACKBAR,
+          timeInSecForIosWeb: 1,
+          backgroundColor: splashScreenBgColor,
+          textColor: Colors.white,
+          fontSize: 16.0);
     } else {
-      showSnackBar(res, context);
+      Fluttertoast.showToast(
+          msg: res,
+          toastLength: Toast.LENGTH_SHORT,
+          gravity: ToastGravity.SNACKBAR,
+          timeInSecForIosWeb: 1,
+          backgroundColor: splashScreenBgColor,
+          textColor: Colors.white,
+          fontSize: 16.0);
       setState(() {
         _isLoading = false;
       });

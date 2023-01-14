@@ -5,6 +5,7 @@ import 'package:elective_project/util/colors.dart';
 import 'package:elective_project/util/utils.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 
 class VerifyEmail extends StatefulWidget {
   const VerifyEmail({super.key});
@@ -57,7 +58,14 @@ class _VerifyEmailState extends State<VerifyEmail> {
       await Future.delayed(const Duration(seconds: 5));
       setState(() => canResendEmail = true);
     } catch (e) {
-      showSnackBar(e.toString(), context);
+      Fluttertoast.showToast(
+          msg: "Something went wrong",
+          toastLength: Toast.LENGTH_SHORT,
+          gravity: ToastGravity.SNACKBAR,
+          timeInSecForIosWeb: 1,
+          backgroundColor: splashScreenBgColor,
+          textColor: Colors.white,
+          fontSize: 16.0);
     }
   }
 

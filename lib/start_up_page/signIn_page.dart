@@ -6,6 +6,7 @@ import 'package:elective_project/util/colors.dart';
 import 'package:elective_project/util/utils.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 
 class SignInPage extends StatefulWidget {
   const SignInPage({Key? key}) : super(key: key);
@@ -39,7 +40,14 @@ class _SignInPageState extends State<SignInPage> {
       Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (context) => VerifyEmail()));
       //Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (context) => VerifyGoogleSignIn()));
     } else {
-      showSnackBar(res, context);
+      Fluttertoast.showToast(
+          msg: "Something went wrong",
+          toastLength: Toast.LENGTH_SHORT,
+          gravity: ToastGravity.SNACKBAR,
+          timeInSecForIosWeb: 1,
+          backgroundColor: splashScreenBgColor,
+          textColor: Colors.white,
+          fontSize: 16.0);
     }
     setState(() {
       _isLoading = false;
