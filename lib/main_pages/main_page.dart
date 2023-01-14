@@ -64,7 +64,7 @@ class _MainPageState extends State<MainPage> {
     final PersistentTabController _controller =
         PersistentTabController(initialIndex: widget.initialIndex);
 
-    FlutterRingtonePlayer.stop;
+    // FlutterRingtonePlayer.stop;
 
     return isLoading
         ? Scaffold(

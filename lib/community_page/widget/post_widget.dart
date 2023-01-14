@@ -8,6 +8,7 @@ import 'package:elective_project/util/utils.dart';
 import 'package:elective_project/widget/like_animation.dart';
 
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 
@@ -60,7 +61,14 @@ class _PostCardState extends State<PostCard> {
       commentLen = snap.docs.length;
       print(commentLen);
     } catch (e) {
-      showSnackBar(e.toString(), context);
+      Fluttertoast.showToast(
+          msg: "Something went wrong",
+          toastLength: Toast.LENGTH_SHORT,
+          gravity: ToastGravity.SNACKBAR,
+          timeInSecForIosWeb: 1,
+          backgroundColor: splashScreenBgColor,
+          textColor: Colors.white,
+          fontSize: 16.0);
     }
     setState(() {});
   }

@@ -32,21 +32,21 @@ class _MyRecipesPageState extends State<MyRecipesPage> {
     final User? user = auth.currentUser;
     final uid = user!.uid;
 
-    final Query<Map<String, dynamic>> _myRecipes = FirebaseFirestore.instance
-        .collection("user-recipes")
-        .where('uid', isEqualTo: uid);
+    final Query<Map<String, dynamic>> _myRecipes =
+        FirebaseFirestore.instance.collection("user-recipes").where('uid', isEqualTo: uid);
 
     return Scaffold(
         backgroundColor: mBackgroundColor,
         appBar: AppBar(
           backgroundColor: mBackgroundColor,
-          title: Text('My Recipes', style: TextStyle(color: appBarColor, fontWeight: FontWeight.w900, fontSize: 22),),
+          title: Text(
+            'My Recipes',
+            style: TextStyle(color: appBarColor, fontWeight: FontWeight.w900, fontSize: 22),
+          ),
           actions: [
             IconButton(
                 onPressed: () {
-                  showSearch(
-                      context: context,
-                      delegate: MyRecipeSearchDelegate(myRecipeList));
+                  showSearch(context: context, delegate: MyRecipeSearchDelegate(myRecipeList));
                 },
                 icon: Icon(
                   Icons.search,
@@ -66,17 +66,13 @@ class _MyRecipesPageState extends State<MyRecipesPage> {
         body: SafeArea(
             child: StreamBuilder(
                 stream: _myRecipes.snapshots(),
-                builder:
-                    (context, AsyncSnapshot<QuerySnapshot> myRecipeSnapshot) {
+                builder: (context, AsyncSnapshot<QuerySnapshot> myRecipeSnapshot) {
                   print("in");
-                  if (myRecipeSnapshot.hasData &&
-                      myRecipeSnapshot.data!.size > 0) {
+                  if (myRecipeSnapshot.hasData && myRecipeSnapshot.data!.size > 0) {
                     print("recipes found");
                     myRecipeList = myRecipeSnapshot.data!.docs;
-                    return _myRecipeListViewBuilder(
-                        context, myRecipeSnapshot.data!.docs);
-                  } else if (myRecipeSnapshot.connectionState ==
-                      ConnectionState.waiting) {
+                    return _myRecipeListViewBuilder(context, myRecipeSnapshot.data!.docs);
+                  } else if (myRecipeSnapshot.connectionState == ConnectionState.waiting) {
                     print("loading");
                     return Center(
                       child: CircularProgressIndicator(),
@@ -129,8 +125,7 @@ class _MyRecipesPageState extends State<MyRecipesPage> {
                         final uid = user!.uid;
 
                         ManageRecipe toggleRecipePrivacy = ManageRecipe();
-                        toggleRecipePrivacy.toggleRecipePrivacy(
-                            uid, documentSnapshot.id, privacy);
+                        toggleRecipePrivacy.toggleRecipePrivacy(uid, documentSnapshot.id, privacy);
                         print(privacy);
                       },
                       backgroundColor: Color.fromARGB(255, 107, 100, 38),
@@ -184,12 +179,8 @@ class _MyRecipesPageState extends State<MyRecipesPage> {
                         final User? user = auth.currentUser;
                         final uid = user!.uid;
 
-                        deleteRecipeDialog(
-                            context,
-                            uid,
-                            documentSnapshot.id,
-                            documentSnapshot['name'],
-                            documentSnapshot['imageUrl']);
+                        deleteRecipeDialog(context, uid, documentSnapshot.id,
+                            documentSnapshot['name'], documentSnapshot['imageUrl']);
                       },
                       backgroundColor: Color(0xFFFE4A49),
                       foregroundColor: Colors.white,
@@ -214,10 +205,7 @@ class _MyRecipesPageState extends State<MyRecipesPage> {
                       visualDensity: VisualDensity(vertical: 4),
                       onTap: () {
                         int numFields =
-                            (documentSnapshot.data() as Map<String, dynamic>)
-                                .keys
-                                .toList()
-                                .length;
+                            (documentSnapshot.data() as Map<String, dynamic>).keys.toList().length;
                         if (numFields >= 5) {
                           //6 fields including the source of the recipe
                           //check if number of fields is 5 (complete)
@@ -238,11 +226,9 @@ class _MyRecipesPageState extends State<MyRecipesPage> {
                             withNavBar: false,
                           );
                         } else {
-                          const recipeSnackbar = SnackBar(
-                              content:
-                                  Text("Sorry, recipe is not yet available."));
-                          ScaffoldMessenger.of(context)
-                              .showSnackBar(recipeSnackbar);
+                          const recipeSnackbar =
+                              SnackBar(content: Text("Sorry, recipe is not yet available."));
+                          ScaffoldMessenger.of(context).showSnackBar(recipeSnackbar);
                         }
                       },
                       leading: Container(
@@ -259,8 +245,7 @@ class _MyRecipesPageState extends State<MyRecipesPage> {
                         ),
                       ),
                       title: Text(documentSnapshot["name"]),
-                      subtitle: Text(
-                          'Last Modified: ${documentSnapshot["date"].toDate()}'),
+                      subtitle: Text('Last Modified: ${documentSnapshot["date"].toDate()}'),
                       trailing: Icon(Icons.arrow_right),
                     ),
                   ),
@@ -297,8 +282,8 @@ class _MyRecipesPageState extends State<MyRecipesPage> {
 
   void doNothing(BuildContext context) {}
 
-  void deleteRecipeDialog(BuildContext myrecipeContext, String uid,
-      String recipeId, String recipeName, String recipeImage) {
+  void deleteRecipeDialog(BuildContext myrecipeContext, String uid, String recipeId,
+      String recipeName, String recipeImage) {
     showDialog(
       context: context,
       builder: (context) => new AlertDialog(
@@ -309,9 +294,7 @@ class _MyRecipesPageState extends State<MyRecipesPage> {
             onPressed: () {
               ManageRecipe deleteRecipe = ManageRecipe();
 
-              deleteRecipe
-                  .deleteRecipe(uid, recipeId, recipeImage)
-                  .whenComplete(() {
+              deleteRecipe.deleteRecipe(uid, recipeId, recipeImage).whenComplete(() {
                 Navigator.pop(myrecipeContext);
                 Fluttertoast.showToast(
                     msg: "Successfully deleted ${recipeName}",
@@ -385,7 +368,7 @@ class MyRecipeSearchDelegate extends SearchDelegate {
   @override
   Widget buildSuggestions(BuildContext context) {
     // TODO: implement buildSuggestions
-    
+
     List suggestions = items.where((item) {
       final result = item["name"].toLowerCase();
       final input = query.toLowerCase();
@@ -397,8 +380,7 @@ class MyRecipeSearchDelegate extends SearchDelegate {
       print(suggestions[i]["name"]);
     }
 
-    filteredList =
-        _MyRecipesPageState()._myRecipeListViewBuilder(context, suggestions);
+    filteredList = _MyRecipesPageState()._myRecipeListViewBuilder(context, suggestions);
     return filteredList;
   }
 }
