@@ -5,6 +5,8 @@
 import 'package:elective_project/util/colors.dart';
 import 'package:elective_project/util/food_tiles.dart';
 import 'package:elective_project/util/food_types.dart';
+import 'package:elective_project/util/header_with_search_bar.dart';
+import 'package:elective_project/util/recommended_with_more_bttn.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -21,85 +23,72 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        backgroundColor: mBackgroundColor,
-        appBar: AppBar(
-          elevation: 0,
-          backgroundColor: appBarColor,
-          leading: SvgPicture.asset(
-            'images/logos/kitchen-goodies.svg',
-            color: Colors.white,
-          ),
-          title: Text(
-            'Kitchen Goodies',
-            style: TextStyle(fontFamily: 'Sanford', color: Colors.white),
-          ),
-          titleSpacing: 0,
+      backgroundColor: mBackgroundColor,
+      appBar: AppBar(
+        elevation: 8,
+        backgroundColor: appBarColor,
+        leading: SvgPicture.asset(
+          'images/logos/kitchen-goodies.svg',
+          color: Colors.white,
         ),
-        body: Column(
-          children: [
-            //find the best recipe
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 25.0),
-              child: Text(
-                'Find the Best Recipe For You',
-                style: TextStyle(
-                  fontFamily: 'Montserrat',
-                  fontSize: 50,
-                  color: Color(0xFF12A2726),
-                ),
-              ),
-            ),
+        title: Text(
+          'Kitchen Goodies',
+          style: TextStyle(fontFamily: 'Sanford', color: Colors.white),
+        ),
+        titleSpacing: 0,
+      ),
+      body: buildBody(),
+    );
+  }
+}
 
-            SizedBox(height: 25),
-            // Search Bar
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 25.0),
-              child: TextField(
-                decoration: InputDecoration(
-                  prefixIcon: Icon(Icons.search),
-                  hintText: 'Find recipe ...',
-                  focusedBorder: OutlineInputBorder(
-                    borderSide: BorderSide(
-                      // ignore: use_full_hex_values_for_flutter_colors
-                      color: const Color(0xff12a2726),
-                    ),
-                  ),
-                  enabledBorder: OutlineInputBorder(
-                    borderSide: BorderSide(
-                      color: const Color(0xff12a2726),
-                    ),
-                  ),
-                ),
-              ),
-            ),
-            SizedBox(
-              height: 25,
-            ),
+class buildBody extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    Size size = MediaQuery.of(context).size;
+    return SingleChildScrollView(
+      child: Column(
+        children: <Widget>[
+          headerWithSearchBar(size: size),
+          TitleWithMoreBttn(
+            title: 'Recommended',
+          )
+        ],
+      ),
+    );
+  }
+}
 
-            // Horizontal listview of recipe tiles
-            Expanded(
-                child: ListView(
-              scrollDirection: Axis.horizontal,
-              children: [
-                RecipeTile(
-                  foodImagePath: 'images/adob.jpg',
-                  foodName: 'Adobo',
-                ),
-                RecipeTile(
-                  foodImagePath: 'images/bicol-express.jpg',
-                  foodName: 'Bicol Express',
-                ),
-                RecipeTile(
-                  foodImagePath: 'images/kare-kare.jpg',
-                  foodName: 'Kare-Kare',
-                ),
-                RecipeTile(
-                  foodImagePath: 'images/menudo.jpg',
-                  foodName: 'Menudo',
-                ),
-              ],
+class TitleWithMoreBttn extends StatelessWidget {
+  const TitleWithMoreBttn({
+    Key? key,
+    required this.title,
+  }) : super(key: key);
+  final String title;
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 20),
+      child: Row(
+        children: [
+          TitleWithUnderline(
+            text: title,
+          ),
+          Spacer(),
+          TextButton(
+            style: (TextButton.styleFrom(
+              backgroundColor: appBarColor,
             )),
-          ],
-        ));
+            onPressed: () {},
+            child: Text(
+              'More',
+              style:
+                  TextStyle(color: mBackgroundColor, fontFamily: 'Montserrat'),
+            ),
+          ),
+        ],
+      ),
+    );
   }
 }
