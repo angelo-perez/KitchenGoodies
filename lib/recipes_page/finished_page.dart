@@ -49,7 +49,7 @@ class _FinishedRecipePageState extends State<FinishedRecipePage> {
   @override
   Widget build(BuildContext context) {
     Color iconTextColor = Colors.white;
-    FlutterRingtonePlayer.stop();
+    // FlutterRingtonePlayer.stop();
 
     return Scaffold(
       appBar: AppBar(
