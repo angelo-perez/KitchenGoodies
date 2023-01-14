@@ -255,6 +255,7 @@ class _RecipeOverviewState extends State<RecipeOverview> {
       floatingActionButton: Padding(
         padding: const EdgeInsets.only(bottom: 15),
         child: FloatingActionButton.extended(
+          heroTag: "StartCookingButton",
           onPressed: () => pushNewScreen(
             context,
             screen: RecipeStepPage(

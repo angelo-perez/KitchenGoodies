@@ -219,6 +219,7 @@ class _RecipesPageState extends State<RecipesPage> {
       floatingActionButton: Visibility(
         visible: _isSearchButtonVisible,
         child: FloatingActionButton(
+          heroTag: "SearchPublicRecipeButton",
           backgroundColor: appBarColor,
           onPressed: (() {
             showSearch(
