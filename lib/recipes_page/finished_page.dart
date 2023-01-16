@@ -65,7 +65,17 @@ class _FinishedRecipePageState extends State<FinishedRecipePage> {
               rateRecipe.rateRecipe(widget.recipeId, widget.collection_name,
                   widget.recipe_rating, recipeRating);
             }
-            Navigator.pop(context);
+
+            // if (widget.recipe_type != 'premade') {
+            //   Navigator.of(context).pop(true);
+            // } else {
+            //   Navigator.pushAndRemoveUntil(
+            //       context,
+            //       MaterialPageRoute(builder: (context) => MainPage(1)),
+            //       (route) => false);
+            // }
+            
+            Navigator.of(context).pop(true);
           },
         ),
         title: Column(
@@ -123,7 +133,8 @@ class _FinishedRecipePageState extends State<FinishedRecipePage> {
                     color: iconTextColor),
               ),
             ),
-            widget.recipe_type != "myrecipe" //A condition will be added so the user will not able to rate his own recipe
+            widget.recipe_type !=
+                    "myrecipe" //A condition will be added so the user will not able to rate his own recipe
                 ? Column(
                     children: [
                       Padding(

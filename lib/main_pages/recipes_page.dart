@@ -55,7 +55,7 @@ class _RecipesPageState extends State<RecipesPage> {
   final Query<Map<String, dynamic>> _publicCollection = FirebaseFirestore
       .instance
       .collection('user-recipes')
-      .where('privacy', isEqualTo: 'public');
+      .where('privacy', isEqualTo: 'public').orderBy('rating-count', descending: true);
   late List<QueryDocumentSnapshot<Object?>> publicRecipeList;
 
   @override
@@ -209,7 +209,7 @@ class _RecipesPageState extends State<RecipesPage> {
               padding: EdgeInsets.symmetric(vertical: 20.0, horizontal: 20.0),
             ),
           ),
-        ]),
+        ],),
       ),
     );
   }

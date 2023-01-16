@@ -49,6 +49,8 @@ class ManageRecipe {
         'steps-timer': recipeTimer,
         'imageUrl': recipeImageUrl,
         'rating': [],
+        'rating-count': 0, //
+        'rating-mean': 0, //
         'date': DateTime.now(),
         'recipeId': recipeId,
       }).whenComplete(() {
@@ -221,23 +223,58 @@ class ManageRecipe {
     List recipeArray,
     double recipeRating,
   ) async {
+
     CollectionReference collection =
         _firebaseInstance.collection(collectionName);
 
     recipeArray.add(recipeRating);
 
-    await collection.doc(recipeId).update({'rating': recipeArray});
+    await collection.doc(recipeId).update({
+      'rating': recipeArray,
+      'rating-count': recipeArray.length,
+      'rating-mean': recipeArray.reduce((a, b) => a + b) / recipeArray.length
+    });
   }
 
-  /// WARNING: Don't enable and call this function 'til necessary as this may overwrite all the data of recipes in Firebase! ////
-  // Future<String?> convertRatingtoArray(
+  /// WARNING: Don't enable and call these functions 'til necessary as this may overwrite all the data of recipes in Firebase! ////
+
+  // Future<String?> updateRatingFields(
   //   String? recipeId,
   //   String collectionName,
   // ) async {
+  //   CollectionReference collection =
+  //       _firebaseInstance.collection(collectionName);
+  //   await collection
+  //       .doc(recipeId)
+  //       .update({'rating': [], 'rating-mean': 0, 'rating-count': 0});
+  // }
 
-  //   CollectionReference collection = _firebaseInstance.collection(collectionName);
-  //   await collection.doc(recipeId).update({
-  //     'rating': []
+  // Future<String?> migrateToAnotherCollection(
+  //   DocumentSnapshot documentSnapshot,
+  // ) async {
+  //   // HOW TO USE? APPLY THE CODE BELOW IN STREAM BUILDER
+  //   // for (int i = 0; i < streamSnapshot.data!.docs.length; i++) {
+  //   //   DocumentSnapshot tempSnapshot = streamSnapshot.data!.docs[i];
+  //   //   ManageRecipe().migrateToAnotherCollection(tempSnapshot);
+  //   // }
+
+  //   String newRecipeId = const Uuid().v1();
+
+  //   CollectionReference premadeCollection =
+  //       _firebaseInstance.collection('premade-recipes');
+  //   await premadeCollection.doc(newRecipeId).set({
+  //     'collection': documentSnapshot['collection'],
+  //     'description': documentSnapshot['description'],
+  //     'imageUrl': documentSnapshot['imageUrl'],
+  //     'ingredients': documentSnapshot['ingredients'],
+  //     'name': documentSnapshot['name'],
+  //     'privacy': documentSnapshot['privacy'],
+  //     'rating': documentSnapshot['rating'],
+  //     'rating-count': documentSnapshot['rating-count'],
+  //     'rating-mean': documentSnapshot['rating-mean'],
+  //     'source': documentSnapshot['source'],
+  //     'steps': documentSnapshot['steps'],
+  //     'steps-timer': documentSnapshot['steps-timer']
   //   });
   // }
 }

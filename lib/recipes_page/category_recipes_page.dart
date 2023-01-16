@@ -29,7 +29,8 @@ class CategoryRecipesPage extends StatefulWidget {
 class _CategoryRecipesPageState extends State<CategoryRecipesPage> {
   PageController _controller = PageController(viewportFraction: 0.75);
   CarouselController _carouselController = CarouselController();
-  late String collection_name;
+  String collection_name = 'premade-recipes';
+  late String categoryName;
   int _selectedIndex = 0;
   int _current = 0;
   bool _listview = false;
@@ -45,59 +46,15 @@ class _CategoryRecipesPageState extends State<CategoryRecipesPage> {
 
   @override
   Widget build(BuildContext context) {
-    String categoryName = widget.category_name;
+  
+    categoryName = widget.category_name.toLowerCase();
 
-    switch (categoryName) {
-      case 'Chicken':
-        {
-          collection_name = 'chicken-recipe';
-        }
-        break;
-      case 'Pork':
-        {
-          collection_name = 'pork-recipe';
-        }
-        break;
-      case 'Beef':
-        {
-          collection_name = 'beef-recipe';
-        }
-        break;
-      case 'Fish':
-        {
-          collection_name = 'fish-recipe';
-        }
-        break;
-      case 'Crustacean':
-        {
-          collection_name = 'crustacean-recipe';
-        }
-        break;
-      case 'Vegetables':
-        {
-          collection_name = 'vegetables-recipe';
-        }
-        break;
-      case 'Dessert':
-        {
-          collection_name = 'dessert-recipe';
-        }
-        break;
-      case 'Others':
-        {
-          collection_name = 'others-recipe';
-        }
-        break;
-      default:
-        {
-          collection_name = 'chicken-recipe';
-        }
-        break;
-    }
-
-    final CollectionReference _premadeCollection =
-        FirebaseFirestore.instance.collection(collection_name);
-
+    final Query<Map<String, dynamic>> _premadeCollection = FirebaseFirestore
+        .instance
+        .collection('premade-recipes')
+        .where('collection', isEqualTo: categoryName)
+        .orderBy('rating-count', descending: true);
+    
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.white,
@@ -110,7 +67,7 @@ class _CategoryRecipesPageState extends State<CategoryRecipesPage> {
         ),
         iconTheme: IconThemeData(color: appBarColor),
         title: Text(
-          '${categoryName} Recipes',
+          '${categoryName[0].toUpperCase() + categoryName.substring(1)} Recipes',
           style: TextStyle(color: Colors.black),
         ),
         elevation: 0.0,
@@ -148,7 +105,7 @@ class _CategoryRecipesPageState extends State<CategoryRecipesPage> {
   }
 
   Widget recipeStreamBuilder(
-      BuildContext context, CollectionReference collectionReference) {
+      BuildContext context, Query<Map<String, dynamic>> collectionReference) {
     return StreamBuilder(
         stream: collectionReference.snapshots(),
         builder: (context, AsyncSnapshot<QuerySnapshot> streamSnapshot) {
@@ -179,6 +136,7 @@ class _CategoryRecipesPageState extends State<CategoryRecipesPage> {
           }),
           options: CarouselOptions(
             aspectRatio: 0.9,
+            enableInfiniteScroll: true,
             enlargeCenterPage: true,
             onPageChanged: (index, reason) {
               setState(() {
@@ -216,7 +174,6 @@ class _CategoryRecipesPageState extends State<CategoryRecipesPage> {
   Widget _recipeListItem(BuildContext context,
       DocumentSnapshot documentSnapshot, int _selectedIndex) {
     final borderRadius = BorderRadius.circular(10);
-
     return Card(
       elevation: 8,
       shape: RoundedRectangleBorder(borderRadius: borderRadius),
