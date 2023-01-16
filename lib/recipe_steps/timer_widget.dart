@@ -1,3 +1,4 @@
+import 'package:audioplayers/audioplayers.dart';
 import 'package:fluentui_system_icons/fluentui_system_icons.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/src/foundation/key.dart';
@@ -30,15 +31,6 @@ class _TimerWidgetState extends State<TimerWidget> {
 
     int stepDurationSeconds = widget.current_step_duration;
 
-    // FlutterRingtonePlayer.play(
-    //   fromAsset: "audio/timer-tiking.wav",
-    //   looping: true, // Android only - API >= 28
-    // );
-
-    // if (!_isRunning) {
-    //   FlutterRingtonePlayer.stop();
-    // }
-
     return Container(
       child: Center(
         child: Column(
@@ -64,7 +56,7 @@ class _TimerWidgetState extends State<TimerWidget> {
                 onComplete: () => setState(() {
                   _isFinished = !_isFinished;
                   FlutterRingtonePlayer.play(
-                    fromAsset: "microwave-timer.wav",
+                    fromAsset: "audio/microwave-timer.wav",
                     looping: false, // Android only - API >= 28
                   );
                 }),
