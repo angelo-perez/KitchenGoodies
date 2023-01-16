@@ -11,6 +11,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class SignUpPage extends StatefulWidget {
   const SignUpPage({Key? key}) : super(key: key);
@@ -24,6 +25,7 @@ class _SignUpPageState extends State<SignUpPage> {
   final TextEditingController _passwordController = TextEditingController();
   final TextEditingController _usernameController = TextEditingController();
   final TextEditingController _confirmPasswordController = TextEditingController();
+
   Uint8List? _image;
 
   bool _isLoading = false;
@@ -89,6 +91,17 @@ class _SignUpPageState extends State<SignUpPage> {
       setState(() {
         _isLoading = false;
       });
+    }
+  }
+
+  Future<void> _launchUrl(String url) async {
+    String APIHOST = 'doc-hosting.flycricket.io';
+    var uri = Uri.https(APIHOST, url, {'q': 'dart'});
+    if (!await launchUrl(
+      uri,
+      mode: LaunchMode.externalApplication,
+    )) {
+      throw 'Could not launch $uri';
     }
   }
 
@@ -278,10 +291,47 @@ class _SignUpPageState extends State<SignUpPage> {
               ),
             ),
 
-            const SizedBox(
-              height: 30,
+            InkWell(
+              child: Container(
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 30,
+                  vertical: 5,
+                ),
+                alignment: Alignment.center,
+                child: RichText(
+                    text: TextSpan(
+                  style: const TextStyle(
+                    color: Colors.grey,
+                    fontSize: 12,
+                  ),
+                  children: [
+                    const TextSpan(text: 'By click the Sign up button, you agree to our '),
+                    TextSpan(
+                        text: 'Terms of Use',
+                        style: TextStyle(
+                          color: mPrimaryColor,
+                          fontSize: 12,
+                        ),
+                        recognizer: TapGestureRecognizer()
+                          ..onTap = () => _launchUrl(
+                              "/kitchen-goodies-terms-of-use/c89b2d33-03ee-4b5e-a77b-d9757ad6c799/terms")),
+                    const TextSpan(text: ' and that you have read our '),
+                    TextSpan(
+                        text: 'Privacy Policy.',
+                        style: TextStyle(
+                          color: mPrimaryColor,
+                          fontSize: 12,
+                        ),
+                        recognizer: TapGestureRecognizer()
+                          ..onTap = () => _launchUrl(
+                              "/kitchen-goodies-privacy-policy/1c986f35-3118-4bc2-aa0a-4e11c632157a/privacy")),
+                  ],
+                )),
+              ),
             ),
-
+            const SizedBox(
+              height: 15,
+            ),
             // <--------- SIGNUP CONTAINER --------->
             InkWell(
               child: Container(
