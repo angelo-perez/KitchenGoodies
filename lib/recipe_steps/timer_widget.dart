@@ -20,8 +20,9 @@ class TimerWidget extends StatefulWidget {
 }
 
 class _TimerWidgetState extends State<TimerWidget> {
-  bool _isRunning = true;
+  bool _isRunning = false;
   bool _isFinished = false;
+  bool _isStarted = false;
   final CountDownController _controller = CountDownController();
   int addTwoMinutes = 0;
 
@@ -39,29 +40,59 @@ class _TimerWidgetState extends State<TimerWidget> {
           children: [
             Padding(
               padding: EdgeInsets.only(top: 15),
-              child: NeonCircularTimer(
-                width: 200,
-                duration: stepDurationSeconds,
-                controller: _controller,
-                isTimerTextShown: true,
-                neumorphicEffect: true,
-                backgroudColor: _isFinished
-                    ? Color.fromARGB(255, 170, 53, 67)
-                    : Colors.white54,
-                isReverse: true,
-                innerFillGradient:
-                    LinearGradient(colors: [appBarColor, appBarColor]),
-                neonGradient:
-                    LinearGradient(colors: [appBarColor, appBarColor]),
-                onComplete: () => setState(() {
-                  _isFinished = !_isFinished;
-                  FlutterRingtonePlayer.play(
-                    fromAsset: "audio/microwave-timer.wav",
-                    looping: false, // Android only - API >= 28
-                  );
-                }),
+              child: Stack(
+                children: [
+                  NeonCircularTimer(
+                    width: 200,
+                    duration: stepDurationSeconds,
+                    controller: _controller,
+                    textFormat: TextFormat.HH_MM_SS,
+                    isTimerTextShown: true,
+                    autoStart: false,
+                    neumorphicEffect: true,
+                    backgroudColor: Colors.white60,
+                    isReverse: true,
+                    textStyle: TextStyle(color: mPrimaryColor, fontSize: 40,),
+                    innerFillGradient:
+                        LinearGradient(colors: [appBarColor, appBarColor]),
+                    neonGradient:
+                        LinearGradient(colors: [appBarColor, appBarColor]),
+                    onComplete: () => setState(() {
+                      _isFinished = !_isFinished;
+                      FlutterRingtonePlayer.play(
+                        fromAsset: "audio/microwave-timer.wav",
+                        looping: false, // Android only - API >= 28
+                      );
+                    }),
+                  ),
+                  Align(
+                    alignment: Alignment.center,
+                    child: !_isStarted
+                        ? InkWell(
+                            onTap: () {
+                              setState(() {
+                                _controller.start();
+                                _isStarted = !_isStarted;
+                                _isRunning = !_isRunning;
+                              });
+                            },
+                            child: CircleAvatar(
+                                backgroundColor: appBarColor,
+                                child: Text(
+                                  "Start",
+                                  style: TextStyle(
+                                      color: mBackgroundColor,
+                                      fontSize: 40,
+                                      fontWeight: FontWeight.bold),
+                                ),
+                                maxRadius: 100),
+                          )
+                        : Container(),
+                  ),
+                ],
               ),
             ),
+            _isStarted ?
             Padding(
               padding: const EdgeInsets.only(bottom: 15, top: 15),
               child: Row(
@@ -145,7 +176,7 @@ class _TimerWidgetState extends State<TimerWidget> {
                   ),
                 ],
               ),
-            ),
+            ) : Container(),
           ],
         ),
       ),
