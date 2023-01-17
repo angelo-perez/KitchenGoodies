@@ -5,6 +5,7 @@ import 'package:elective_project/util/colors.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
+import 'package:readmore/readmore.dart';
 
 class CommentCard extends StatefulWidget {
   final snap;
@@ -58,15 +59,18 @@ class _CommentCardState extends State<CommentCard> {
                             color: mPrimaryTextColor,
                           ),
                         ),
-                        TextSpan(
-                          text: widget.snap['text'],
-                          style: TextStyle(
-                            color: mPrimaryTextColor,
-                            fontWeight: FontWeight.w200,
-                          ),
-                        ),
                       ],
                     ),
+                  ),
+                  ReadMoreText(
+                    widget.snap['text'],
+                    trimLines: 3,
+                    colorClickableText: Colors.pink,
+                    trimMode: TrimMode.Line,
+                    trimCollapsedText: ' Show more',
+                    trimExpandedText: ' Show less',
+                    moreStyle: const TextStyle(fontSize: 14, fontWeight: FontWeight.bold),
+                    lessStyle: const TextStyle(fontSize: 14, fontWeight: FontWeight.bold),
                   ),
                   Padding(
                     padding: const EdgeInsets.only(top: 4),

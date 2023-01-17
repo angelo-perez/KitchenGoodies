@@ -11,7 +11,7 @@ import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
-
+import 'package:readmore/readmore.dart';
 import '../../profile_page/view_profile.dart';
 
 class PostCard extends StatefulWidget {
@@ -318,19 +318,29 @@ class _PostCardState extends State<PostCard> {
               children: [
                 Container(
                   width: double.infinity,
-                  child: RichText(
-                    text: TextSpan(
-                      style: TextStyle(
-                        color: mPrimaryTextColor,
-                      ),
-                      children: [
-                        TextSpan(
-                          text: widget.snap['description'],
-                          style: TextStyle(color: mSecondTextColor),
-                        ),
-                      ],
-                    ),
+                  child: ReadMoreText(
+                    widget.snap['description'],
+                    trimLines: 2,
+                    colorClickableText: Colors.pink,
+                    trimMode: TrimMode.Line,
+                    trimCollapsedText: ' Show more',
+                    trimExpandedText: ' Show less',
+                    moreStyle: const TextStyle(fontSize: 14, fontWeight: FontWeight.bold),
+                    lessStyle: const TextStyle(fontSize: 14, fontWeight: FontWeight.bold),
                   ),
+                  // RichText(
+                  //   text: TextSpan(
+                  //     style: TextStyle(
+                  //       color: mPrimaryTextColor,
+                  //     ),
+                  //     children: [
+                  //       TextSpan(
+                  //         text: widget.snap['description'],
+                  //         style: TextStyle(color: mSecondTextColor),
+                  //       ),
+                  //     ],
+                  //   ),
+                  // ),
                 ),
                 Container(
                   padding: const EdgeInsets.symmetric(
