@@ -32,13 +32,22 @@ class _CommentCardState extends State<CommentCard> {
         vertical: 18,
         horizontal: 16,
       ),
+
+      // INDIVIDUAL COMMENTS
       child: Row(
         children: [
-          CircleAvatar(
-            backgroundImage: NetworkImage(
-              widget.snap['profilePic'],
-            ),
-            radius: 18,
+          // BUG
+          Column(
+            mainAxisAlignment: MainAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              CircleAvatar(
+                backgroundImage: NetworkImage(
+                  widget.snap['profilePic'],
+                ),
+                radius: 18,
+              ),
+            ],
           ),
           Expanded(
             child: Padding(
@@ -96,6 +105,7 @@ class _CommentCardState extends State<CommentCard> {
                 widget.snap['likes'],
               );
             },
+            // BUG
             child: Container(
               padding: const EdgeInsets.all(8),
               child: Row(

@@ -1,4 +1,7 @@
+import 'dart:typed_data';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:dio/dio.dart';
 import 'package:elective_project/community_page/models/user.dart' as model;
 import 'package:elective_project/community_page/widget/comments_screen.dart';
 import 'package:elective_project/resources/firestore_methods.dart';
@@ -9,7 +12,9 @@ import 'package:elective_project/widget/like_animation.dart';
 
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:image_gallery_saver/image_gallery_saver.dart';
 import 'package:intl/intl.dart';
+import 'package:permission_handler/permission_handler.dart';
 import 'package:provider/provider.dart';
 import 'package:readmore/readmore.dart';
 import '../../profile_page/view_profile.dart';
@@ -71,6 +76,19 @@ class _PostCardState extends State<PostCard> {
           fontSize: 16.0);
     }
     setState(() {});
+  }
+
+  _save(String url) async {
+    var status = await Permission.storage.request();
+    if (status.isGranted) {
+      var response = await Dio().get(
+        url,
+        options: Options(responseType: ResponseType.bytes),
+      );
+      final result = await ImageGallerySaver.saveImage(Uint8List.fromList(response.data),
+          quality: 60, name: "hello");
+      print(result);
+    }
   }
 
   @override
@@ -160,6 +178,7 @@ class _PostCardState extends State<PostCard> {
                                   padding: const EdgeInsets.all(20),
                                   child: const Text('Save Image'),
                                   onPressed: () async {
+                                    _save(widget.snap['postUrl']);
                                     Navigator.pop(context);
                                   }),
                               SimpleDialogOption(
