@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:elective_project/community_page/widget/add_post_widget.dart';
 import 'package:elective_project/community_page/widget/post_widget.dart';
+import 'package:elective_project/community_page/widget/search_widget.dart';
 import 'package:elective_project/util/colors.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -16,8 +17,7 @@ class CommunityPage extends StatelessWidget {
         centerTitle: false,
         title: Text(
           'Kitchen Buddies',
-          style: TextStyle(
-              color: appBarColor, fontWeight: FontWeight.w900, fontSize: 22),
+          style: TextStyle(color: appBarColor, fontWeight: FontWeight.w900, fontSize: 22),
         ),
         elevation: 0.0,
         bottom: PreferredSize(
@@ -29,9 +29,10 @@ class CommunityPage extends StatelessWidget {
         ),
         actions: [
           IconButton(
-            onPressed: () {},
+            onPressed: () => Navigator.of(context)
+                .push(MaterialPageRoute(builder: (context) => const SearchWidget())),
             icon: Icon(
-              Icons.messenger_outlined,
+              Icons.search,
               color: mPrimaryColor,
             ),
           ),
@@ -45,8 +46,7 @@ class CommunityPage extends StatelessWidget {
               descending: true,
             )
             .snapshots(),
-        builder: (context,
-            AsyncSnapshot<QuerySnapshot<Map<String, dynamic>>> snapshot) {
+        builder: (context, AsyncSnapshot<QuerySnapshot<Map<String, dynamic>>> snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
             return const Center(
               child: CircularProgressIndicator(),
@@ -62,8 +62,7 @@ class CommunityPage extends StatelessWidget {
       ),
       floatingActionButton: FloatingActionButton.extended(
         onPressed: () {
-          Navigator.of(context)
-              .push(MaterialPageRoute(builder: (context) => AddPostWidget()));
+          Navigator.of(context).push(MaterialPageRoute(builder: (context) => AddPostWidget()));
         },
         icon: const Icon(Icons.post_add),
         label: const Text("Post"),
