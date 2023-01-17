@@ -24,13 +24,12 @@ class _EditProfileWidgetState extends State<EditProfileWidget> {
   TextEditingController _passwordController = TextEditingController();
   String _image = "";
   bool _isLoading = false;
+  Uint8List? _selectedImage;
 
   void selectImage() async {
     Uint8List im = await pickImage(ImageSource.gallery);
-
-    String profImage = await StorageMethods().uploadImageToStorage('profilePictures', im, false);
     setState(() {
-      _image = profImage;
+      _selectedImage = im;
     });
   }
 
@@ -42,7 +41,7 @@ class _EditProfileWidgetState extends State<EditProfileWidget> {
     String res = await AuthMethods().editUser(
       email: _emailController.text,
       username: _usernameController.text,
-      profImage: _image,
+      file: _selectedImage!,
       description: _descriptionController.text,
       password: _passwordController.text,
       context: context,
@@ -113,10 +112,15 @@ class _EditProfileWidgetState extends State<EditProfileWidget> {
                       SizedBox(
                         width: 120,
                         height: 120,
-                        child: CircleAvatar(
-                          radius: 64,
-                          backgroundImage: NetworkImage(_image),
-                        ),
+                        child: _selectedImage != null
+                            ? CircleAvatar(
+                                radius: 64,
+                                backgroundImage: MemoryImage(_selectedImage!),
+                              )
+                            : CircleAvatar(
+                                radius: 64,
+                                backgroundImage: NetworkImage(_image),
+                              ),
                       ),
                       Positioned(
                         bottom: 0,

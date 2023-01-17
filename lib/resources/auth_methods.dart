@@ -94,7 +94,7 @@ class AuthMethods {
   Future<String> editUser({
     required String email,
     required String username,
-    required String profImage,
+    required Uint8List file,
     required String description,
     required String password,
     required context,
@@ -110,6 +110,9 @@ class AuthMethods {
         // gets the data in firebase for model user
         followers = userSnap.data()!['followers'];
         following = userSnap.data()!['following'];
+
+        String profImage =
+            await StorageMethods().uploadImageToStorage('profilePictures', file, false);
 
         model.User user = model.User(
           email: email,
