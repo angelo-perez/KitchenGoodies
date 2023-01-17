@@ -32,6 +32,7 @@ class _ViewProfileState extends State<ViewProfile> {
   bool isFollowing = false;
   bool isLoading = false;
   String description = "";
+  bool canReclick = true;
 
   @override
   void initState() {
@@ -137,13 +138,24 @@ class _ViewProfileState extends State<ViewProfile> {
                                                 text: 'Following',
                                                 textColor: Colors.grey,
                                                 function: () async {
-                                                  await FirestoreMethods().followUser(
-                                                      FirebaseAuth.instance.currentUser!.uid,
-                                                      userData['uid']);
-                                                  setState(() {
-                                                    isFollowing = false;
-                                                    followers--;
-                                                  });
+                                                  if (canReclick) {
+                                                    setState(() {
+                                                      canReclick = false;
+                                                    });
+                                                    await Future.delayed(
+                                                        const Duration(milliseconds: 1000));
+                                                    setState(() {
+                                                      isFollowing = false;
+                                                      canReclick = true;
+                                                      followers--;
+                                                    });
+                                                    await FirestoreMethods().followUser(
+                                                        FirebaseAuth.instance.currentUser!.uid,
+                                                        userData['uid']);
+                                                  } else {
+                                                    await Future.delayed(
+                                                        const Duration(milliseconds: 1000));
+                                                  }
                                                 },
                                               )
                                             : FollowButton(
@@ -152,13 +164,24 @@ class _ViewProfileState extends State<ViewProfile> {
                                                 text: 'Follow',
                                                 textColor: Colors.grey,
                                                 function: () async {
-                                                  await FirestoreMethods().followUser(
-                                                      FirebaseAuth.instance.currentUser!.uid,
-                                                      userData['uid']);
-                                                  setState(() {
-                                                    isFollowing = true;
-                                                    followers++;
-                                                  });
+                                                  if (canReclick) {
+                                                    setState(() {
+                                                      canReclick = false;
+                                                    });
+                                                    await Future.delayed(
+                                                        const Duration(milliseconds: 1000));
+                                                    setState(() {
+                                                      isFollowing = true;
+                                                      canReclick = true;
+                                                      followers++;
+                                                    });
+                                                    await FirestoreMethods().followUser(
+                                                        FirebaseAuth.instance.currentUser!.uid,
+                                                        userData['uid']);
+                                                  } else {
+                                                    await Future.delayed(
+                                                        const Duration(milliseconds: 1000));
+                                                  }
                                                 },
                                               ),
                                   ],

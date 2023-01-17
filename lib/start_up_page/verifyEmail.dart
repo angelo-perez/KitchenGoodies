@@ -16,7 +16,7 @@ class VerifyEmail extends StatefulWidget {
 
 class _VerifyEmailState extends State<VerifyEmail> {
   bool isEmailVerified = false;
-  bool canResendEmail = false;
+  bool canResendEmail = true;
   Timer? timer;
 
   @override
@@ -41,8 +41,7 @@ class _VerifyEmailState extends State<VerifyEmail> {
   }
 
   Future checkEmailVerified() async {
-    await FirebaseAuth.instance
-      ..currentUser!.reload();
+    await FirebaseAuth.instance.currentUser!.reload();
     setState(() {
       isEmailVerified = FirebaseAuth.instance.currentUser!.emailVerified;
     });
@@ -108,7 +107,7 @@ class _VerifyEmailState extends State<VerifyEmail> {
                     "Resent Email",
                     style: TextStyle(fontSize: 24),
                   ),
-                  onPressed: sendVerificationEmail,
+                  onPressed: canResendEmail ? sendVerificationEmail : null,
                 ),
                 const SizedBox(
                   height: 10,
