@@ -5,6 +5,7 @@ import 'package:flutter_svg/svg.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 
 import 'package:provider/provider.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 import '../providers/user_provider.dart';
 
@@ -12,6 +13,14 @@ import '../community_page/models/user.dart' as model;
 
 class AboutWidget extends StatelessWidget {
   const AboutWidget({Key? key}) : super(key: key);
+
+  String? encodeQueryParameters(Map<String, String> params) {
+    return params.entries
+        .map((MapEntry<String, String> e) =>
+            '${Uri.encodeComponent(e.key)}=${Uri.encodeComponent(e.value)}')
+        .join('&');
+  }
+// ···
 
   @override
   Widget build(BuildContext context) {
@@ -57,14 +66,26 @@ class AboutWidget extends StatelessWidget {
                   title: "Contact Us",
                   icon: Icons.phone,
                   onPress: (() {
-                    Fluttertoast.showToast(
-                        msg: "App is not yet deployed",
-                        toastLength: Toast.LENGTH_SHORT,
-                        gravity: ToastGravity.SNACKBAR,
-                        timeInSecForIosWeb: 1,
-                        backgroundColor: splashScreenBgColor,
-                        textColor: Colors.white,
-                        fontSize: 16.0);
+                    try {
+                      final Uri emailLaunchUri = Uri(
+                        scheme: 'mailto',
+                        path: 'efor2023@gmail.com',
+                        query: encodeQueryParameters(<String, String>{
+                          'subject': 'Contact Us',
+                        }),
+                      );
+
+                      launchUrl(emailLaunchUri);
+                    } on Exception catch (e) {
+                      Fluttertoast.showToast(
+                          msg: "No Email App detected",
+                          toastLength: Toast.LENGTH_SHORT,
+                          gravity: ToastGravity.SNACKBAR,
+                          timeInSecForIosWeb: 1,
+                          backgroundColor: splashScreenBgColor,
+                          textColor: Colors.white,
+                          fontSize: 16.0);
+                    }
                   })),
               SettingMenu(
                   title: "Rate Us",

@@ -3,12 +3,21 @@ import 'package:elective_project/profile_page/settings_changePassword.dart';
 import 'package:elective_project/resources/auth_methods.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:quickalert/quickalert.dart';
+import 'package:url_launcher/url_launcher.dart';
 import '../start_up_page/login_page.dart';
 import '../util/colors.dart';
 
 class UserManagementWidget extends StatelessWidget {
   const UserManagementWidget({super.key});
+
+  String? encodeQueryParameters(Map<String, String> params) {
+    return params.entries
+        .map((MapEntry<String, String> e) =>
+            '${Uri.encodeComponent(e.key)}=${Uri.encodeComponent(e.value)}')
+        .join('&');
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -40,6 +49,31 @@ class UserManagementWidget extends StatelessWidget {
               const Divider(),
               const SizedBox(height: 10),
               SettingMenu(
+                  title: "Report a Problem",
+                  icon: Icons.bug_report,
+                  onPress: () {
+                    try {
+                      final Uri emailLaunchUri = Uri(
+                        scheme: 'mailto',
+                        path: 'efor2023@gmail.com',
+                        query: encodeQueryParameters(<String, String>{
+                          'subject': 'Report a Problem',
+                        }),
+                      );
+
+                      launchUrl(emailLaunchUri);
+                    } on Exception catch (e) {
+                      Fluttertoast.showToast(
+                          msg: "No Email App detected",
+                          toastLength: Toast.LENGTH_SHORT,
+                          gravity: ToastGravity.SNACKBAR,
+                          timeInSecForIosWeb: 1,
+                          backgroundColor: splashScreenBgColor,
+                          textColor: Colors.white,
+                          fontSize: 16.0);
+                    }
+                  }),
+              SettingMenu(
                 title: "Change Password",
                 icon: Icons.password,
                 onPress: () => Navigator.of(context)
@@ -54,7 +88,7 @@ class UserManagementWidget extends StatelessWidget {
                 textColor: Colors.red,
                 endIcon: false,
                 iconColor: Colors.red,
-              )
+              ),
             ],
           ),
         ),
