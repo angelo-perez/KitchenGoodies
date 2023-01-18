@@ -1,5 +1,6 @@
 // import 'package:flutter/src/foundation/key.dart';
 // import 'package:flutter/src/widgets/framework.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:elective_project/recipes_page/category_recipes_page.dart';
 import 'package:filter_list/filter_list.dart';
@@ -55,7 +56,8 @@ class _RecipesPageState extends State<RecipesPage> {
   final Query<Map<String, dynamic>> _publicCollection = FirebaseFirestore
       .instance
       .collection('user-recipes')
-      .where('privacy', isEqualTo: 'public').orderBy('rating-count', descending: true);
+      .where('privacy', isEqualTo: 'public')
+      .orderBy('rating-count', descending: true);
   late List<QueryDocumentSnapshot<Object?>> publicRecipeList;
 
   @override
@@ -67,10 +69,10 @@ class _RecipesPageState extends State<RecipesPage> {
           backgroundColor: mBackgroundColor,
           title: Text(
             'Recipes',
-            style: TextStyle(color: appBarColor, fontWeight: FontWeight.w900, fontSize: 22),
+            style: TextStyle(
+                color: appBarColor, fontWeight: FontWeight.w900, fontSize: 22),
           ),
           elevation: 0.0,
-          
           bottom: TabBar(
             labelColor: mPrimaryColor,
             indicatorColor: mPrimaryColor,
@@ -169,47 +171,49 @@ class _RecipesPageState extends State<RecipesPage> {
               screen: CategoryRecipesPage(recipeCategory.categoryName),
               withNavBar: true);
         },
-        child: Stack(children: [
-          Ink(
-            width: 200,
-            height: 300,
-            decoration: BoxDecoration(
-              borderRadius: borderRadius,
-              image: DecorationImage(
-                fit: BoxFit.cover,
-                image: AssetImage(recipeCategory.imgPath), // Background image
-              ),
-            ),
-          ),
-          Positioned(
-            bottom: 0.0,
-            left: 0.0,
-            right: 0.0,
-            child: Container(
-              child: Text(
-                recipeCategory.categoryName,
-                textAlign: TextAlign.center,
-                style: TextStyle(
-                  color: mBackgroundColor,
-                  fontSize: 20.0,
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
+        child: Stack(
+          children: [
+            Ink(
+              width: 200,
+              height: 300,
               decoration: BoxDecoration(
                 borderRadius: borderRadius,
-                gradient: LinearGradient(
-                  colors: [
-                    Color.fromARGB(255, 0, 0, 0),
-                    Color.fromARGB(0, 0, 0, 0)
-                  ],
-                  begin: FractionalOffset.bottomCenter,
-                  end: FractionalOffset.topCenter,
+                image: DecorationImage(
+                  fit: BoxFit.cover,
+                  image: AssetImage(recipeCategory.imgPath), // Background image
                 ),
               ),
-              padding: EdgeInsets.symmetric(vertical: 20.0, horizontal: 20.0),
             ),
-          ),
-        ],),
+            Positioned(
+              bottom: 0.0,
+              left: 0.0,
+              right: 0.0,
+              child: Container(
+                child: Text(
+                  recipeCategory.categoryName,
+                  textAlign: TextAlign.center,
+                  style: TextStyle(
+                    color: mBackgroundColor,
+                    fontSize: 20.0,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+                decoration: BoxDecoration(
+                  borderRadius: borderRadius,
+                  gradient: LinearGradient(
+                    colors: [
+                      Color.fromARGB(255, 0, 0, 0),
+                      Color.fromARGB(0, 0, 0, 0)
+                    ],
+                    begin: FractionalOffset.bottomCenter,
+                    end: FractionalOffset.topCenter,
+                  ),
+                ),
+                padding: EdgeInsets.symmetric(vertical: 20.0, horizontal: 20.0),
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }
@@ -265,11 +269,17 @@ class _RecipesPageState extends State<RecipesPage> {
                                 topRight: Radius.circular(10),
                                 topLeft: Radius.circular(10),
                               ),
-                              child: Image(
-                                image: NetworkImage(
-                                  documentSnapshot['imageUrl'],
-                                ),
+                              child: CachedNetworkImage(
+                                imageUrl: documentSnapshot['imageUrl'],
                                 fit: BoxFit.cover,
+                                progressIndicatorBuilder:
+                                    (context, url, downloadProgress) => Center(
+                                  child: CircularProgressIndicator(
+                                      color: mPrimaryColor,
+                                      value: downloadProgress.progress),
+                                ),
+                                errorWidget: (context, url, error) =>
+                                    Icon(Icons.error),
                               ),
                             ),
                           ),

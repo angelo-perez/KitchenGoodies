@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:elective_project/recipes_page/recipe_overview.dart';
@@ -46,7 +47,6 @@ class _CategoryRecipesPageState extends State<CategoryRecipesPage> {
 
   @override
   Widget build(BuildContext context) {
-  
     categoryName = widget.category_name.toLowerCase();
 
     final Query<Map<String, dynamic>> _premadeCollection = FirebaseFirestore
@@ -54,7 +54,7 @@ class _CategoryRecipesPageState extends State<CategoryRecipesPage> {
         .collection('premade-recipes')
         .where('collection', isEqualTo: categoryName)
         .orderBy('rating-count', descending: true);
-    
+
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.white,
@@ -211,14 +211,23 @@ class _CategoryRecipesPageState extends State<CategoryRecipesPage> {
           }
         },
         child: Stack(children: [
-          Ink(
-            height: double.infinity,
-            width: double.infinity,
-            decoration: BoxDecoration(
-                borderRadius: borderRadius,
-                image: DecorationImage(
-                    image: NetworkImage(documentSnapshot['imageUrl']),
-                    fit: BoxFit.cover)),
+          CachedNetworkImage(
+            imageUrl: documentSnapshot['imageUrl'],
+            imageBuilder: (context, imageProvider) => Ink(
+              height: double.infinity,
+              width: double.infinity,
+              decoration: BoxDecoration(
+                  borderRadius: borderRadius,
+                  image: DecorationImage(
+                      image: NetworkImage(documentSnapshot['imageUrl']),
+                      fit: BoxFit.cover)),
+            ),
+            progressIndicatorBuilder: (context, url, downloadProgress) =>
+                Center(
+              child: CircularProgressIndicator(
+                  color: mPrimaryColor, value: downloadProgress.progress),
+            ),
+            errorWidget: (context, url, error) => Icon(Icons.error),
           ),
           Positioned(
             bottom: 0.0,
@@ -355,11 +364,16 @@ class _CategoryRecipesPageState extends State<CategoryRecipesPage> {
                       decoration: BoxDecoration(
                         borderRadius: BorderRadius.all(Radius.circular(20)),
                       ),
-                      child: Image(
-                        image: NetworkImage(
-                          documentSnapshot['imageUrl'],
-                        ),
+                      child: CachedNetworkImage(
+                        imageUrl: documentSnapshot['imageUrl'],
                         fit: BoxFit.fitWidth,
+                        progressIndicatorBuilder:
+                            (context, url, downloadProgress) => Center(
+                          child: CircularProgressIndicator(
+                              color: mPrimaryColor,
+                              value: downloadProgress.progress),
+                        ),
+                        errorWidget: (context, url, error) => Icon(Icons.error),
                       ),
                     ),
                     title: Text(documentSnapshot['name']),

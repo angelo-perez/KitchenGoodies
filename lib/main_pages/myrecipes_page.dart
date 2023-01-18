@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:elective_project/create_recipe/create_page.dart';
 import 'package:elective_project/edit_recipe/edit_name_picture.dart';
@@ -32,8 +33,9 @@ class _MyRecipesPageState extends State<MyRecipesPage> {
     final User? user = auth.currentUser;
     final uid = user!.uid;
 
-    final Query<Map<String, dynamic>> _myRecipes =
-        FirebaseFirestore.instance.collection("user-recipes").where('uid', isEqualTo: uid);
+    final Query<Map<String, dynamic>> _myRecipes = FirebaseFirestore.instance
+        .collection("user-recipes")
+        .where('uid', isEqualTo: uid);
 
     return Scaffold(
         backgroundColor: mBackgroundColor,
@@ -41,13 +43,15 @@ class _MyRecipesPageState extends State<MyRecipesPage> {
           backgroundColor: mBackgroundColor,
           title: Text(
             'My Recipes',
-            style: TextStyle(color: appBarColor, fontWeight: FontWeight.w900, fontSize: 22),
+            style: TextStyle(
+                color: appBarColor, fontWeight: FontWeight.w900, fontSize: 22),
           ),
           actions: [
             IconButton(
                 onPressed: () {
-                  print(myRecipeList);
-                  showSearch(context: context, delegate: MyRecipeSearchDelegate(myRecipeList));
+                  showSearch(
+                      context: context,
+                      delegate: MyRecipeSearchDelegate(myRecipeList));
                 },
                 icon: Icon(
                   Icons.search,
@@ -67,15 +71,19 @@ class _MyRecipesPageState extends State<MyRecipesPage> {
         body: SafeArea(
             child: StreamBuilder(
                 stream: _myRecipes.snapshots(),
-                builder: (context, AsyncSnapshot<QuerySnapshot> myRecipeSnapshot) {
+                builder:
+                    (context, AsyncSnapshot<QuerySnapshot> myRecipeSnapshot) {
                   print("in");
-                  if (myRecipeSnapshot.hasData && myRecipeSnapshot.data!.size > 0) {
+                  if (myRecipeSnapshot.hasData &&
+                      myRecipeSnapshot.data!.size > 0) {
                     print("recipes found");
                     myRecipeList = myRecipeSnapshot.data!.docs;
-                    return _myRecipeListViewBuilder(context, myRecipeSnapshot.data!.docs);
-                  } else if (myRecipeSnapshot.connectionState == ConnectionState.waiting) {
+                    return _myRecipeListViewBuilder(
+                        context, myRecipeSnapshot.data!.docs);
+                  } else if (myRecipeSnapshot.connectionState ==
+                      ConnectionState.waiting) {
                     print("loading");
-                    return const Center(
+                    return Center(
                       child: CircularProgressIndicator(),
                     );
                   } else {
@@ -126,10 +134,11 @@ class _MyRecipesPageState extends State<MyRecipesPage> {
                         final uid = user!.uid;
 
                         ManageRecipe toggleRecipePrivacy = ManageRecipe();
-                        toggleRecipePrivacy.toggleRecipePrivacy(uid, documentSnapshot.id, privacy);
+                        toggleRecipePrivacy.toggleRecipePrivacy(
+                            uid, documentSnapshot.id, privacy);
                         print(privacy);
                       },
-                      backgroundColor: const Color.fromARGB(255, 107, 100, 38),
+                      backgroundColor: Color.fromARGB(255, 107, 100, 38),
                       foregroundColor: Colors.white,
                       icon: documentSnapshot["privacy"] == "Private" ||
                               documentSnapshot["privacy"] == "private"
@@ -141,7 +150,7 @@ class _MyRecipesPageState extends State<MyRecipesPage> {
                     // SHARE BUTTON IS NOT YET IMPLEMENTED
                     SlidableAction(
                       onPressed: doNothing,
-                      backgroundColor: const Color.fromARGB(255, 71, 129, 95),
+                      backgroundColor: Color.fromARGB(255, 71, 129, 95),
                       foregroundColor: Colors.white,
                       icon: Icons.share,
                       label: 'Share',
@@ -170,7 +179,7 @@ class _MyRecipesPageState extends State<MyRecipesPage> {
                                 documentSnapshot["steps-timer"]),
                             withNavBar: true);
                       },
-                      backgroundColor: const Color(0xFF0392CF),
+                      backgroundColor: Color(0xFF0392CF),
                       foregroundColor: Colors.white,
                       icon: Icons.edit,
                       label: 'Edit',
@@ -180,10 +189,14 @@ class _MyRecipesPageState extends State<MyRecipesPage> {
                         final User? user = auth.currentUser;
                         final uid = user!.uid;
 
-                        deleteRecipeDialog(context, uid, documentSnapshot.id,
-                            documentSnapshot['name'], documentSnapshot['imageUrl']);
+                        deleteRecipeDialog(
+                            context,
+                            uid,
+                            documentSnapshot.id,
+                            documentSnapshot['name'],
+                            documentSnapshot['imageUrl']);
                       },
-                      backgroundColor: const Color(0xFFFE4A49),
+                      backgroundColor: Color(0xFFFE4A49),
                       foregroundColor: Colors.white,
                       icon: Icons.delete,
                       label: 'Delete',
@@ -206,7 +219,10 @@ class _MyRecipesPageState extends State<MyRecipesPage> {
                       visualDensity: VisualDensity(vertical: 4),
                       onTap: () {
                         int numFields =
-                            (documentSnapshot.data() as Map<String, dynamic>).keys.toList().length;
+                            (documentSnapshot.data() as Map<String, dynamic>)
+                                .keys
+                                .toList()
+                                .length;
                         if (numFields >= 5) {
                           //6 fields including the source of the recipe
                           //check if number of fields is 5 (complete)
@@ -227,33 +243,43 @@ class _MyRecipesPageState extends State<MyRecipesPage> {
                             withNavBar: false,
                           );
                         } else {
-                          const recipeSnackbar =
-                              SnackBar(content: Text("Sorry, recipe is not yet available."));
-                          ScaffoldMessenger.of(context).showSnackBar(recipeSnackbar);
+                          const recipeSnackbar = SnackBar(
+                              content:
+                                  Text("Sorry, recipe is not yet available."));
+                          ScaffoldMessenger.of(context)
+                              .showSnackBar(recipeSnackbar);
                         }
                       },
                       leading: Container(
                         height: 72,
                         width: 72,
-                        decoration: const BoxDecoration(
+                        decoration: BoxDecoration(
                           borderRadius: BorderRadius.all(Radius.circular(20)),
                         ),
-                        child: Image(
-                          image: NetworkImage(
-                            documentSnapshot["imageUrl"],
-                          ),
+                        child: CachedNetworkImage(
+                          imageUrl: documentSnapshot["imageUrl"],
+                          progressIndicatorBuilder:
+                              (context, url, downloadProgress) =>
+                                  Center(
+                                    child: CircularProgressIndicator(
+                                        color: mPrimaryColor,
+                                        value: downloadProgress.progress),
+                                  ),
+                          errorWidget: (context, url, error) =>
+                              Icon(Icons.error),
                           fit: BoxFit.fitWidth,
                         ),
                       ),
                       title: Text(documentSnapshot["name"]),
-                      subtitle: Text('Last Modified: ${documentSnapshot["date"].toDate()}'),
-                      trailing: const Icon(Icons.arrow_right),
+                      subtitle: Text(
+                          'Last Modified: ${documentSnapshot["date"].toDate()}'),
+                      trailing: Icon(Icons.arrow_right),
                     ),
                   ),
                 ),
               );
             }),
-        const Padding(padding: EdgeInsets.only(bottom: 5))
+        Padding(padding: EdgeInsets.only(bottom: 5))
       ],
     );
   }
@@ -264,15 +290,15 @@ class _MyRecipesPageState extends State<MyRecipesPage> {
           mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            const Image(
+            Image(
               image: AssetImage(
                 'images/recipe-book-concept-illustration.png',
               ),
               height: 175,
               width: 250,
             ),
-            const Text('No saved recipe yet', style: TextStyle(fontSize: 18)),
-            const Padding(padding: EdgeInsets.only(bottom: 5)),
+            Text('No saved recipe yet', style: TextStyle(fontSize: 18)),
+            Padding(padding: EdgeInsets.only(bottom: 5)),
             Text(
               'Tap "+" button to create a recipe',
               style: TextStyle(color: Colors.grey[600], fontSize: 16),
@@ -283,8 +309,8 @@ class _MyRecipesPageState extends State<MyRecipesPage> {
 
   void doNothing(BuildContext context) {}
 
-  void deleteRecipeDialog(BuildContext myrecipeContext, String uid, String recipeId,
-      String recipeName, String recipeImage) {
+  void deleteRecipeDialog(BuildContext myrecipeContext, String uid,
+      String recipeId, String recipeName, String recipeImage) {
     showDialog(
       context: context,
       builder: (context) => new AlertDialog(
@@ -295,7 +321,9 @@ class _MyRecipesPageState extends State<MyRecipesPage> {
             onPressed: () {
               ManageRecipe deleteRecipe = ManageRecipe();
 
-              deleteRecipe.deleteRecipe(uid, recipeId, recipeImage).whenComplete(() {
+              deleteRecipe
+                  .deleteRecipe(uid, recipeId, recipeImage)
+                  .whenComplete(() {
                 Navigator.pop(myrecipeContext);
                 Fluttertoast.showToast(
                     msg: "Successfully deleted ${recipeName}",
@@ -338,8 +366,9 @@ class MyRecipeSearchDelegate extends SearchDelegate {
 
   @override
   List<Widget>? buildActions(BuildContext context) => [
+        // TODO: implement buildActions
         IconButton(
-          icon: const Icon(Icons.clear),
+          icon: Icon(Icons.clear),
           onPressed: () {
             if (query.isEmpty) {
               close(context, null);
@@ -352,19 +381,23 @@ class MyRecipeSearchDelegate extends SearchDelegate {
 
   @override
   Widget? buildLeading(BuildContext context) {
+    // TODO: implement buildLeading
     return IconButton(
-      icon: const Icon(Icons.arrow_back_ios),
+      icon: Icon(Icons.arrow_back_ios),
       onPressed: () => close(context, null), //close searchbar
     );
   }
 
   @override
   Widget buildResults(BuildContext context) {
+    // TODO: implement buildResults
     return filteredList;
   }
 
   @override
   Widget buildSuggestions(BuildContext context) {
+    // TODO: implement buildSuggestions
+
     List suggestions = items.where((item) {
       final result = item["name"].toLowerCase();
       final input = query.toLowerCase();
@@ -376,7 +409,8 @@ class MyRecipeSearchDelegate extends SearchDelegate {
       print(suggestions[i]["name"]);
     }
 
-    filteredList = _MyRecipesPageState()._myRecipeListViewBuilder(context, suggestions);
+    filteredList =
+        _MyRecipesPageState()._myRecipeListViewBuilder(context, suggestions);
     return filteredList;
   }
 }

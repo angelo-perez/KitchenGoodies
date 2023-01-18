@@ -1,5 +1,6 @@
 import 'dart:typed_data';
 
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dio/dio.dart';
 import 'package:elective_project/community_page/models/user.dart' as model;
@@ -85,8 +86,10 @@ class _PostCardState extends State<PostCard> {
         url,
         options: Options(responseType: ResponseType.bytes),
       );
-      final result = await ImageGallerySaver.saveImage(Uint8List.fromList(response.data),
-          quality: 60, name: "hello");
+      final result = await ImageGallerySaver.saveImage(
+          Uint8List.fromList(response.data),
+          quality: 60,
+          name: "hello");
       print(result);
     }
   }
@@ -156,7 +159,8 @@ class _PostCardState extends State<PostCard> {
                                       padding: const EdgeInsets.all(20),
                                       child: const Text("Delete"),
                                       onPressed: () async {
-                                        FirestoreMethods().deletePost(widget.snap['postId']);
+                                        FirestoreMethods()
+                                            .deletePost(widget.snap['postId']);
                                         Navigator.pop(context);
                                       },
                                     )
@@ -169,7 +173,8 @@ class _PostCardState extends State<PostCard> {
                                             toastLength: Toast.LENGTH_SHORT,
                                             gravity: ToastGravity.SNACKBAR,
                                             timeInSecForIosWeb: 1,
-                                            backgroundColor: splashScreenBgColor,
+                                            backgroundColor:
+                                                splashScreenBgColor,
                                             textColor: Colors.white,
                                             fontSize: 16.0);
                                       },
@@ -221,9 +226,16 @@ class _PostCardState extends State<PostCard> {
                 SizedBox(
                   height: MediaQuery.of(context).size.height * 0.5,
                   width: double.infinity,
-                  child: Image.network(
-                    widget.snap['postUrl'],
+                  child: CachedNetworkImage(
+                    imageUrl: widget.snap['postUrl'],
                     fit: BoxFit.cover,
+                    progressIndicatorBuilder:
+                        (context, url, downloadProgress) => Center(
+                      child: CircularProgressIndicator(
+                          color: mPrimaryColor,
+                          value: downloadProgress.progress),
+                    ),
+                    errorWidget: (context, url, error) => Icon(Icons.error),
                   ),
                 ),
                 AnimatedOpacity(
@@ -344,8 +356,10 @@ class _PostCardState extends State<PostCard> {
                     trimMode: TrimMode.Line,
                     trimCollapsedText: ' Show more',
                     trimExpandedText: ' Show less',
-                    moreStyle: const TextStyle(fontSize: 14, fontWeight: FontWeight.bold),
-                    lessStyle: const TextStyle(fontSize: 14, fontWeight: FontWeight.bold),
+                    moreStyle: const TextStyle(
+                        fontSize: 14, fontWeight: FontWeight.bold),
+                    lessStyle: const TextStyle(
+                        fontSize: 14, fontWeight: FontWeight.bold),
                   ),
                 ),
                 Container(

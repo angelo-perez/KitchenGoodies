@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:elective_project/community_page/models/user.dart' as model;
 import 'package:elective_project/profile_page/edit_profile_widget.dart';
@@ -45,7 +46,10 @@ class _ViewProfileState extends State<ViewProfile> {
       isLoading = true;
     });
     try {
-      var userSnap = await FirebaseFirestore.instance.collection('users').doc(widget.uid).get();
+      var userSnap = await FirebaseFirestore.instance
+          .collection('users')
+          .doc(widget.uid)
+          .get();
 
       var postSnap = await FirebaseFirestore.instance
           .collection('posts')
@@ -57,7 +61,9 @@ class _ViewProfileState extends State<ViewProfile> {
       description = userSnap.data()!['description'];
       followers = userSnap.data()!['followers'].length;
       following = userSnap.data()!['following'].length;
-      isFollowing = userSnap.data()!['followers'].contains(FirebaseAuth.instance.currentUser!.uid);
+      isFollowing = userSnap
+          .data()!['followers']
+          .contains(FirebaseAuth.instance.currentUser!.uid);
       setState(() {});
     } catch (e) {
       print(e);
@@ -111,7 +117,8 @@ class _ViewProfileState extends State<ViewProfile> {
                               children: [
                                 Row(
                                   mainAxisSize: MainAxisSize.max,
-                                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceEvenly,
                                   children: [
                                     buildStatColumn(postLen, 'posts'),
                                     buildStatColumn(followers, 'followers'),
@@ -119,7 +126,8 @@ class _ViewProfileState extends State<ViewProfile> {
                                   ],
                                 ),
                                 Row(
-                                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceEvenly,
                                   children: [
                                     user.uid == widget.uid
                                         ? FollowButton(
@@ -127,13 +135,16 @@ class _ViewProfileState extends State<ViewProfile> {
                                             borderColor: mPrimaryColor,
                                             text: 'Edit Profile',
                                             textColor: Colors.grey,
-                                            function: () => pushNewScreen(context,
-                                                screen: const EditProfileWidget(),
+                                            function: () => pushNewScreen(
+                                                context,
+                                                screen:
+                                                    const EditProfileWidget(),
                                                 withNavBar: true),
                                           )
                                         : isFollowing
                                             ? FollowButton(
-                                                backgroundColor: mBackgroundColor,
+                                                backgroundColor:
+                                                    mBackgroundColor,
                                                 borderColor: mPrimaryColor,
                                                 text: 'Following',
                                                 textColor: Colors.grey,
@@ -143,23 +154,32 @@ class _ViewProfileState extends State<ViewProfile> {
                                                       canReclick = false;
                                                     });
                                                     await Future.delayed(
-                                                        const Duration(milliseconds: 1000));
+                                                        const Duration(
+                                                            milliseconds:
+                                                                1000));
                                                     setState(() {
                                                       isFollowing = false;
                                                       canReclick = true;
                                                       followers--;
                                                     });
-                                                    await FirestoreMethods().followUser(
-                                                        FirebaseAuth.instance.currentUser!.uid,
-                                                        userData['uid']);
+                                                    await FirestoreMethods()
+                                                        .followUser(
+                                                            FirebaseAuth
+                                                                .instance
+                                                                .currentUser!
+                                                                .uid,
+                                                            userData['uid']);
                                                   } else {
                                                     await Future.delayed(
-                                                        const Duration(milliseconds: 1000));
+                                                        const Duration(
+                                                            milliseconds:
+                                                                1000));
                                                   }
                                                 },
                                               )
                                             : FollowButton(
-                                                backgroundColor: mBackgroundColor,
+                                                backgroundColor:
+                                                    mBackgroundColor,
                                                 borderColor: mPrimaryColor,
                                                 text: 'Follow',
                                                 textColor: Colors.grey,
@@ -169,18 +189,26 @@ class _ViewProfileState extends State<ViewProfile> {
                                                       canReclick = false;
                                                     });
                                                     await Future.delayed(
-                                                        const Duration(milliseconds: 1000));
+                                                        const Duration(
+                                                            milliseconds:
+                                                                1000));
                                                     setState(() {
                                                       isFollowing = true;
                                                       canReclick = true;
                                                       followers++;
                                                     });
-                                                    await FirestoreMethods().followUser(
-                                                        FirebaseAuth.instance.currentUser!.uid,
-                                                        userData['uid']);
+                                                    await FirestoreMethods()
+                                                        .followUser(
+                                                            FirebaseAuth
+                                                                .instance
+                                                                .currentUser!
+                                                                .uid,
+                                                            userData['uid']);
                                                   } else {
                                                     await Future.delayed(
-                                                        const Duration(milliseconds: 1000));
+                                                        const Duration(
+                                                            milliseconds:
+                                                                1000));
                                                   }
                                                 },
                                               ),
@@ -220,21 +248,29 @@ class _ViewProfileState extends State<ViewProfile> {
                     return GridView.builder(
                         shrinkWrap: true,
                         itemCount: (snapshot.data! as dynamic).docs.length,
-                        gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                        gridDelegate:
+                            const SliverGridDelegateWithFixedCrossAxisCount(
                           crossAxisCount: 3,
                           crossAxisSpacing: 5,
                           mainAxisSpacing: 1.5,
                           childAspectRatio: 1,
                         ),
                         itemBuilder: (context, index) {
-                          DocumentSnapshot snap = (snapshot.data! as dynamic).docs[index];
+                          DocumentSnapshot snap =
+                              (snapshot.data! as dynamic).docs[index];
 
                           return Container(
-                            child: Image(
-                              image: NetworkImage(
-                                snap['postUrl'],
-                              ),
+                            child: CachedNetworkImage(
+                              imageUrl: snap['postUrl'],
                               fit: BoxFit.cover,
+                              progressIndicatorBuilder:
+                                  (context, url, downloadProgress) => Center(
+                                child: CircularProgressIndicator(
+                                    color: mPrimaryColor,
+                                    value: downloadProgress.progress),
+                              ),
+                              errorWidget: (context, url, error) =>
+                                  Icon(Icons.error),
                             ),
                           );
                         });
