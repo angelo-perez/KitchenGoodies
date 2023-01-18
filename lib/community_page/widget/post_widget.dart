@@ -347,19 +347,6 @@ class _PostCardState extends State<PostCard> {
                     moreStyle: const TextStyle(fontSize: 14, fontWeight: FontWeight.bold),
                     lessStyle: const TextStyle(fontSize: 14, fontWeight: FontWeight.bold),
                   ),
-                  // RichText(
-                  //   text: TextSpan(
-                  //     style: TextStyle(
-                  //       color: mPrimaryTextColor,
-                  //     ),
-                  //     children: [
-                  //       TextSpan(
-                  //         text: widget.snap['description'],
-                  //         style: TextStyle(color: mSecondTextColor),
-                  //       ),
-                  //     ],
-                  //   ),
-                  // ),
                 ),
                 Container(
                   padding: const EdgeInsets.symmetric(

@@ -28,18 +28,16 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  final Query<Map<String, dynamic>> _popularRecipeCollection = FirebaseFirestore
-      .instance
+  final Query<Map<String, dynamic>> _popularRecipeCollection = FirebaseFirestore.instance
       .collection('user-recipes')
       .where('privacy', isEqualTo: 'public')
       .orderBy('rating-count', descending: true)
       .limit(3);
 
-  final Query<Map<String, dynamic>> _suggestedRecipeCollection =
-      FirebaseFirestore.instance
-          .collection('premade-recipes')
-          .orderBy('rating-mean', descending: true)
-          .limit(6);
+  final Query<Map<String, dynamic>> _suggestedRecipeCollection = FirebaseFirestore.instance
+      .collection('premade-recipes')
+      .orderBy('rating-mean', descending: true)
+      .limit(6);
 
   List premadeCollectionNames = [
     'chicken-recipe',
@@ -66,8 +64,7 @@ class _HomePageState extends State<HomePage> {
         ),
         title: Text(
           'Kitchen Goodies',
-          style: TextStyle(
-              color: appBarColor, fontWeight: FontWeight.w900, fontSize: 22),
+          style: TextStyle(color: appBarColor, fontWeight: FontWeight.w900, fontSize: 22),
         ),
         titleSpacing: 0,
       ),
@@ -99,8 +96,7 @@ class _HomePageState extends State<HomePage> {
       builder: (context, AsyncSnapshot<QuerySnapshot> popularRecipeSnapshot) {
         if (popularRecipeSnapshot.hasData) {
           print(popularRecipeSnapshot.data!.docs.length);
-          return popularRecipesBuilder(
-              context, popularRecipeSnapshot.data!.docs);
+          return popularRecipesBuilder(context, popularRecipeSnapshot.data!.docs);
         } else {
           return Center(
             child: CircularProgressIndicator(),
@@ -171,6 +167,15 @@ class _HomePageState extends State<HomePage> {
                       left: 0.0,
                       right: 0.0,
                       child: Container(
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(10),
+                          gradient: LinearGradient(
+                            colors: [Color.fromARGB(255, 0, 0, 0), Color.fromARGB(0, 0, 0, 0)],
+                            begin: FractionalOffset.bottomCenter,
+                            end: FractionalOffset.topCenter,
+                          ),
+                        ),
+                        padding: EdgeInsets.symmetric(vertical: 20.0, horizontal: 20.0),
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
@@ -179,22 +184,17 @@ class _HomePageState extends State<HomePage> {
                               child: documentSnapshot["rating"].length == 0
                                   ? Container()
                                   : Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.start,
+                                      mainAxisAlignment: MainAxisAlignment.start,
                                       children: [
                                         Padding(
-                                          padding:
-                                              const EdgeInsets.only(top: 2.5),
+                                          padding: const EdgeInsets.only(top: 2.5),
                                           child: RatingBarIndicator(
                                             itemSize: 18,
                                             rating: (documentSnapshot['rating']
-                                                        .reduce(
-                                                            (a, b) => a + b) /
-                                                    documentSnapshot['rating']
-                                                        .length)
+                                                        .reduce((a, b) => a + b) /
+                                                    documentSnapshot['rating'].length)
                                                 .toDouble(), //get the average of the rating array and convert it to double
-                                            itemBuilder: (context, index) =>
-                                                Icon(
+                                            itemBuilder: (context, index) => Icon(
                                               Icons.star,
                                               color: Colors.amber,
                                             ),
@@ -202,8 +202,7 @@ class _HomePageState extends State<HomePage> {
                                         ),
                                         Text(
                                           " (${documentSnapshot['rating'].length})",
-                                          style: TextStyle(
-                                              color: mBackgroundColor),
+                                          style: TextStyle(color: mBackgroundColor),
                                         ),
                                       ],
                                     ),
@@ -219,19 +218,6 @@ class _HomePageState extends State<HomePage> {
                             ),
                           ],
                         ),
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(10),
-                          gradient: LinearGradient(
-                            colors: [
-                              Color.fromARGB(255, 0, 0, 0),
-                              Color.fromARGB(0, 0, 0, 0)
-                            ],
-                            begin: FractionalOffset.bottomCenter,
-                            end: FractionalOffset.topCenter,
-                          ),
-                        ),
-                        padding: EdgeInsets.symmetric(
-                            vertical: 20.0, horizontal: 20.0),
                       ),
                     ),
                   ],
@@ -239,10 +225,7 @@ class _HomePageState extends State<HomePage> {
                 onTap: () {
                   String collection_name = 'user-recipes';
                   int numFields =
-                      (documentSnapshot.data() as Map<String, dynamic>)
-                          .keys
-                          .toList()
-                          .length;
+                      (documentSnapshot.data() as Map<String, dynamic>).keys.toList().length;
                   if (numFields >= 5) {
                     //6 fields including the source of the recipe
                     //check if number of fields is 5 (complete)
@@ -263,8 +246,8 @@ class _HomePageState extends State<HomePage> {
                       withNavBar: false,
                     );
                   } else {
-                    const recipeSnackbar = SnackBar(
-                        content: Text("Sorry, recipe is not yet available."));
+                    const recipeSnackbar =
+                        SnackBar(content: Text("Sorry, recipe is not yet available."));
                     ScaffoldMessenger.of(context).showSnackBar(recipeSnackbar);
                   }
                 },
@@ -283,8 +266,7 @@ class _HomePageState extends State<HomePage> {
       builder: (context, AsyncSnapshot<QuerySnapshot> suggestedRecipeSnapshot) {
         if (suggestedRecipeSnapshot.hasData) {
           print(suggestedRecipeSnapshot.data!.docs.length);
-          return suggestedRecipesBuilder(
-              context, suggestedRecipeSnapshot.data!.docs);
+          return suggestedRecipesBuilder(context, suggestedRecipeSnapshot.data!.docs);
         } else {
           return Center(
             child: CircularProgressIndicator(),
@@ -351,22 +333,17 @@ class _HomePageState extends State<HomePage> {
                               child: documentSnapshot["rating"].length == 0
                                   ? Container()
                                   : Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.start,
+                                      mainAxisAlignment: MainAxisAlignment.start,
                                       children: [
                                         Padding(
-                                          padding:
-                                              const EdgeInsets.only(top: 2.5),
+                                          padding: const EdgeInsets.only(top: 2.5),
                                           child: RatingBarIndicator(
                                             itemSize: 18,
                                             rating: (documentSnapshot['rating']
-                                                        .reduce(
-                                                            (a, b) => a + b) /
-                                                    documentSnapshot['rating']
-                                                        .length)
+                                                        .reduce((a, b) => a + b) /
+                                                    documentSnapshot['rating'].length)
                                                 .toDouble(), //get the average of the rating array and convert it to double
-                                            itemBuilder: (context, index) =>
-                                                Icon(
+                                            itemBuilder: (context, index) => Icon(
                                               Icons.star,
                                               color: Colors.amber,
                                             ),
@@ -374,8 +351,7 @@ class _HomePageState extends State<HomePage> {
                                         ),
                                         Text(
                                           " (${documentSnapshot['rating'].length})",
-                                          style: TextStyle(
-                                              color: mBackgroundColor),
+                                          style: TextStyle(color: mBackgroundColor),
                                         ),
                                       ],
                                     ),
@@ -394,16 +370,12 @@ class _HomePageState extends State<HomePage> {
                         decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(10),
                           gradient: LinearGradient(
-                            colors: [
-                              Color.fromARGB(255, 0, 0, 0),
-                              Color.fromARGB(0, 0, 0, 0)
-                            ],
+                            colors: [Color.fromARGB(255, 0, 0, 0), Color.fromARGB(0, 0, 0, 0)],
                             begin: FractionalOffset.bottomCenter,
                             end: FractionalOffset.topCenter,
                           ),
                         ),
-                        padding: EdgeInsets.symmetric(
-                            vertical: 20.0, horizontal: 20.0),
+                        padding: EdgeInsets.symmetric(vertical: 20.0, horizontal: 20.0),
                       ),
                     ),
                   ],
@@ -411,10 +383,7 @@ class _HomePageState extends State<HomePage> {
                 onTap: () {
                   String collection_name = 'premade-recipes';
                   int numFields =
-                      (documentSnapshot.data() as Map<String, dynamic>)
-                          .keys
-                          .toList()
-                          .length;
+                      (documentSnapshot.data() as Map<String, dynamic>).keys.toList().length;
                   if (numFields >= 5) {
                     //6 fields including the source of the recipe
                     //check if number of fields is 5 (complete)
@@ -435,8 +404,8 @@ class _HomePageState extends State<HomePage> {
                       withNavBar: false,
                     );
                   } else {
-                    const recipeSnackbar = SnackBar(
-                        content: Text("Sorry, recipe is not yet available."));
+                    const recipeSnackbar =
+                        SnackBar(content: Text("Sorry, recipe is not yet available."));
                     ScaffoldMessenger.of(context).showSnackBar(recipeSnackbar);
                   }
                 },

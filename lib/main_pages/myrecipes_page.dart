@@ -46,6 +46,7 @@ class _MyRecipesPageState extends State<MyRecipesPage> {
           actions: [
             IconButton(
                 onPressed: () {
+                  print(myRecipeList);
                   showSearch(context: context, delegate: MyRecipeSearchDelegate(myRecipeList));
                 },
                 icon: Icon(
@@ -74,7 +75,7 @@ class _MyRecipesPageState extends State<MyRecipesPage> {
                     return _myRecipeListViewBuilder(context, myRecipeSnapshot.data!.docs);
                   } else if (myRecipeSnapshot.connectionState == ConnectionState.waiting) {
                     print("loading");
-                    return Center(
+                    return const Center(
                       child: CircularProgressIndicator(),
                     );
                   } else {
@@ -128,7 +129,7 @@ class _MyRecipesPageState extends State<MyRecipesPage> {
                         toggleRecipePrivacy.toggleRecipePrivacy(uid, documentSnapshot.id, privacy);
                         print(privacy);
                       },
-                      backgroundColor: Color.fromARGB(255, 107, 100, 38),
+                      backgroundColor: const Color.fromARGB(255, 107, 100, 38),
                       foregroundColor: Colors.white,
                       icon: documentSnapshot["privacy"] == "Private" ||
                               documentSnapshot["privacy"] == "private"
@@ -140,7 +141,7 @@ class _MyRecipesPageState extends State<MyRecipesPage> {
                     // SHARE BUTTON IS NOT YET IMPLEMENTED
                     SlidableAction(
                       onPressed: doNothing,
-                      backgroundColor: Color.fromARGB(255, 71, 129, 95),
+                      backgroundColor: const Color.fromARGB(255, 71, 129, 95),
                       foregroundColor: Colors.white,
                       icon: Icons.share,
                       label: 'Share',
@@ -169,7 +170,7 @@ class _MyRecipesPageState extends State<MyRecipesPage> {
                                 documentSnapshot["steps-timer"]),
                             withNavBar: true);
                       },
-                      backgroundColor: Color(0xFF0392CF),
+                      backgroundColor: const Color(0xFF0392CF),
                       foregroundColor: Colors.white,
                       icon: Icons.edit,
                       label: 'Edit',
@@ -182,7 +183,7 @@ class _MyRecipesPageState extends State<MyRecipesPage> {
                         deleteRecipeDialog(context, uid, documentSnapshot.id,
                             documentSnapshot['name'], documentSnapshot['imageUrl']);
                       },
-                      backgroundColor: Color(0xFFFE4A49),
+                      backgroundColor: const Color(0xFFFE4A49),
                       foregroundColor: Colors.white,
                       icon: Icons.delete,
                       label: 'Delete',
@@ -234,7 +235,7 @@ class _MyRecipesPageState extends State<MyRecipesPage> {
                       leading: Container(
                         height: 72,
                         width: 72,
-                        decoration: BoxDecoration(
+                        decoration: const BoxDecoration(
                           borderRadius: BorderRadius.all(Radius.circular(20)),
                         ),
                         child: Image(
@@ -246,13 +247,13 @@ class _MyRecipesPageState extends State<MyRecipesPage> {
                       ),
                       title: Text(documentSnapshot["name"]),
                       subtitle: Text('Last Modified: ${documentSnapshot["date"].toDate()}'),
-                      trailing: Icon(Icons.arrow_right),
+                      trailing: const Icon(Icons.arrow_right),
                     ),
                   ),
                 ),
               );
             }),
-        Padding(padding: EdgeInsets.only(bottom: 5))
+        const Padding(padding: EdgeInsets.only(bottom: 5))
       ],
     );
   }
@@ -263,15 +264,15 @@ class _MyRecipesPageState extends State<MyRecipesPage> {
           mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            Image(
+            const Image(
               image: AssetImage(
                 'images/recipe-book-concept-illustration.png',
               ),
               height: 175,
               width: 250,
             ),
-            Text('No saved recipe yet', style: TextStyle(fontSize: 18)),
-            Padding(padding: EdgeInsets.only(bottom: 5)),
+            const Text('No saved recipe yet', style: TextStyle(fontSize: 18)),
+            const Padding(padding: EdgeInsets.only(bottom: 5)),
             Text(
               'Tap "+" button to create a recipe',
               style: TextStyle(color: Colors.grey[600], fontSize: 16),
@@ -337,9 +338,8 @@ class MyRecipeSearchDelegate extends SearchDelegate {
 
   @override
   List<Widget>? buildActions(BuildContext context) => [
-        // TODO: implement buildActions
         IconButton(
-          icon: Icon(Icons.clear),
+          icon: const Icon(Icons.clear),
           onPressed: () {
             if (query.isEmpty) {
               close(context, null);
@@ -352,23 +352,19 @@ class MyRecipeSearchDelegate extends SearchDelegate {
 
   @override
   Widget? buildLeading(BuildContext context) {
-    // TODO: implement buildLeading
     return IconButton(
-      icon: Icon(Icons.arrow_back_ios),
+      icon: const Icon(Icons.arrow_back_ios),
       onPressed: () => close(context, null), //close searchbar
     );
   }
 
   @override
   Widget buildResults(BuildContext context) {
-    // TODO: implement buildResults
     return filteredList;
   }
 
   @override
   Widget buildSuggestions(BuildContext context) {
-    // TODO: implement buildSuggestions
-
     List suggestions = items.where((item) {
       final result = item["name"].toLowerCase();
       final input = query.toLowerCase();
