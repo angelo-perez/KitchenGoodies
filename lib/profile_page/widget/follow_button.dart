@@ -40,7 +40,7 @@ class FollowButton extends StatelessWidget {
               fontWeight: FontWeight.w600,
             ),
           ),
-          width: 250,
+          width: MediaQuery.of(context).size.width*0.6,
           height: 27,
         ),
       ),
