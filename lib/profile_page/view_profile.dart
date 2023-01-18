@@ -234,7 +234,7 @@ class _ViewProfileState extends State<ViewProfile> {
                               image: NetworkImage(
                                 snap['postUrl'],
                               ),
-                              fit: BoxFit.contain,
+                              fit: BoxFit.cover,
                             ),
                           );
                         });
