@@ -1,8 +1,11 @@
+import 'package:elective_project/providers/google_sign_in.dart';
 import 'package:elective_project/resources/auth_methods.dart';
 import 'package:elective_project/util/colors.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
 import '../providers/user_provider.dart';
@@ -39,11 +42,53 @@ class _EditProfileWidgetState extends State<EditProfileWidget> {
     });
 
     String res = await AuthMethods().editUser(
+      _selectedImage,
       email: _emailController.text,
       username: _usernameController.text,
-      file: _selectedImage!,
       description: _descriptionController.text,
       password: _passwordController.text,
+      context: context,
+    );
+    print(_image);
+    if (res == 'Success') {
+      setState(() {
+        _isLoading = false;
+      });
+      Fluttertoast.showToast(
+          msg: res,
+          toastLength: Toast.LENGTH_SHORT,
+          gravity: ToastGravity.SNACKBAR,
+          timeInSecForIosWeb: 1,
+          backgroundColor: splashScreenBgColor,
+          textColor: Colors.white,
+          fontSize: 16.0);
+      // ignore: use_build_context_synchronously
+      Navigator.pop(context);
+    } else {
+      Fluttertoast.showToast(
+          msg: "Something went wrong",
+          toastLength: Toast.LENGTH_SHORT,
+          gravity: ToastGravity.SNACKBAR,
+          timeInSecForIosWeb: 1,
+          backgroundColor: splashScreenBgColor,
+          textColor: Colors.white,
+          fontSize: 16.0);
+      setState(() {
+        _isLoading = false;
+      });
+    }
+  }
+
+  void editUserGoogle() async {
+    setState(() {
+      _isLoading = true;
+    });
+
+    String res = await AuthMethods().editUserData(
+      _selectedImage,
+      email: _emailController.text,
+      username: _usernameController.text,
+      description: _descriptionController.text,
       context: context,
     );
     print(_image);
@@ -83,6 +128,7 @@ class _EditProfileWidgetState extends State<EditProfileWidget> {
     _usernameController = TextEditingController(text: user.username);
     _descriptionController = TextEditingController(text: user.description);
     _image = user.profImage;
+    final googleSignIn = GoogleSignIn();
 
     return Scaffold(
       appBar: AppBar(
@@ -153,20 +199,35 @@ class _EditProfileWidgetState extends State<EditProfileWidget> {
                           txtController: _usernameController,
                           labeltxt: "Username",
                         ),
-                        textFieldWidget(
-                          txtController: _emailController,
-                          labeltxt: "Email",
-                        ),
+                        (FirebaseAuth.instance.currentUser!.providerData[0].providerId
+                                .toLowerCase()
+                                .contains('google'))
+                            ? textFieldWidget(
+                                txtController: _emailController,
+                                labeltxt: "Email",
+                                editableText: false,
+                                interactiveSelection: false,
+                              )
+                            : textFieldWidget(
+                                txtController: _emailController,
+                                labeltxt: "Email",
+                              ),
                         textFieldWidget(
                           txtController: _descriptionController,
                           labeltxt: "Description",
                           maxlines: 3,
                         ),
-                        textFieldWidget(
-                          txtController: _passwordController,
-                          labeltxt: "Password",
-                          obscurebool: true,
-                        ),
+                        (FirebaseAuth.instance.currentUser!.providerData[0].providerId
+                                .toLowerCase()
+                                .contains('google'))
+                            ? const SizedBox(
+                                height: 80,
+                              )
+                            : textFieldWidget(
+                                txtController: _passwordController,
+                                labeltxt: "Password",
+                                obscurebool: true,
+                              ),
                       ],
                     ),
                   ),
@@ -181,7 +242,11 @@ class _EditProfileWidgetState extends State<EditProfileWidget> {
                           width: double.infinity,
                           child: ElevatedButton(
                             onPressed: () {
-                              editUser();
+                              (FirebaseAuth.instance.currentUser!.providerData[0].providerId
+                                      .toLowerCase()
+                                      .contains('google'))
+                                  ? editUserGoogle()
+                                  : editUser();
                             },
                             style: ElevatedButton.styleFrom(
                               backgroundColor: mPrimaryColor,
@@ -213,18 +278,24 @@ class textFieldWidget extends StatelessWidget {
     required this.labeltxt,
     this.obscurebool = false,
     this.maxlines = 1,
+    this.interactiveSelection = true,
+    this.editableText = true,
   }) : super(key: key);
 
   final TextEditingController txtController;
   final String labeltxt;
   final bool obscurebool;
   final int maxlines;
+  final bool interactiveSelection;
+  final bool editableText;
 
   @override
   Widget build(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.only(top: 20.0),
       child: TextField(
+        enabled: editableText,
+        enableInteractiveSelection: interactiveSelection,
         maxLines: maxlines,
         controller: txtController,
         keyboardType: TextInputType.name,
