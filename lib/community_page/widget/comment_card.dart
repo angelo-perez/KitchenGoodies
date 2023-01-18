@@ -18,7 +18,7 @@ class CommentCard extends StatefulWidget {
 class _CommentCardState extends State<CommentCard> {
   String listCheck(len) {
     if (widget.snap[len].length == 0) {
-      return "     ";
+      return ' 0';
     } else {
       return '  ${widget.snap[len].length}';
     }
@@ -35,19 +35,13 @@ class _CommentCardState extends State<CommentCard> {
 
       // INDIVIDUAL COMMENTS
       child: Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          // BUG
-          Column(
-            mainAxisAlignment: MainAxisAlignment.start,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              CircleAvatar(
-                backgroundImage: NetworkImage(
-                  widget.snap['profilePic'],
-                ),
-                radius: 18,
-              ),
-            ],
+          CircleAvatar(
+            backgroundImage: NetworkImage(
+              widget.snap['profilePic'],
+            ),
+            radius: 18,
           ),
           Expanded(
             child: Padding(
@@ -78,13 +72,16 @@ class _CommentCardState extends State<CommentCard> {
                     trimMode: TrimMode.Line,
                     trimCollapsedText: ' Show more',
                     trimExpandedText: ' Show less',
-                    moreStyle: const TextStyle(fontSize: 14, fontWeight: FontWeight.bold),
-                    lessStyle: const TextStyle(fontSize: 14, fontWeight: FontWeight.bold),
+                    moreStyle: const TextStyle(
+                        fontSize: 14, fontWeight: FontWeight.bold),
+                    lessStyle: const TextStyle(
+                        fontSize: 14, fontWeight: FontWeight.bold),
                   ),
                   Padding(
                     padding: const EdgeInsets.only(top: 4),
                     child: Text(
-                      DateFormat.yMMMd().format(widget.snap['datePublished'].toDate()),
+                      DateFormat.yMMMd()
+                          .format(widget.snap['datePublished'].toDate()),
                       style: TextStyle(
                         fontSize: 12,
                         fontWeight: FontWeight.w400,
