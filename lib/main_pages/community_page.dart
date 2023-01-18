@@ -60,7 +60,8 @@ class _CommunityPageState extends State<CommunityPage> {
           return StreamBuilder(
             stream: FirebaseFirestore.instance.collection('users').snapshots(),
             builder: (context, AsyncSnapshot<QuerySnapshot> snapshot2) {
-              if (snapshot.connectionState == ConnectionState.waiting) {
+              if (snapshot.connectionState == ConnectionState.waiting &&
+                  snapshot2.connectionState == ConnectionState.waiting) {
                 return const Center(
                   child: CircularProgressIndicator(),
                 );
