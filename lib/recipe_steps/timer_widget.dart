@@ -50,13 +50,18 @@ class _TimerWidgetState extends State<TimerWidget> {
                     isTimerTextShown: true,
                     autoStart: false,
                     neumorphicEffect: true,
-                    backgroudColor: Colors.white60,
+                    backgroudColor: Colors.transparent,
                     isReverse: true,
-                    textStyle: TextStyle(color: mPrimaryColor, fontSize: 40,),
-                    innerFillGradient:
-                        LinearGradient(colors: [appBarColor, appBarColor]),
-                    neonGradient:
-                        LinearGradient(colors: [appBarColor, appBarColor]),
+                    textStyle: TextStyle(
+                      color: mBackgroundColor,
+                      fontSize: 40,
+                    ),
+                    innerFillGradient: LinearGradient(
+                        colors: [mPrimaryColor, mPrimaryColor]),
+                    neonGradient: LinearGradient(
+                      colors: [mBackgroundColor, mBackgroundColor],
+                    ),
+                    
                     onComplete: () => setState(() {
                       _isFinished = !_isFinished;
                       FlutterRingtonePlayer.play(
@@ -68,115 +73,125 @@ class _TimerWidgetState extends State<TimerWidget> {
                   Align(
                     alignment: Alignment.center,
                     child: !_isStarted
-                        ? InkWell(
-                            onTap: () {
+                        ? ElevatedButton(
+                            onPressed: () {
                               setState(() {
                                 _controller.start();
                                 _isStarted = !_isStarted;
                                 _isRunning = !_isRunning;
                               });
                             },
-                            child: CircleAvatar(
-                                backgroundColor: appBarColor,
-                                child: Text(
-                                  "Start",
-                                  style: TextStyle(
-                                      color: mBackgroundColor,
-                                      fontSize: 40,
-                                      fontWeight: FontWeight.bold),
-                                ),
-                                maxRadius: 100),
+                            child: Text(
+                              'Start',
+                              style: TextStyle(
+                                  color: mBackgroundColor,
+                                  fontSize: 40,
+                                  fontWeight: FontWeight.bold),
+                            ),
+                            style: ElevatedButton.styleFrom(
+                              shape: CircleBorder(),
+                              padding: EdgeInsets.all(20),
+                              backgroundColor:
+                                  Color(0xFF12A2726), // <-- Button color
+                              foregroundColor: Colors.red, // <-- Splash color
+
+                              fixedSize: Size.fromRadius(100),
+                            ),
                           )
                         : Container(),
                   ),
                 ],
               ),
             ),
-            _isStarted ?
-            Padding(
-              padding: const EdgeInsets.only(bottom: 15, top: 15),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Padding(
-                    padding: EdgeInsets.fromLTRB(20, 10, 20, 10),
-                    child: IconButton(
-                      onPressed: () {
-                        setState(() {
-                          int remainingSeconds = _controller.getTimeInSeconds();
-                          if (remainingSeconds <= 0) {
-                            _isFinished = !_isFinished;
-                          }
-                          _controller.restart();
-                        });
-                        print(_isFinished);
-                      },
-                      icon: Icon(
-                        FluentIcons.arrow_reset_24_filled,
-                        color: iconTextColor,
-                      ),
-                      iconSize: 35,
-                    ),
-                  ),
-                  Padding(
-                    padding: EdgeInsets.fromLTRB(20, 10, 20, 10),
-                    child: IconButton(
-                      onPressed: () => setState(() {
-                        if (_isRunning) {
-                          _controller.pause();
-                          //FlutterRingtonePlayer.stop();
-                        } else {
-                          _controller.resume();
-                          //FlutterRingtonePlayer.play();
-                        }
-
-                        _isRunning = !_isRunning;
-                      }),
-                      icon: _isRunning
-                          ? Icon(
-                              FluentIcons.pause_24_filled,
-                              color: iconTextColor,
-                            )
-                          : Icon(
-                              FluentIcons.play_24_filled,
+            _isStarted
+                ? Padding(
+                    padding: const EdgeInsets.only(bottom: 15, top: 15),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Padding(
+                          padding: EdgeInsets.fromLTRB(20, 10, 20, 10),
+                          child: IconButton(
+                            onPressed: () {
+                              setState(() {
+                                int remainingSeconds =
+                                    _controller.getTimeInSeconds();
+                                if (remainingSeconds <= 0) {
+                                  _isFinished = !_isFinished;
+                                }
+                                _controller.restart();
+                              });
+                              print(_isFinished);
+                            },
+                            icon: Icon(
+                              FluentIcons.arrow_reset_24_filled,
                               color: iconTextColor,
                             ),
-                      iconSize: 35,
+                            iconSize: 35,
+                          ),
+                        ),
+                        Padding(
+                          padding: EdgeInsets.fromLTRB(20, 10, 20, 10),
+                          child: IconButton(
+                            onPressed: () => setState(() {
+                              if (_isRunning) {
+                                _controller.pause();
+                                //FlutterRingtonePlayer.stop();
+                              } else {
+                                _controller.resume();
+                                //FlutterRingtonePlayer.play();
+                              }
+
+                              _isRunning = !_isRunning;
+                            }),
+                            icon: _isRunning
+                                ? Icon(
+                                    FluentIcons.pause_24_filled,
+                                    color: iconTextColor,
+                                  )
+                                : Icon(
+                                    FluentIcons.play_24_filled,
+                                    color: iconTextColor,
+                                  ),
+                            iconSize: 35,
+                          ),
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.fromLTRB(20, 10, 20, 10),
+                          child: IconButton(
+                            onPressed: () {
+                              setState(() {
+                                //stepDurationSeconds += 300;
+                                addTwoMinutes +=
+                                    120; //adds 2 mins (120s) to the time
+                                int remainingSeconds =
+                                    _controller.getTimeInSeconds();
+                                if (remainingSeconds <= 0) {
+                                  _isFinished = !_isFinished;
+                                }
+                                _controller.restart(
+                                    duration: remainingSeconds + addTwoMinutes);
+                              });
+                              Fluttertoast.showToast(
+                                  msg: "Extended 2 minutes",
+                                  toastLength: Toast.LENGTH_SHORT,
+                                  gravity: ToastGravity.SNACKBAR,
+                                  timeInSecForIosWeb: 1,
+                                  backgroundColor: splashScreenBgColor,
+                                  textColor: Colors.white,
+                                  fontSize: 16.0);
+                            },
+                            icon: Icon(
+                              FluentIcons.timer_2_24_filled,
+                              color: iconTextColor,
+                            ),
+                            iconSize: 35,
+                          ),
+                        ),
+                      ],
                     ),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.fromLTRB(20, 10, 20, 10),
-                    child: IconButton(
-                      onPressed: () {
-                        setState(() {
-                          //stepDurationSeconds += 300;
-                          addTwoMinutes += 120; //adds 2 mins (120s) to the time
-                          int remainingSeconds = _controller.getTimeInSeconds();
-                          if (remainingSeconds <= 0) {
-                            _isFinished = !_isFinished;
-                          }
-                          _controller.restart(
-                              duration: remainingSeconds + addTwoMinutes);
-                        });
-                        Fluttertoast.showToast(
-                            msg: "Extended 2 minutes",
-                            toastLength: Toast.LENGTH_SHORT,
-                            gravity: ToastGravity.SNACKBAR,
-                            timeInSecForIosWeb: 1,
-                            backgroundColor: splashScreenBgColor,
-                            textColor: Colors.white,
-                            fontSize: 16.0);
-                      },
-                      icon: Icon(
-                        FluentIcons.timer_2_24_filled,
-                        color: iconTextColor,
-                      ),
-                      iconSize: 35,
-                    ),
-                  ),
-                ],
-              ),
-            ) : Container(),
+                  )
+                : Container(),
           ],
         ),
       ),
