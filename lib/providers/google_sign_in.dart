@@ -44,30 +44,29 @@ class GoogleSignInProvider extends ChangeNotifier {
 
     if (googleSignIn.currentUser != null) {
       //to avoid overwritting data of non-google accounts
+      QuerySnapshot<Map<String, dynamic>> newGoogleUser = await FirebaseFirestore.instance
+          .collection('users')
+          .where("email", isEqualTo: cred.user?.email)
+          .get();
 
-      QuerySnapshot<Map<String, dynamic>> newGoogleUser = await FirebaseFirestore.instance.collection('users').where("email", isEqualTo: cred.user?.email).get();
-
-      if(newGoogleUser.docs.length > 0){
+      if (newGoogleUser.docs.length > 0) {
         await FirebaseFirestore.instance.collection('users').doc(cred.user?.uid).set({
-        'uid': user?.uid,
-        'email': user?.email,
-        'username': user?.displayName,
-        'profImage': user?.photoURL,
-      }, SetOptions(merge: true));
-      }
-      else{
+          'uid': user?.uid,
+          'email': user?.email,
+          'username': user?.displayName,
+          'profImage': user?.photoURL,
+        }, SetOptions(merge: true));
+      } else {
         await FirebaseFirestore.instance.collection('users').doc(cred.user?.uid).set({
-        'uid': user?.uid,
-        'email': user?.email,
-        'username': user?.displayName,
-        'profImage': user?.photoURL,
-        'description': "",
-        'followers': [],
-        'following':[]
-      });
+          'uid': user?.uid,
+          'email': user?.email,
+          'username': user?.displayName,
+          'profImage': user?.photoURL,
+          'description': "",
+          'followers': [],
+          'following': []
+        });
       }
-
-      
     }
   }
 
@@ -75,7 +74,6 @@ class GoogleSignInProvider extends ChangeNotifier {
     if (googleSignIn.currentUser != null) {
       //logout for
       await googleSignIn.disconnect();
-      await FirebaseAuth.instance.signOut();
     } else {
       await FirebaseAuth.instance.signOut();
       Navigator.of(context, rootNavigator: true).pushAndRemoveUntil(

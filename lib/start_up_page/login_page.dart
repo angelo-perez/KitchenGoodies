@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:elective_project/resources/facebook_sign_in.dart';
 import 'package:elective_project/providers/google_sign_in.dart';
@@ -5,9 +7,11 @@ import 'package:elective_project/main.dart';
 import 'package:elective_project/start_up_page/signIn_page.dart';
 import 'package:elective_project/start_up_page/signUp_page.dart';
 import 'package:elective_project/resources/verify_sign_in.dart';
+import 'package:elective_project/start_up_page/verifyEmail.dart';
 import 'package:elective_project/util/colors.dart';
 import 'package:elective_project/util/utils.dart';
 import 'package:elective_project/widget/sliderDot.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_facebook_auth/flutter_facebook_auth.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -43,10 +47,44 @@ class LoginPage extends StatefulWidget {
 
 class _LoginPageState extends State<LoginPage> {
   bool _isLoggedIn = false;
+  bool _isUserLoggedIn = false;
 
   Map _userObj = {};
 
   int _current = 0;
+  Timer? timer;
+
+  @override
+  void initState() {
+    super.initState();
+
+    if (!_isUserLoggedIn) {
+      timer = Timer.periodic(
+        const Duration(seconds: 1),
+        (_) => checkUserLogin(),
+      );
+    }
+  }
+
+  Future checkUserLogin() async {
+    print("nagana dito pre");
+    if (FirebaseAuth.instance.currentUser?.uid != null) {
+      timer?.cancel();
+      final provider = Provider.of<GoogleSignInProvider>(context, listen: false);
+      provider.saveUserData(); // only works with google accounts
+      setState(() {
+        _isUserLoggedIn = true;
+      });
+      Navigator.pushReplacement(
+          context, MaterialPageRoute(builder: (BuildContext context) => const VerifyEmail()));
+    }
+  }
+
+  @override
+  void dispose() {
+    timer?.cancel();
+    super.dispose();
+  }
 
   List<Widget> carouselItem = imgList
       .map(
@@ -56,16 +94,12 @@ class _LoginPageState extends State<LoginPage> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-                Container(
-                    child: Image(image: AssetImage(item), fit: BoxFit.contain)),
+                Container(child: Image(image: AssetImage(item), fit: BoxFit.contain)),
                 Padding(
                   padding: const EdgeInsets.fromLTRB(10, 5, 10, 5),
                   child: Text(
                     titleList[imgList.indexOf(item)],
-                    style: TextStyle(
-                        color: appBarColor,
-                        fontSize: 20,
-                        fontWeight: FontWeight.w800),
+                    style: TextStyle(color: appBarColor, fontSize: 20, fontWeight: FontWeight.w800),
                   ),
                 ),
                 Padding(
@@ -73,10 +107,8 @@ class _LoginPageState extends State<LoginPage> {
                   child: Text(
                     descriptionList[imgList.indexOf(item)],
                     textAlign: TextAlign.center,
-                    style: TextStyle(
-                        color: Colors.black54,
-                        fontSize: 15,
-                        fontWeight: FontWeight.w500),
+                    style:
+                        TextStyle(color: Colors.black54, fontSize: 15, fontWeight: FontWeight.w500),
                   ),
                 )
               ],
@@ -118,12 +150,10 @@ class _LoginPageState extends State<LoginPage> {
                     child: Container(
                       width: 12.0,
                       height: 12.0,
-                      margin:
-                          EdgeInsets.symmetric(vertical: 8.0, horizontal: 4.0),
+                      margin: EdgeInsets.symmetric(vertical: 8.0, horizontal: 4.0),
                       decoration: BoxDecoration(
                           shape: BoxShape.circle,
-                          color: (Theme.of(context).brightness ==
-                                      Brightness.dark
+                          color: (Theme.of(context).brightness == Brightness.dark
                                   ? Colors.white
                                   : appBarColor)
                               .withOpacity(_current == entry.key ? 0.9 : 0.4)),
@@ -142,8 +172,8 @@ class _LoginPageState extends State<LoginPage> {
                     Expanded(
                       child: TextButton(
                         onPressed: () {
-                          Navigator.of(context).push(MaterialPageRoute(
-                              builder: (context) => SignUpPage()));
+                          Navigator.of(context)
+                              .push(MaterialPageRoute(builder: (context) => SignUpPage()));
                         },
                         style: TextButton.styleFrom(
                           shape: RoundedRectangleBorder(
@@ -172,8 +202,7 @@ class _LoginPageState extends State<LoginPage> {
                     Expanded(
                       child: TextButton(
                         onPressed: () {
-                          Navigator.push(context,
-                              MaterialPageRoute(builder: (context) {
+                          Navigator.push(context, MaterialPageRoute(builder: (context) {
                             return const SignInPage();
                           }));
                         },
@@ -206,11 +235,10 @@ class _LoginPageState extends State<LoginPage> {
                 padding: const EdgeInsets.symmetric(horizontal: 30),
                 child: TextButton(
                   onPressed: () {
-                    final provider = Provider.of<GoogleSignInProvider>(context,
-                        listen: false);
+                    final provider = Provider.of<GoogleSignInProvider>(context, listen: false);
                     provider.googleLogin();
-                    // Navigator.of(context).pushReplacement(MaterialPageRoute(
-                    //     builder: (context) => VerifyGoogleSignIn()));
+                    // Navigator.of(context)
+                    //     .pushReplacement(MaterialPageRoute(builder: (context) => MainPage(0)));
                   },
                   style: TextButton.styleFrom(
                       shape: RoundedRectangleBorder(

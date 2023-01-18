@@ -46,16 +46,31 @@ class _MainPageState extends State<MainPage> {
   void initState() {
     super.initState();
     addData();
+    checkData();
   }
 
   addData() async {
     setState(() {
       isLoading = true;
     });
+
     UserProvider _userProvider = Provider.of<UserProvider>(context, listen: false);
     await _userProvider.refreshUser();
+
     setState(() {
       isLoading = false;
+    });
+  }
+
+  checkData() async {
+    Future.delayed(const Duration(milliseconds: 3000), () {
+      if (FirebaseAuth.instance.currentUser?.uid != null) {
+        UserProvider _userProvider = Provider.of<UserProvider>(context, listen: false);
+        _userProvider.refreshUser();
+      }
+      setState(() {
+        isLoading = false;
+      });
     });
   }
 
@@ -93,25 +108,25 @@ class _MainPageState extends State<MainPage> {
     final model.User user = Provider.of<UserProvider>(context).getUser;
     return [
       PersistentBottomNavBarItem(
-        icon: Icon(FluentIcons.home_24_filled),
+        icon: const Icon(FluentIcons.home_24_filled),
         title: ("Home"),
         activeColorPrimary: appBarColor,
         inactiveColorPrimary: CupertinoColors.systemGrey,
       ),
       PersistentBottomNavBarItem(
-        icon: Icon(FluentIcons.food_24_filled),
+        icon: const Icon(FluentIcons.food_24_filled),
         title: ("Recipes"),
         activeColorPrimary: appBarColor,
         inactiveColorPrimary: CupertinoColors.systemGrey,
       ),
       PersistentBottomNavBarItem(
-        icon: Icon(FluentIcons.add_square_24_filled),
+        icon: const Icon(FluentIcons.add_square_24_filled),
         title: ("My Recipes"),
         activeColorPrimary: appBarColor,
         inactiveColorPrimary: CupertinoColors.systemGrey,
       ),
       PersistentBottomNavBarItem(
-        icon: Icon(FluentIcons.people_community_24_filled),
+        icon: const Icon(FluentIcons.people_community_24_filled),
         title: ("Community"),
         activeColorPrimary: appBarColor,
         inactiveColorPrimary: CupertinoColors.systemGrey,
