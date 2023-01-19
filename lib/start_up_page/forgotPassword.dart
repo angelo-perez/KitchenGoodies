@@ -24,12 +24,14 @@ class _ForgotPasswordState extends State<ForgotPassword> {
       _isLoading = true;
     });
     try {
-      await FirebaseAuth.instance.sendPasswordResetEmail(email: _emailController.text.trim());
+      await FirebaseAuth.instance
+          .sendPasswordResetEmail(email: _emailController.text.trim());
       showDialog(
         context: context,
         builder: (context) {
           return const AlertDialog(
-            content: Text('Password reset link has been sent! Check your Email'),
+            content:
+                Text('Password reset link has been sent! Check your Email'),
           );
         },
       );
@@ -115,13 +117,25 @@ class _ForgotPasswordState extends State<ForgotPassword> {
           const SizedBox(
             height: 10,
           ),
-          MaterialButton(
+          TextButton(
             onPressed: () => passwordReset(),
-            color: mPrimaryColor,
-            child: const Text(
-              'Reset Password',
-              style: TextStyle(
-                color: Colors.white,
+            style: TextButton.styleFrom(
+              backgroundColor: appBarColor,
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(36),
+                side: BorderSide(
+                  color: appBarColor,
+                ),
+              ),
+            ),
+            child: Padding(
+              padding: const EdgeInsets.all(4),
+              child: const Text(
+                'Reset Password',
+                style: TextStyle(
+                  color: Colors.white,
+                  fontSize: 18
+                ),
               ),
             ),
           )

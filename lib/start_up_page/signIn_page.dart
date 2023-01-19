@@ -67,6 +67,7 @@ class _SignInPageState extends State<SignInPage> {
           'Sign In',
           style: TextStyle(
             color: appBarColor,
+            fontSize: 22
           ),
         ),
         leading: IconButton(
@@ -216,6 +217,7 @@ class _SignInPageState extends State<SignInPage> {
                           'Sign In',
                           style: TextStyle(
                             color: mBackgroundColor,
+                            fontSize: 18
                           ),
                         ),
                 ),
