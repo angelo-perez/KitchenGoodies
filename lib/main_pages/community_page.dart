@@ -41,6 +41,7 @@ class _CommunityPageState extends State<CommunityPage> {
           IconButton(
               onPressed: () {
                 showSearch(context: context, delegate: ProfileSearchDelegate(userlist));
+                searchUserStream(context);
               },
               icon: Icon(
                 Icons.search,
@@ -48,36 +49,8 @@ class _CommunityPageState extends State<CommunityPage> {
               )),
         ],
       ),
-      body: StreamBuilder(
-        stream: FirebaseFirestore.instance
-            .collection('posts')
-            .orderBy(
-              'datePublished',
-              descending: true,
-            )
-            .snapshots(),
-        builder: (context, AsyncSnapshot<QuerySnapshot<Map<String, dynamic>>> snapshot) {
-          return StreamBuilder(
-            stream: FirebaseFirestore.instance.collection('users').snapshots(),
-            builder: (context, AsyncSnapshot<QuerySnapshot> snapshot2) {
-              if (snapshot.connectionState == ConnectionState.waiting ||
-                  snapshot2.connectionState == ConnectionState.waiting) {
-                return const Center(
-                  child: CircularProgressIndicator(),
-                );
-              } else {
-                userlist = snapshot2.data!.docs;
-                print(userlist);
-                return ListView.builder(
-                  itemCount: snapshot.data!.docs.length,
-                  itemBuilder: (context, index) => PostCard(
-                    snap: snapshot.data!.docs[index].data(),
-                  ),
-                );
-              }
-            },
-          );
-        },
+      body: SafeArea(
+        child: postStream(context),
       ),
       floatingActionButton: FloatingActionButton.extended(
         onPressed: () {
@@ -87,6 +60,48 @@ class _CommunityPageState extends State<CommunityPage> {
         label: const Text("Post"),
         backgroundColor: mPrimaryColor,
       ),
+    );
+  }
+
+  Widget postStream(BuildContext context) {
+    return StreamBuilder(
+      stream: FirebaseFirestore.instance
+          .collection('posts')
+          .orderBy(
+            'datePublished',
+            descending: true,
+          )
+          .snapshots(),
+      builder: (context, AsyncSnapshot<QuerySnapshot<Map<String, dynamic>>> snapshot) {
+        if (snapshot.connectionState == ConnectionState.waiting) {
+          return const Center(
+            child: CircularProgressIndicator(),
+          );
+        }
+        return ListView.builder(
+          itemCount: snapshot.data!.docs.length,
+          itemBuilder: (context, index) => PostCard(
+            snap: snapshot.data!.docs[index].data(),
+          ),
+        );
+      },
+    );
+  }
+
+  Widget searchUserStream(BuildContext context) {
+    return StreamBuilder(
+      stream: FirebaseFirestore.instance.collection('users').snapshots(),
+      builder: (context, AsyncSnapshot<QuerySnapshot> snapshot) {
+        if (snapshot.connectionState == ConnectionState.waiting) {
+          return const Center(
+            child: CircularProgressIndicator(),
+          );
+        } else {
+          userlist = snapshot.data!.docs;
+          print(userlist);
+        }
+        return Container();
+      },
     );
   }
 }
