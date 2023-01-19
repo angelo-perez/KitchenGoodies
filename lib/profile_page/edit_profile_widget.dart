@@ -271,7 +271,7 @@ class _EditProfileWidgetState extends State<EditProfileWidget> {
   }
 }
 
-class textFieldWidget extends StatelessWidget {
+class textFieldWidget extends StatefulWidget {
   const textFieldWidget({
     Key? key,
     required this.txtController,
@@ -290,20 +290,25 @@ class textFieldWidget extends StatelessWidget {
   final bool editableText;
 
   @override
+  State<textFieldWidget> createState() => _textFieldWidgetState();
+}
+
+class _textFieldWidgetState extends State<textFieldWidget> {
+  @override
   Widget build(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.only(top: 20.0),
       child: TextField(
-        enabled: editableText,
-        enableInteractiveSelection: interactiveSelection,
-        maxLines: maxlines,
-        controller: txtController,
+        enabled: widget.editableText,
+        enableInteractiveSelection: widget.interactiveSelection,
+        maxLines: widget.maxlines,
+        controller: widget.txtController,
         keyboardType: TextInputType.name,
         textInputAction: TextInputAction.next,
-        obscureText: obscurebool,
+        obscureText: widget.obscurebool,
         cursorColor: Colors.grey,
         decoration: InputDecoration(
-          labelText: labeltxt,
+          labelText: widget.labeltxt,
           labelStyle: const TextStyle(color: Colors.grey),
           border: OutlineInputBorder(
             borderSide: BorderSide(

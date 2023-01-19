@@ -48,14 +48,8 @@ class EditNamePicture extends StatefulWidget {
 class _EditNamePictureState extends State<EditNamePicture> {
   Uint8List? _image;
 
-  // void initState() {
-  //   recipeImgPlaceholder();
-  //   super.initState();
-  // }
-
   void recipeImgPlaceholder() async {
-    final ByteData bytes = await rootBundle
-        .load('images/test-images/recipe-image-placeholder.jpg');
+    final ByteData bytes = await rootBundle.load('images/test-images/recipe-image-placeholder.jpg');
     final Uint8List list = bytes.buffer.asUint8List();
     setState(() {
       _image = list;
@@ -82,8 +76,7 @@ class _EditNamePictureState extends State<EditNamePicture> {
     print(user.uid);
     print(user.username);
 
-    TextEditingController _nameController =
-        TextEditingController(text: widget.recipeName);
+    TextEditingController _nameController = TextEditingController(text: widget.recipeName);
     TextEditingController _descriptionController =
         TextEditingController(text: widget.recipeDescription);
     String? recipePrivacy = widget.recipePrivacy;
@@ -108,10 +101,7 @@ class _EditNamePictureState extends State<EditNamePicture> {
               color: mBackgroundColor,
               child: Text(
                 "Camera",
-                style: TextStyle(
-                    color: mPrimaryColor,
-                    fontWeight: FontWeight.bold,
-                    fontSize: 16),
+                style: TextStyle(color: mPrimaryColor, fontWeight: FontWeight.bold, fontSize: 16),
               ),
             ),
           ),
@@ -138,10 +128,7 @@ class _EditNamePictureState extends State<EditNamePicture> {
                 color: mBackgroundColor,
                 child: Text(
                   "Gallery",
-                  style: TextStyle(
-                      color: mPrimaryColor,
-                      fontWeight: FontWeight.bold,
-                      fontSize: 16),
+                  style: TextStyle(color: mPrimaryColor, fontWeight: FontWeight.bold, fontSize: 16),
                 ),
               ),
             ),
@@ -164,8 +151,8 @@ class _EditNamePictureState extends State<EditNamePicture> {
         children: [
           StarMenu(
               params: StarMenuParameters(
-                backgroundParams: BackgroundParams(
-                    sigmaX: 3, sigmaY: 3, backgroundColor: mPrimaryColor),
+                backgroundParams:
+                    BackgroundParams(sigmaX: 3, sigmaY: 3, backgroundColor: mPrimaryColor),
                 useScreenCenter: true,
               ),
               onItemTapped: (index, controller) {
@@ -205,8 +192,7 @@ class _EditNamePictureState extends State<EditNamePicture> {
                             color: Colors.black45,
                             child: Text(
                               "Tap to change",
-                              style:
-                                  TextStyle(color: Colors.white, fontSize: 20),
+                              style: TextStyle(color: Colors.white, fontSize: 20),
                             ),
                           ),
                         ),
@@ -248,7 +234,7 @@ class _EditNamePictureState extends State<EditNamePicture> {
                     elevation: 16,
                     shadowColor: appBarColor,
                   )),
-              items: [
+              items: const [
                 'Chicken',
                 'Pork',
                 'Beef',
@@ -282,8 +268,7 @@ class _EditNamePictureState extends State<EditNamePicture> {
                 print(recipeCategory);
               },
               selectedItem: widget.recipeCategory[0].toUpperCase() +
-                  widget.recipeCategory
-                      .substring(1), //capitalize the first letter
+                  widget.recipeCategory.substring(1), //capitalize the first letter
             ),
           ),
           Padding(
@@ -349,8 +334,7 @@ class _EditNamePictureState extends State<EditNamePicture> {
                 print(recipePrivacy);
               },
               selectedItem: widget.recipePrivacy[0].toUpperCase() +
-                  widget.recipePrivacy
-                      .substring(1), //capitalize the first letter
+                  widget.recipePrivacy.substring(1), //capitalize the first letter
             ),
           ),
           Padding(padding: EdgeInsets.all(8.0)),
