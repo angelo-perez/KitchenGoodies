@@ -138,7 +138,7 @@ class _MyRecipesPageState extends State<MyRecipesPage> {
                             uid, documentSnapshot.id, privacy);
                         print(privacy);
                       },
-                      backgroundColor: Color.fromARGB(255, 107, 100, 38),
+                      backgroundColor: Color.fromARGB(255, 95, 131, 80),
                       foregroundColor: Colors.white,
                       icon: documentSnapshot["privacy"] == "Private" ||
                               documentSnapshot["privacy"] == "private"
@@ -148,13 +148,6 @@ class _MyRecipesPageState extends State<MyRecipesPage> {
                           documentSnapshot['privacy'].substring(1),
                     ),
                     // SHARE BUTTON IS NOT YET IMPLEMENTED
-                    SlidableAction(
-                      onPressed: doNothing,
-                      backgroundColor: Color.fromARGB(255, 71, 129, 95),
-                      foregroundColor: Colors.white,
-                      icon: Icons.share,
-                      label: 'Share',
-                    ),
                   ],
                 ),
                 endActionPane: ActionPane(

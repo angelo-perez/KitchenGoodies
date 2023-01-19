@@ -96,17 +96,23 @@ class _EditNamePictureState extends State<EditNamePicture> {
         FloatingActionButton(
           onPressed: captureImage,
           child: Icon(FluentIcons.camera_28_filled, color: appBarColor),
-          backgroundColor: Colors.white,
+          backgroundColor: mBackgroundColor,
         ),
         Padding(padding: EdgeInsets.only(top: 4.0)),
         Center(
           widthFactor: double.minPositive,
-          child: Container(
-            color: appBarColor,
-            child: Text(
-              "Camera",
-              style:
-                  TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
+          child: ClipRRect(
+            borderRadius: BorderRadius.circular(10),
+            child: Container(
+              padding: EdgeInsets.all(4),
+              color: mBackgroundColor,
+              child: Text(
+                "Camera",
+                style: TextStyle(
+                    color: mPrimaryColor,
+                    fontWeight: FontWeight.bold,
+                    fontSize: 16),
+              ),
             ),
           ),
         )
@@ -120,17 +126,23 @@ class _EditNamePictureState extends State<EditNamePicture> {
               FluentIcons.image_28_filled,
               color: appBarColor,
             ),
-            backgroundColor: Colors.white,
+            backgroundColor: mBackgroundColor,
           ),
           Padding(padding: EdgeInsets.only(top: 4.0)),
           Center(
             widthFactor: double.minPositive,
-            child: Container(
-              color: appBarColor,
-              child: Text(
-                "Gallery",
-                style:
-                    TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
+            child: ClipRRect(
+              borderRadius: BorderRadius.circular(10),
+              child: Container(
+                padding: EdgeInsets.all(4),
+                color: mBackgroundColor,
+                child: Text(
+                  "Gallery",
+                  style: TextStyle(
+                      color: mPrimaryColor,
+                      fontWeight: FontWeight.bold,
+                      fontSize: 16),
+                ),
               ),
             ),
           )
@@ -153,9 +165,7 @@ class _EditNamePictureState extends State<EditNamePicture> {
           StarMenu(
               params: StarMenuParameters(
                 backgroundParams: BackgroundParams(
-                  sigmaX: 3,
-                  sigmaY: 3,
-                ),
+                    sigmaX: 3, sigmaY: 3, backgroundColor: mPrimaryColor),
                 useScreenCenter: true,
               ),
               onItemTapped: (index, controller) {

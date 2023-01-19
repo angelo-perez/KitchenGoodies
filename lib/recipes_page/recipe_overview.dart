@@ -276,9 +276,9 @@ class _RecipeOverviewState extends State<RecipeOverview> {
           ),
           label: Text(
             'Start Cooking',
-            style: TextStyle(color: iconTextColor),
+            style: TextStyle(color: mPrimaryColor, fontSize: 16, fontWeight: FontWeight.bold),
           ),
-          backgroundColor: appBarColor,
+          backgroundColor: mBackgroundColor,
           elevation: 20,
         ),
       ),

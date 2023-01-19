@@ -60,7 +60,7 @@ class _MyAppState extends State<MyApp> {
         ),
         home: AnimatedSplashScreen(
           duration: 1500,
-          splash: SvgPicture.asset('images/logos/kitchen-goodies.svg', color: mBackgroundColor),
+          splash: Image.asset("images/logos/logo-with-label.png", ),
           centered: true,
           splashIconSize: 300,
           splashTransition: SplashTransition.fadeTransition,

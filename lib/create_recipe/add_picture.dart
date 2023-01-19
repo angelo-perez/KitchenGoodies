@@ -92,18 +92,24 @@ class _AddPictureState extends State<AddPicture> {
         Padding(padding: EdgeInsets.only(top: 250.0)),
         FloatingActionButton(
           onPressed: captureImage,
-          child: Icon(FluentIcons.camera_28_filled, color: appBarColor),
-          backgroundColor: Colors.white,
+          child: Icon(FluentIcons.camera_28_filled, color: mPrimaryColor),
+          backgroundColor: mBackgroundColor,
         ),
         Padding(padding: EdgeInsets.only(top: 4.0)),
         Center(
           widthFactor: double.minPositive,
-          child: Container(
-            color: appBarColor,
-            child: Text(
-              "Camera",
-              style:
-                  TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
+          child: ClipRRect(
+            borderRadius: BorderRadius.circular(10),
+            child: Container(
+              padding: EdgeInsets.all(4),
+              color: mBackgroundColor,
+              child: Text(
+                "Camera",
+                style: TextStyle(
+                    color: mPrimaryColor,
+                    fontWeight: FontWeight.bold,
+                    fontSize: 16),
+              ),
             ),
           ),
         )
@@ -116,21 +122,27 @@ class _AddPictureState extends State<AddPicture> {
             onPressed: selectImage,
             child: Icon(
               FluentIcons.image_28_filled,
-              color: appBarColor,
+              color: mPrimaryColor,
             ),
-            backgroundColor: Colors.white,
+            backgroundColor: mBackgroundColor,
           ),
           Padding(padding: EdgeInsets.only(top: 4.0)),
           Center(
             widthFactor: double.minPositive,
+            child: ClipRRect(
+            borderRadius: BorderRadius.circular(10),
             child: Container(
-              color: appBarColor,
+              padding: EdgeInsets.all(4),
+              color: mBackgroundColor,
               child: Text(
                 "Gallery",
-                style:
-                    TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
+                style: TextStyle(
+                    color: mPrimaryColor,
+                    fontWeight: FontWeight.bold,
+                    fontSize: 16),
               ),
             ),
+          ),
           )
         ],
       ),
@@ -180,8 +192,10 @@ class _AddPictureState extends State<AddPicture> {
               backgroundParams: BackgroundParams(
                 sigmaX: 3,
                 sigmaY: 3,
+                backgroundColor: mPrimaryColor
               ),
               useScreenCenter: true,
+
             ),
             onItemTapped: (index, controller) {
               controller.closeMenu!();
@@ -221,16 +235,6 @@ class _AddPictureState extends State<AddPicture> {
                     textColor: Colors.white,
                     fontSize: 16.0);
                 String recipeId = const Uuid().v1();
-
-                // print(widget.recipeName);
-                // print(widget.recipeCategory);
-                // print(widget.recipePrivacy);
-                // print(widget.recipeIngredients);
-                // print(widget.recipeSteps);
-                // print(widget.recipeTimer);
-                // print(_image);
-                // print(user.uid);
-                // print(user.username);
                 print(recipeId);
 
                 ManageRecipe uploadRecipe = ManageRecipe();

@@ -98,14 +98,18 @@ class _HomePageState extends State<HomePage> {
     return StreamBuilder(
       stream: _popularRecipeCollection.snapshots(),
       builder: (context, AsyncSnapshot<QuerySnapshot> popularRecipeSnapshot) {
-        if (popularRecipeSnapshot.hasData) {
+        if (popularRecipeSnapshot.hasData &&
+            popularRecipeSnapshot.data!.size > 0) {
           print(popularRecipeSnapshot.data!.docs.length);
           return popularRecipesBuilder(
               context, popularRecipeSnapshot.data!.docs);
-        } else {
+        } else if (popularRecipeSnapshot.connectionState ==
+            ConnectionState.waiting) {
           return Center(
             child: CircularProgressIndicator(),
           );
+        } else {
+          return Container();
         }
       },
     );
@@ -468,6 +472,7 @@ class _HomePageState extends State<HomePage> {
       ],
     );
   }
+
 }
 
 // class buildBody extends StatelessWidget {

@@ -111,7 +111,7 @@ class _RecipesPageState extends State<RecipesPage> {
       child: StreamBuilder(
         stream: _publicCollection.snapshots(),
         builder: (context, AsyncSnapshot<QuerySnapshot> publicRecipeSnapshot) {
-          if (publicRecipeSnapshot.hasData) {
+          if (publicRecipeSnapshot.hasData && publicRecipeSnapshot.data!.size > 0) {
             publicRecipeList = publicRecipeSnapshot.data!.docs;
             return publicRecipesBuilder(
                 context, publicRecipeSnapshot.data!.docs); //temporary listview
@@ -121,12 +121,7 @@ class _RecipesPageState extends State<RecipesPage> {
               child: CircularProgressIndicator(),
             );
           } else {
-            return Center(
-              child: Text(
-                'No Public Recipes Yet',
-                style: TextStyle(color: mPrimaryColor),
-              ),
-            );
+            return _emptyPublicRecipe(context);
           }
         },
       ),
@@ -395,6 +390,29 @@ class _RecipesPageState extends State<RecipesPage> {
           ),
         ],
       ),
+    );
+  }
+
+  Widget _emptyPublicRecipe(BuildContext context) {
+    return Center(
+      child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            Image(
+              image: AssetImage(
+                'images/recipe-book-concept-illustration.png',
+              ),
+              height: 175,
+              width: 250,
+            ),
+            Text('No Public Recipe Yet', style: TextStyle(fontSize: 18)),
+            Padding(padding: EdgeInsets.only(bottom: 5)),
+            Text(
+              'Create one and share it to the Public!',
+              style: TextStyle(color: Colors.grey[600], fontSize: 16),
+            )
+          ]),
     );
   }
 }
