@@ -39,7 +39,7 @@ class _SignUpPageState extends State<SignUpPage> {
   }
 
   void defaultpp() async {
-    final ByteData bytes = await rootBundle.load('images/test-images/default-pp.png');
+    final ByteData bytes = await rootBundle.load('images/user_placeholder.png');
     final Uint8List list = bytes.buffer.asUint8List();
     setState(() {
       _image = list;
@@ -118,6 +118,7 @@ class _SignUpPageState extends State<SignUpPage> {
           'Sign Up',
           style: TextStyle(
             color: appBarColor,
+            fontSize: 22
           ),
         ),
         leading: IconButton(
@@ -153,7 +154,7 @@ class _SignUpPageState extends State<SignUpPage> {
                         )
                       : const CircleAvatar(
                           radius: 64,
-                          backgroundImage: AssetImage('images/test-images/default-pp.png'),
+                          backgroundImage: AssetImage('images/user_placeholder.png'),
                         ),
                   Positioned(
                     bottom: -10,
@@ -305,7 +306,7 @@ class _SignUpPageState extends State<SignUpPage> {
                     fontSize: 12,
                   ),
                   children: [
-                    const TextSpan(text: 'By click the Sign up button, you agree to our '),
+                    const TextSpan(text: 'By clicking the Sign up button, you agree to our '),
                     TextSpan(
                         text: 'Terms of Use',
                         style: TextStyle(
@@ -371,6 +372,7 @@ class _SignUpPageState extends State<SignUpPage> {
                             'Sign Up',
                             style: TextStyle(
                               color: mBackgroundColor,
+                              fontSize: 18
                             ),
                           ),
                   ),

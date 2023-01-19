@@ -78,8 +78,10 @@ class _VerifyEmailState extends State<VerifyEmail> {
               "Verify Email",
               style: TextStyle(
                 color: appBarColor,
+                fontSize: 22
               ),
             ),
+            automaticallyImplyLeading: false,
           ),
           body: Padding(
             padding: const EdgeInsets.all(16),
@@ -96,15 +98,16 @@ class _VerifyEmailState extends State<VerifyEmail> {
                 ),
                 ElevatedButton.icon(
                   style: ElevatedButton.styleFrom(
-                    minimumSize: const Size.fromHeight(50),
+                    minimumSize: const Size.fromRadius(24),
                     backgroundColor: mPrimaryColor,
+
                   ),
                   icon: const Icon(
                     Icons.email,
                     size: 32,
                   ),
                   label: const Text(
-                    "Resent Email",
+                    "Resend Email",
                     style: TextStyle(fontSize: 24),
                   ),
                   onPressed: canResendEmail ? sendVerificationEmail : null,

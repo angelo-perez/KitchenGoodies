@@ -191,6 +191,7 @@ class _LoginPageState extends State<LoginPage> {
                             "Sign Up",
                             style: TextStyle(
                               color: Colors.white,
+                              fontSize: 16
                             ),
                           ),
                         ),
@@ -223,6 +224,7 @@ class _LoginPageState extends State<LoginPage> {
                             "Sign In",
                             style: TextStyle(
                               color: appBarColor,
+                              fontSize: 16
                             ),
                           ),
                         ),
@@ -264,6 +266,7 @@ class _LoginPageState extends State<LoginPage> {
                           'Sign in with Google',
                           style: TextStyle(
                             color: appBarColor,
+                            fontSize: 16
                           ),
                         )
                       ],
