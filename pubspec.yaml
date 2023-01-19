@@ -98,6 +98,7 @@ dependencies:
   image_gallery_saver: ^1.7.1
   dio: ^4.0.6
   permission_handler: ^10.2.0
+  full_screen_image_null_safe: ^2.0.0
 
 dev_dependencies:
   flutter_test:

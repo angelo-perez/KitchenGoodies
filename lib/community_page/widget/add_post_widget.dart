@@ -218,7 +218,7 @@ class _AddPostWidgetState extends State<AddPostWidget> {
                     decoration: BoxDecoration(
                       image: DecorationImage(
                         image: MemoryImage(_file!),
-                        fit: BoxFit.fill,
+                        fit: BoxFit.cover,
                       ),
                     ),
                   ),

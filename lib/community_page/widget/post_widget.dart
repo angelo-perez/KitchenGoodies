@@ -9,6 +9,7 @@ import 'package:elective_project/resources/firestore_methods.dart';
 import 'package:elective_project/providers/user_provider.dart';
 import 'package:elective_project/util/colors.dart';
 import 'package:elective_project/util/utils.dart';
+import 'package:elective_project/widget/ImageViewer.dart';
 import 'package:elective_project/widget/like_animation.dart';
 
 import 'package:flutter/material.dart';
@@ -16,6 +17,7 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:image_gallery_saver/image_gallery_saver.dart';
 import 'package:intl/intl.dart';
 import 'package:permission_handler/permission_handler.dart';
+import 'package:persistent_bottom_nav_bar/persistent-tab-view.dart';
 import 'package:provider/provider.dart';
 import 'package:readmore/readmore.dart';
 import '../../profile_page/view_profile.dart';
@@ -86,10 +88,8 @@ class _PostCardState extends State<PostCard> {
         url,
         options: Options(responseType: ResponseType.bytes),
       );
-      final result = await ImageGallerySaver.saveImage(
-          Uint8List.fromList(response.data),
-          quality: 60,
-          name: "hello");
+      final result = await ImageGallerySaver.saveImage(Uint8List.fromList(response.data),
+          quality: 60, name: "hello");
       print(result);
     }
   }
@@ -159,8 +159,7 @@ class _PostCardState extends State<PostCard> {
                                       padding: const EdgeInsets.all(20),
                                       child: const Text("Delete"),
                                       onPressed: () async {
-                                        FirestoreMethods()
-                                            .deletePost(widget.snap['postId']);
+                                        FirestoreMethods().deletePost(widget.snap['postId']);
                                         Navigator.pop(context);
                                       },
                                     )
@@ -173,8 +172,7 @@ class _PostCardState extends State<PostCard> {
                                             toastLength: Toast.LENGTH_SHORT,
                                             gravity: ToastGravity.SNACKBAR,
                                             timeInSecForIosWeb: 1,
-                                            backgroundColor:
-                                                splashScreenBgColor,
+                                            backgroundColor: splashScreenBgColor,
                                             textColor: Colors.white,
                                             fontSize: 16.0);
                                       },
@@ -208,6 +206,13 @@ class _PostCardState extends State<PostCard> {
 
           // IMAGE SECTION
           GestureDetector(
+            onTap: () {
+              pushNewScreen(
+                context,
+                screen: ImageViewer(image: widget.snap['postUrl']),
+                pageTransitionAnimation: PageTransitionAnimation.fade,
+              );
+            },
             onDoubleTap: () async {
               await FirestoreMethods().likePost(
                 widget.snap['postId'],
@@ -229,11 +234,9 @@ class _PostCardState extends State<PostCard> {
                   child: CachedNetworkImage(
                     imageUrl: widget.snap['postUrl'],
                     fit: BoxFit.cover,
-                    progressIndicatorBuilder:
-                        (context, url, downloadProgress) => Center(
+                    progressIndicatorBuilder: (context, url, downloadProgress) => Center(
                       child: CircularProgressIndicator(
-                          color: mPrimaryColor,
-                          value: downloadProgress.progress),
+                          color: mPrimaryColor, value: downloadProgress.progress),
                     ),
                     errorWidget: (context, url, error) => Icon(Icons.error),
                   ),
@@ -356,10 +359,8 @@ class _PostCardState extends State<PostCard> {
                     trimMode: TrimMode.Line,
                     trimCollapsedText: ' Show more',
                     trimExpandedText: ' Show less',
-                    moreStyle: const TextStyle(
-                        fontSize: 14, fontWeight: FontWeight.bold),
-                    lessStyle: const TextStyle(
-                        fontSize: 14, fontWeight: FontWeight.bold),
+                    moreStyle: const TextStyle(fontSize: 14, fontWeight: FontWeight.bold),
+                    lessStyle: const TextStyle(fontSize: 14, fontWeight: FontWeight.bold),
                   ),
                 ),
                 Container(
