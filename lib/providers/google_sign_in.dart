@@ -58,14 +58,7 @@ class GoogleSignInProvider extends ChangeNotifier {
           .where("email", isEqualTo: cred.user?.email)
           .get();
 
-      if (newGoogleUser.docs.length > 0) {
-        await FirebaseFirestore.instance.collection('users').doc(cred.user?.uid).set({
-          'uid': user?.uid,
-          'email': user?.email,
-          'username': user?.displayName,
-          'profImage': user?.photoURL,
-        }, SetOptions(merge: true));
-      } else {
+      if (!(newGoogleUser.docs.length > 0)) {
         await FirebaseFirestore.instance.collection('users').doc(cred.user?.uid).set({
           'uid': user?.uid,
           'email': user?.email,
@@ -75,7 +68,24 @@ class GoogleSignInProvider extends ChangeNotifier {
           'followers': [],
           'following': []
         });
+        // await FirebaseFirestore.instance.collection('users').doc(cred.user?.uid).set({
+        //   'uid': user?.uid,
+        //   'email': user?.email,
+        //   'username': user?.displayName,
+        //   'profImage': user?.photoURL,
+        // }, SetOptions(merge: true));
       }
+      // else {
+      //   await FirebaseFirestore.instance.collection('users').doc(cred.user?.uid).set({
+      //     'uid': user?.uid,
+      //     'email': user?.email,
+      //     'username': user?.displayName,
+      //     'profImage': user?.photoURL,
+      //     'description': "",
+      //     'followers': [],
+      //     'following': []
+      //   });
+      // }
     }
   }
 
