@@ -1,6 +1,7 @@
 import 'package:blurry/blurry.dart';
 import 'package:elective_project/profile_page/settings_changePassword.dart';
 import 'package:elective_project/resources/auth_methods.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:fluttertoast/fluttertoast.dart';
@@ -74,12 +75,16 @@ class UserManagementWidget extends StatelessWidget {
                           fontSize: 16.0);
                     }
                   }),
-              SettingMenu(
-                title: "Change Password",
-                icon: Icons.password,
-                onPress: () => Navigator.of(context)
-                    .push(MaterialPageRoute(builder: (context) => const ChangePassword())),
-              ),
+              (FirebaseAuth.instance.currentUser!.providerData[0].providerId
+                      .toLowerCase()
+                      .contains('google'))
+                  ? Container()
+                  : SettingMenu(
+                      title: "Change Password",
+                      icon: Icons.password,
+                      onPress: () => Navigator.of(context)
+                          .push(MaterialPageRoute(builder: (context) => const ChangePassword())),
+                    ),
               SettingMenu(
                 title: "Delete Account",
                 icon: Icons.delete_forever,

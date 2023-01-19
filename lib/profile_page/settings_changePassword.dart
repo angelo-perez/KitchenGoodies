@@ -56,6 +56,7 @@ class _ChangePasswordState extends State<ChangePassword> {
           backgroundColor: splashScreenBgColor,
           textColor: Colors.white,
           fontSize: 16.0);
+      Navigator.pop(context);
     } else {
       Fluttertoast.showToast(
           msg: res,
