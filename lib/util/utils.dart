@@ -5,10 +5,18 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:image_picker/image_picker.dart';
 
-pickImage(ImageSource source) async {
+pickImage(ImageSource source, bool isProfilePicture) async {
   final ImagePicker _imagePicker = ImagePicker();
+  XFile? _file;
 
-  XFile? _file = await _imagePicker.pickImage(source: source);
+  if (isProfilePicture) {
+    _file = await _imagePicker.pickImage(
+      source: source,
+      imageQuality: 0,
+    );
+  } else {
+    _file = await _imagePicker.pickImage(source: source);
+  }
 
   if (_file != null) {
     return await _file.readAsBytes();

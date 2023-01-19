@@ -24,13 +24,13 @@ class _EditProfileWidgetState extends State<EditProfileWidget> {
   TextEditingController _usernameController = TextEditingController();
   TextEditingController _emailController = TextEditingController();
   TextEditingController _descriptionController = TextEditingController();
-  TextEditingController _passwordController = TextEditingController();
+  final TextEditingController _passwordController = TextEditingController();
   String _image = "";
   bool _isLoading = false;
   Uint8List? _selectedImage;
 
   void selectImage() async {
-    Uint8List im = await pickImage(ImageSource.gallery);
+    Uint8List im = await pickImage(ImageSource.gallery, true);
     setState(() {
       _selectedImage = im;
     });
@@ -122,12 +122,18 @@ class _EditProfileWidgetState extends State<EditProfileWidget> {
   }
 
   @override
-  Widget build(BuildContext context) {
-    final model.User user = Provider.of<UserProvider>(context).getUser;
+  void initState() {
+    super.initState();
+    model.User user = Provider.of<UserProvider>(context, listen: false).getUser;
     _emailController = TextEditingController(text: user.email);
     _usernameController = TextEditingController(text: user.username);
     _descriptionController = TextEditingController(text: user.description);
+
     _image = user.profImage;
+  }
+
+  @override
+  Widget build(BuildContext context) {
     final googleSignIn = GoogleSignIn();
 
     return Scaffold(
@@ -145,134 +151,137 @@ class _EditProfileWidgetState extends State<EditProfileWidget> {
           style: TextStyle(color: mPrimaryTextColor),
         ),
       ),
-      body: SingleChildScrollView(
-        child: Column(
-          children: [
-            _isLoading ? const LinearProgressIndicator() : Container(),
-            Container(
-              padding: const EdgeInsets.all(20),
-              child: Column(
-                children: [
-                  Stack(
-                    children: [
-                      SizedBox(
-                        width: 120,
-                        height: 120,
-                        child: _selectedImage != null
-                            ? CircleAvatar(
-                                radius: 64,
-                                backgroundImage: MemoryImage(_selectedImage!),
-                              )
-                            : CircleAvatar(
-                                radius: 64,
-                                backgroundImage: NetworkImage(_image),
-                              ),
-                      ),
-                      Positioned(
-                        bottom: 0,
-                        right: 0,
-                        child: Container(
-                          width: 35,
-                          height: 35,
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(100),
-                            color: mPrimaryColor,
-                          ),
-                          child: IconButton(
-                              onPressed: () => selectImage(),
-                              icon: const Icon(
-                                Icons.edit,
-                                color: Colors.white,
-                                size: 20,
-                              )),
-                        ),
-                      ),
-                    ],
-                  ),
-                  const SizedBox(height: 10),
-                  const Divider(),
-                  Container(
-                    padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 5),
-                    child: Column(
-                      children: <Widget>[
-                        textFieldWidget(
-                          txtController: _usernameController,
-                          labeltxt: "Username",
-                        ),
-                        (FirebaseAuth.instance.currentUser!.providerData[0].providerId
-                                .toLowerCase()
-                                .contains('google'))
-                            ? textFieldWidget(
-                                txtController: _emailController,
-                                labeltxt: "Email",
-                                editableText: false,
-                                interactiveSelection: false,
-                              )
-                            : textFieldWidget(
-                                txtController: _emailController,
-                                labeltxt: "Email",
-                              ),
-                        textFieldWidget(
-                          txtController: _descriptionController,
-                          labeltxt: "Description",
-                          maxlines: 3,
-                        ),
-                        (FirebaseAuth.instance.currentUser!.providerData[0].providerId
-                                .toLowerCase()
-                                .contains('google'))
-                            ? const SizedBox(
-                                height: 80,
-                              )
-                            : textFieldWidget(
-                                txtController: _passwordController,
-                                labeltxt: "Password",
-                                obscurebool: true,
-                              ),
-                      ],
-                    ),
-                  ),
-                  const SizedBox(height: 15),
-                  const Divider(),
-                  Container(
-                    padding: const EdgeInsets.symmetric(horizontal: 30),
-                    child: Column(
-                      children: <Widget>[
-                        const SizedBox(height: 20),
+      body: SafeArea(
+        child: SingleChildScrollView(
+          child: Column(
+            children: [
+              _isLoading ? const LinearProgressIndicator() : Container(),
+              Container(
+                padding: const EdgeInsets.all(20),
+                child: Column(
+                  children: [
+                    Stack(
+                      children: [
                         SizedBox(
-                          width: double.infinity,
-                          child: ElevatedButton(
-                            onPressed: () {
-                              (FirebaseAuth.instance.currentUser!.providerData[0].providerId
-                                      .toLowerCase()
-                                      .contains('google'))
-                                  ? editUserGoogle()
-                                  : editUser();
-                            },
-                            style: ElevatedButton.styleFrom(
-                              backgroundColor: mPrimaryColor,
-                              side: BorderSide.none,
-                              shape: const StadiumBorder(),
+                          width: 120,
+                          height: 120,
+                          child: _selectedImage != null
+                              ? CircleAvatar(
+                                  radius: 64,
+                                  backgroundImage: MemoryImage(_selectedImage!),
+                                )
+                              : CircleAvatar(
+                                  radius: 64,
+                                  backgroundImage: NetworkImage(_image),
+                                ),
+                        ),
+                        Positioned(
+                          bottom: 0,
+                          right: 0,
+                          child: Container(
+                            width: 35,
+                            height: 35,
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(100),
+                              color: mPrimaryColor,
                             ),
-                            child: const Text(
-                              "Edit Profile",
-                            ),
+                            child: IconButton(
+                                onPressed: () => selectImage(),
+                                icon: const Icon(
+                                  Icons.edit,
+                                  color: Colors.white,
+                                  size: 20,
+                                )),
                           ),
                         ),
                       ],
                     ),
-                  ),
-                ],
+                    const SizedBox(height: 10),
+                    const Divider(),
+                    Container(
+                      padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 5),
+                      child: Column(
+                        children: [
+                          textFieldWidget(
+                            txtController: _usernameController,
+                            labeltxt: "Username",
+                          ),
+                          (FirebaseAuth.instance.currentUser!.providerData[0].providerId
+                                  .toLowerCase()
+                                  .contains('google'))
+                              ? textFieldWidget(
+                                  txtController: _emailController,
+                                  labeltxt: "Email",
+                                  editableText: false,
+                                  interactiveSelection: false,
+                                )
+                              : textFieldWidget(
+                                  txtController: _emailController,
+                                  labeltxt: "Email",
+                                ),
+                          textFieldWidget(
+                            txtController: _descriptionController,
+                            labeltxt: "Description",
+                            maxlines: 3,
+                          ),
+                          (FirebaseAuth.instance.currentUser!.providerData[0].providerId
+                                  .toLowerCase()
+                                  .contains('google'))
+                              ? const SizedBox(
+                                  height: 80,
+                                )
+                              : textFieldWidget(
+                                  txtController: _passwordController,
+                                  labeltxt: "Password",
+                                  obscurebool: true,
+                                  inputAction: TextInputAction.none,
+                                ),
+                        ],
+                      ),
+                    ),
+                    const SizedBox(height: 15),
+                    const Divider(),
+                    Container(
+                      padding: const EdgeInsets.symmetric(horizontal: 30),
+                      child: Column(
+                        children: <Widget>[
+                          const SizedBox(height: 20),
+                          SizedBox(
+                            width: double.infinity,
+                            child: ElevatedButton(
+                              onPressed: () {
+                                (FirebaseAuth.instance.currentUser!.providerData[0].providerId
+                                        .toLowerCase()
+                                        .contains('google'))
+                                    ? editUserGoogle()
+                                    : editUser();
+                              },
+                              style: ElevatedButton.styleFrom(
+                                backgroundColor: mPrimaryColor,
+                                side: BorderSide.none,
+                                shape: const StadiumBorder(),
+                              ),
+                              child: const Text(
+                                "Edit Profile",
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );
   }
 }
 
-class textFieldWidget extends StatefulWidget {
-  const textFieldWidget({
+class textFieldWidget extends StatelessWidget {
+  textFieldWidget({
     Key? key,
     required this.txtController,
     required this.labeltxt,
@@ -280,6 +289,7 @@ class textFieldWidget extends StatefulWidget {
     this.maxlines = 1,
     this.interactiveSelection = true,
     this.editableText = true,
+    this.inputAction = TextInputAction.next,
   }) : super(key: key);
 
   final TextEditingController txtController;
@@ -288,27 +298,23 @@ class textFieldWidget extends StatefulWidget {
   final int maxlines;
   final bool interactiveSelection;
   final bool editableText;
+  var inputAction;
 
-  @override
-  State<textFieldWidget> createState() => _textFieldWidgetState();
-}
-
-class _textFieldWidgetState extends State<textFieldWidget> {
   @override
   Widget build(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.only(top: 20.0),
       child: TextField(
-        enabled: widget.editableText,
-        enableInteractiveSelection: widget.interactiveSelection,
-        maxLines: widget.maxlines,
-        controller: widget.txtController,
+        enabled: editableText,
+        enableInteractiveSelection: interactiveSelection,
+        maxLines: maxlines,
+        controller: txtController,
         keyboardType: TextInputType.name,
         textInputAction: TextInputAction.next,
-        obscureText: widget.obscurebool,
+        obscureText: obscurebool,
         cursorColor: Colors.grey,
         decoration: InputDecoration(
-          labelText: widget.labeltxt,
+          labelText: labeltxt,
           labelStyle: const TextStyle(color: Colors.grey),
           border: OutlineInputBorder(
             borderSide: BorderSide(

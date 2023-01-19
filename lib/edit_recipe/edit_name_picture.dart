@@ -48,6 +48,11 @@ class EditNamePicture extends StatefulWidget {
 class _EditNamePictureState extends State<EditNamePicture> {
   Uint8List? _image;
 
+  // void initState() {
+  //   recipeImgPlaceholder();
+  //   super.initState();
+  // }
+
   void recipeImgPlaceholder() async {
     final ByteData bytes = await rootBundle.load('images/test-images/recipe-image-placeholder.jpg');
     final Uint8List list = bytes.buffer.asUint8List();
@@ -57,14 +62,14 @@ class _EditNamePictureState extends State<EditNamePicture> {
   }
 
   void selectImage() async {
-    Uint8List im = await pickImage(ImageSource.gallery);
+    Uint8List im = await pickImage(ImageSource.gallery, false);
     setState(() {
       _image = im;
     });
   }
 
   void captureImage() async {
-    Uint8List im = await pickImage(ImageSource.camera);
+    Uint8List im = await pickImage(ImageSource.camera, false);
     setState(() {
       _image = im;
     });
@@ -88,16 +93,16 @@ class _EditNamePictureState extends State<EditNamePicture> {
       Column(mainAxisAlignment: MainAxisAlignment.center, children: [
         FloatingActionButton(
           onPressed: captureImage,
-          child: Icon(FluentIcons.camera_28_filled, color: appBarColor),
           backgroundColor: mBackgroundColor,
+          child: Icon(FluentIcons.camera_28_filled, color: appBarColor),
         ),
-        Padding(padding: EdgeInsets.only(top: 4.0)),
+        const Padding(padding: EdgeInsets.only(top: 4.0)),
         Center(
           widthFactor: double.minPositive,
           child: ClipRRect(
             borderRadius: BorderRadius.circular(10),
             child: Container(
-              padding: EdgeInsets.all(4),
+              padding: const EdgeInsets.all(4),
               color: mBackgroundColor,
               child: Text(
                 "Camera",
@@ -112,19 +117,19 @@ class _EditNamePictureState extends State<EditNamePicture> {
         children: [
           FloatingActionButton(
             onPressed: selectImage,
+            backgroundColor: mBackgroundColor,
             child: Icon(
               FluentIcons.image_28_filled,
               color: appBarColor,
             ),
-            backgroundColor: mBackgroundColor,
           ),
-          Padding(padding: EdgeInsets.only(top: 4.0)),
+          const Padding(padding: EdgeInsets.only(top: 4.0)),
           Center(
             widthFactor: double.minPositive,
             child: ClipRRect(
               borderRadius: BorderRadius.circular(10),
               child: Container(
-                padding: EdgeInsets.all(4),
+                padding: const EdgeInsets.all(4),
                 color: mBackgroundColor,
                 child: Text(
                   "Gallery",
@@ -142,12 +147,12 @@ class _EditNamePictureState extends State<EditNamePicture> {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: appBarColor,
-        title: Text('Edit Recipe'),
+        title: const Text('Edit Recipe'),
       ),
       backgroundColor: mBackgroundColor,
       body: SafeArea(
           child: ListView(
-        padding: EdgeInsets.all(10.0),
+        padding: const EdgeInsets.all(10.0),
         children: [
           StarMenu(
               params: StarMenuParameters(
@@ -190,7 +195,7 @@ class _EditNamePictureState extends State<EditNamePicture> {
                           widthFactor: double.maxFinite,
                           child: Container(
                             color: Colors.black45,
-                            child: Text(
+                            child: const Text(
                               "Tap to change",
                               style: TextStyle(color: Colors.white, fontSize: 20),
                             ),

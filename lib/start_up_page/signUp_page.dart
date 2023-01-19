@@ -47,7 +47,7 @@ class _SignUpPageState extends State<SignUpPage> {
   }
 
   void selectImage() async {
-    Uint8List im = await pickImage(ImageSource.gallery);
+    Uint8List im = await pickImage(ImageSource.gallery, true);
     setState(() {
       _image = im;
     });
@@ -116,10 +116,7 @@ class _SignUpPageState extends State<SignUpPage> {
         centerTitle: true,
         title: Text(
           'Sign Up',
-          style: TextStyle(
-            color: appBarColor,
-            fontSize: 22
-          ),
+          style: TextStyle(color: appBarColor, fontSize: 22),
         ),
         leading: IconButton(
           onPressed: () {
@@ -370,10 +367,7 @@ class _SignUpPageState extends State<SignUpPage> {
                           )
                         : Text(
                             'Sign Up',
-                            style: TextStyle(
-                              color: mBackgroundColor,
-                              fontSize: 18
-                            ),
+                            style: TextStyle(color: mBackgroundColor, fontSize: 18),
                           ),
                   ),
                 ),

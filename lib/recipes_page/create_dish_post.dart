@@ -24,8 +24,7 @@ class _CreateDishPostState extends State<CreateDishPost> {
   }
 
   void recipeImgPlaceholder() async {
-    final ByteData bytes = await rootBundle
-        .load('images/test-images/recipe-image-placeholder.jpg');
+    final ByteData bytes = await rootBundle.load('images/test-images/recipe-image-placeholder.jpg');
     final Uint8List list = bytes.buffer.asUint8List();
     setState(() {
       _image = list;
@@ -33,7 +32,7 @@ class _CreateDishPostState extends State<CreateDishPost> {
   }
 
   void captureImage() async {
-    Uint8List im = await pickImage(ImageSource.camera);
+    Uint8List im = await pickImage(ImageSource.camera, false);
     setState(() {
       _image = im;
     });
@@ -81,8 +80,8 @@ class _CreateDishPostState extends State<CreateDishPost> {
                 children: [
                   ElevatedButton(
                     style: ElevatedButton.styleFrom(
-                        backgroundColor: Color(0xFF12A2726),
-                        fixedSize: Size(90, 45),
+                      backgroundColor: Color(0xFF12A2726),
+                      fixedSize: Size(90, 45),
                     ),
                     onPressed: () {},
                     child: Text(
@@ -92,8 +91,8 @@ class _CreateDishPostState extends State<CreateDishPost> {
                   ),
                   ElevatedButton(
                     style: ElevatedButton.styleFrom(
-                        backgroundColor: Color(0xFF12A2726), 
-                        fixedSize: Size(90, 45),
+                      backgroundColor: Color(0xFF12A2726),
+                      fixedSize: Size(90, 45),
                     ),
                     onPressed: () {},
                     child: Text(

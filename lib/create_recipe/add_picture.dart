@@ -22,14 +22,8 @@ import '../util/utils.dart';
 import '../community_page/models/user.dart' as model;
 
 class AddPicture extends StatefulWidget {
-  AddPicture(
-      this.recipeName,
-      this.recipeDescription,
-      this.recipeCategory,
-      this.recipePrivacy,
-      this.recipeIngredients,
-      this.recipeSteps,
-      this.recipeTimer);
+  AddPicture(this.recipeName, this.recipeDescription, this.recipeCategory, this.recipePrivacy,
+      this.recipeIngredients, this.recipeSteps, this.recipeTimer);
 
   final String recipeName;
   final String recipeDescription;
@@ -54,8 +48,7 @@ class _AddPictureState extends State<AddPicture> {
   }
 
   void recipeImgPlaceholder() async {
-    final ByteData bytes = await rootBundle
-        .load('images/test-images/recipe-image-placeholder.jpg');
+    final ByteData bytes = await rootBundle.load('images/test-images/recipe-image-placeholder.jpg');
     final Uint8List list = bytes.buffer.asUint8List();
     setState(() {
       _image = list;
@@ -63,14 +56,14 @@ class _AddPictureState extends State<AddPicture> {
   }
 
   void selectImage() async {
-    Uint8List im = await pickImage(ImageSource.gallery);
+    Uint8List im = await pickImage(ImageSource.gallery, false);
     setState(() {
       _image = im;
     });
   }
 
   void captureImage() async {
-    Uint8List im = await pickImage(ImageSource.camera);
+    Uint8List im = await pickImage(ImageSource.camera, false);
     setState(() {
       _image = im;
     });
@@ -105,10 +98,7 @@ class _AddPictureState extends State<AddPicture> {
               color: mBackgroundColor,
               child: Text(
                 "Camera",
-                style: TextStyle(
-                    color: mPrimaryColor,
-                    fontWeight: FontWeight.bold,
-                    fontSize: 16),
+                style: TextStyle(color: mPrimaryColor, fontWeight: FontWeight.bold, fontSize: 16),
               ),
             ),
           ),
@@ -130,19 +120,16 @@ class _AddPictureState extends State<AddPicture> {
           Center(
             widthFactor: double.minPositive,
             child: ClipRRect(
-            borderRadius: BorderRadius.circular(10),
-            child: Container(
-              padding: EdgeInsets.all(4),
-              color: mBackgroundColor,
-              child: Text(
-                "Gallery",
-                style: TextStyle(
-                    color: mPrimaryColor,
-                    fontWeight: FontWeight.bold,
-                    fontSize: 16),
+              borderRadius: BorderRadius.circular(10),
+              child: Container(
+                padding: EdgeInsets.all(4),
+                color: mBackgroundColor,
+                child: Text(
+                  "Gallery",
+                  style: TextStyle(color: mPrimaryColor, fontWeight: FontWeight.bold, fontSize: 16),
+                ),
               ),
             ),
-          ),
           )
         ],
       ),
@@ -161,8 +148,7 @@ class _AddPictureState extends State<AddPicture> {
         body: SafeArea(
             child: ListView(padding: EdgeInsets.all(10.0), children: [
           Padding(
-            padding:
-                const EdgeInsets.symmetric(horizontal: 15.0, vertical: 15.0),
+            padding: const EdgeInsets.symmetric(horizontal: 15.0, vertical: 15.0),
             child: Text(
               'Add a Picture',
               style: GoogleFonts.bebasNeue(
@@ -189,13 +175,9 @@ class _AddPictureState extends State<AddPicture> {
           Padding(padding: EdgeInsets.all(8.0)),
           StarMenu(
             params: StarMenuParameters(
-              backgroundParams: BackgroundParams(
-                sigmaX: 3,
-                sigmaY: 3,
-                backgroundColor: mPrimaryColor
-              ),
+              backgroundParams:
+                  BackgroundParams(sigmaX: 3, sigmaY: 3, backgroundColor: mPrimaryColor),
               useScreenCenter: true,
-
             ),
             onItemTapped: (index, controller) {
               controller.closeMenu!();
@@ -254,8 +236,8 @@ class _AddPictureState extends State<AddPicture> {
                     .whenComplete(() {
                   Navigator.of(context, rootNavigator: true).pushAndRemoveUntil(
                       MaterialPageRoute(
-                          builder: (context) => MainPage(
-                              2)), //should go to "myrecipe tab" not in homepage
+                          builder: (context) =>
+                              MainPage(2)), //should go to "myrecipe tab" not in homepage
                       (route) => false);
                 });
               },

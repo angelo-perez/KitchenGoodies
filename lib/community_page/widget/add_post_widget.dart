@@ -95,9 +95,7 @@ class _AddPostWidgetState extends State<AddPostWidget> {
                 child: const Text("Choose from Gallery"),
                 onPressed: () async {
                   Navigator.of(context).pop();
-                  Uint8List file = await pickImage(
-                    ImageSource.gallery,
-                  );
+                  Uint8List file = await pickImage(ImageSource.gallery, false);
                   setState(() {
                     _file = file;
                   });
@@ -108,7 +106,7 @@ class _AddPostWidgetState extends State<AddPostWidget> {
                   child: const Text('Take a Photo'),
                   onPressed: () async {
                     Navigator.pop(context);
-                    Uint8List file = await pickImage(ImageSource.camera);
+                    Uint8List file = await pickImage(ImageSource.camera, false);
                     setState(() {
                       _file = file;
                     });
