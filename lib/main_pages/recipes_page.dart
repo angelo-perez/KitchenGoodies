@@ -170,7 +170,6 @@ class _RecipesPageState extends State<RecipesPage> {
           children: [
             Ink(
               width: 200,
-              height: 300,
               decoration: BoxDecoration(
                 borderRadius: borderRadius,
                 image: DecorationImage(
