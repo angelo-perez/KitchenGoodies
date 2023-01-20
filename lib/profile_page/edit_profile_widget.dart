@@ -262,7 +262,7 @@ class _EditProfileWidgetState extends State<EditProfileWidget> {
                                 shape: const StadiumBorder(),
                               ),
                               child: const Text(
-                                "Edit Profile",
+                                "Save Changes",
                               ),
                             ),
                           ),
