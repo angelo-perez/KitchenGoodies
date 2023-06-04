@@ -6,6 +6,9 @@ import 'package:elective_project/util/utils.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:provider/provider.dart';
+
+import '../providers/google_sign_in.dart';
 
 class VerifyEmail extends StatefulWidget {
   const VerifyEmail({super.key});
@@ -57,14 +60,14 @@ class _VerifyEmailState extends State<VerifyEmail> {
       await Future.delayed(const Duration(seconds: 5));
       setState(() => canResendEmail = true);
     } catch (e) {
-      Fluttertoast.showToast(
-          msg: "Something went wrong",
-          toastLength: Toast.LENGTH_SHORT,
-          gravity: ToastGravity.SNACKBAR,
-          timeInSecForIosWeb: 1,
-          backgroundColor: splashScreenBgColor,
-          textColor: Colors.white,
-          fontSize: 16.0);
+      // Fluttertoast.showToast(
+      //     msg: "Something went wrong",
+      //     toastLength: Toast.LENGTH_SHORT,
+      //     gravity: ToastGravity.SNACKBAR,
+      //     timeInSecForIosWeb: 1,
+      //     backgroundColor: splashScreenBgColor,
+      //     textColor: Colors.white,
+      //     fontSize: 16.0);
     }
   }
 
@@ -76,10 +79,7 @@ class _VerifyEmailState extends State<VerifyEmail> {
             backgroundColor: mBackgroundColor,
             title: Text(
               "Verify Email",
-              style: TextStyle(
-                color: appBarColor,
-                fontSize: 22
-              ),
+              style: TextStyle(color: appBarColor, fontSize: 22),
             ),
             automaticallyImplyLeading: false,
           ),
@@ -100,7 +100,6 @@ class _VerifyEmailState extends State<VerifyEmail> {
                   style: ElevatedButton.styleFrom(
                     minimumSize: const Size.fromRadius(24),
                     backgroundColor: mPrimaryColor,
-
                   ),
                   icon: const Icon(
                     Icons.email,
@@ -116,7 +115,7 @@ class _VerifyEmailState extends State<VerifyEmail> {
                   height: 10,
                 ),
                 TextButton(
-                  onPressed: () => FirebaseAuth.instance.signOut(),
+                  onPressed: () => _onCancelAccount(context),
                   child: Text(
                     'Cancel',
                     style: TextStyle(fontSize: 24, color: mPrimaryTextColor),
@@ -126,4 +125,38 @@ class _VerifyEmailState extends State<VerifyEmail> {
             ),
           ),
         );
+}
+
+Future<bool> _onCancelAccount(BuildContext context) async {
+  bool deleteAccount = await showDialog(
+    context: context,
+    builder: (BuildContext context) {
+      return AlertDialog(
+        title: const Text("Cancel Verification"),
+        content: const Text("Are you sure you want to cancel?"),
+        actions: <Widget>[
+          TextButton(
+            onPressed: () {
+              final googleProvider = Provider.of<GoogleSignInProvider>(context, listen: false);
+              googleProvider.logout(context);
+            },
+            child: Text(
+              "Yes",
+              style: TextStyle(color: mPrimaryTextColor),
+            ),
+          ),
+          TextButton(
+            onPressed: () {
+              Navigator.of(context).pop(false);
+            },
+            child: Text(
+              "No",
+              style: TextStyle(color: mPrimaryTextColor),
+            ),
+          ),
+        ],
+      );
+    },
+  );
+  return deleteAccount;
 }

@@ -11,7 +11,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:provider/provider.dart';
 import 'package:url_launcher/url_launcher.dart';
+
+import '../providers/google_sign_in.dart';
 
 class SignUpPage extends StatefulWidget {
   const SignUpPage({Key? key}) : super(key: key);
@@ -129,284 +132,287 @@ class _SignUpPageState extends State<SignUpPage> {
         ),
       ),
       body: SafeArea(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          //mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            Container(
-              padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 20),
-              child: Text(
-                'Welcome',
-                style: TextStyle(color: appBarColor, fontSize: 32, fontWeight: FontWeight.w500),
-              ),
-            ),
-            // <--------- DEFAULT PICTURE --------->
-            Center(
-              child: Stack(
-                children: [
-                  _image != null
-                      ? CircleAvatar(
-                          radius: 64,
-                          backgroundImage: MemoryImage(_image!),
-                        )
-                      : const CircleAvatar(
-                          radius: 64,
-                          backgroundImage: AssetImage('images/user_placeholder.png'),
-                        ),
-                  Positioned(
-                    bottom: -10,
-                    left: 80,
-                    child: IconButton(
-                      onPressed: selectImage,
-                      icon: const Icon(
-                        Icons.add_a_photo,
-                      ),
-                    ),
-                  )
-                ],
-              ),
-            ),
-
-            // <--------- EMAIL, USERNAME, AND PASSWORD CONTAINER --------->
-            Container(
-              padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 20),
-              child: Column(
-                children: <Widget>[
-                  // <--------- EMAIL --------->
-                  TextField(
-                    controller: _emailController,
-                    keyboardType: TextInputType.emailAddress,
-                    cursorColor: Colors.grey,
-                    decoration: InputDecoration(
-                      labelText: 'Email',
-                      labelStyle: const TextStyle(color: Colors.grey),
-                      border: UnderlineInputBorder(
-                        borderSide: BorderSide(
-                          color: mPrimaryColor,
-                          width: 2,
-                        ),
-                      ),
-                      focusedBorder: UnderlineInputBorder(
-                        borderSide: BorderSide(
-                          color: mPrimaryColor,
-                          width: 2,
-                        ),
-                      ),
-                      enabledBorder: const UnderlineInputBorder(
-                        borderSide: BorderSide(
-                          color: Colors.grey,
-                          width: 0.5,
-                        ),
-                      ),
-                    ),
-                  ),
-                  // <--------- USERNAME --------->
-                  TextField(
-                    controller: _usernameController,
-                    keyboardType: TextInputType.text,
-                    cursorColor: Colors.grey,
-                    decoration: InputDecoration(
-                      labelText: 'Username',
-                      labelStyle: const TextStyle(color: Colors.grey),
-                      border: UnderlineInputBorder(
-                        borderSide: BorderSide(
-                          color: mPrimaryColor,
-                          width: 2,
-                        ),
-                      ),
-                      focusedBorder: UnderlineInputBorder(
-                        borderSide: BorderSide(
-                          color: mPrimaryColor,
-                          width: 2,
-                        ),
-                      ),
-                      enabledBorder: const UnderlineInputBorder(
-                        borderSide: BorderSide(
-                          color: Colors.grey,
-                          width: 0.5,
-                        ),
-                      ),
-                    ),
-                  ),
-                  // <--------- PASSWORD --------->
-                  TextField(
-                    controller: _passwordController,
-                    keyboardType: TextInputType.text,
-                    obscureText: true,
-                    cursorColor: Colors.grey,
-                    decoration: InputDecoration(
-                      labelText: 'Password',
-                      labelStyle: const TextStyle(color: Colors.grey),
-                      border: UnderlineInputBorder(
-                        borderSide: BorderSide(
-                          color: mPrimaryColor,
-                          width: 2,
-                        ),
-                      ),
-                      focusedBorder: UnderlineInputBorder(
-                        borderSide: BorderSide(
-                          color: mPrimaryColor,
-                          width: 2,
-                        ),
-                      ),
-                      enabledBorder: const UnderlineInputBorder(
-                        borderSide: BorderSide(
-                          color: Colors.grey,
-                          width: 0.5,
-                        ),
-                      ),
-                    ),
-                  ),
-                  TextField(
-                    controller: _confirmPasswordController,
-                    keyboardType: TextInputType.text,
-                    obscureText: true,
-                    cursorColor: Colors.grey,
-                    decoration: InputDecoration(
-                      labelText: 'Confirm Password',
-                      labelStyle: const TextStyle(color: Colors.grey),
-                      border: UnderlineInputBorder(
-                        borderSide: BorderSide(
-                          color: mPrimaryColor,
-                          width: 2,
-                        ),
-                      ),
-                      focusedBorder: UnderlineInputBorder(
-                        borderSide: BorderSide(
-                          color: mPrimaryColor,
-                          width: 2,
-                        ),
-                      ),
-                      enabledBorder: const UnderlineInputBorder(
-                        borderSide: BorderSide(
-                          color: Colors.grey,
-                          width: 0.5,
-                        ),
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-            ),
-
-            InkWell(
-              child: Container(
-                padding: const EdgeInsets.symmetric(
-                  horizontal: 30,
-                  vertical: 5,
+        child: SingleChildScrollView(
+          // physics: BouncingScrollPhysics(),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            //mainAxisAlignment: MainAxisAlignment.center,
+            children: <Widget>[
+              Container(
+                padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 20),
+                child: Text(
+                  'Welcome',
+                  style: TextStyle(color: appBarColor, fontSize: 32, fontWeight: FontWeight.w500),
                 ),
-                alignment: Alignment.center,
-                child: RichText(
-                    text: TextSpan(
-                  style: const TextStyle(
-                    color: Colors.grey,
-                    fontSize: 12,
-                  ),
+              ),
+              // <--------- DEFAULT PICTURE --------->
+              Center(
+                child: Stack(
                   children: [
-                    const TextSpan(text: 'By clicking the Sign up button, you agree to our '),
-                    TextSpan(
-                        text: 'Terms of Use',
-                        style: TextStyle(
-                          color: mPrimaryColor,
-                          fontSize: 12,
-                        ),
-                        recognizer: TapGestureRecognizer()
-                          ..onTap = () => _launchUrl(
-                              "/kitchen-goodies-terms-of-use/c89b2d33-03ee-4b5e-a77b-d9757ad6c799/terms")),
-                    const TextSpan(text: ' and that you have read our '),
-                    TextSpan(
-                        text: 'Privacy Policy.',
-                        style: TextStyle(
-                          color: mPrimaryColor,
-                          fontSize: 12,
-                        ),
-                        recognizer: TapGestureRecognizer()
-                          ..onTap = () => _launchUrl(
-                              "/kitchen-goodies-privacy-policy/1c986f35-3118-4bc2-aa0a-4e11c632157a/privacy")),
-                  ],
-                )),
-              ),
-            ),
-            const SizedBox(
-              height: 15,
-            ),
-            // <--------- SIGNUP CONTAINER --------->
-            InkWell(
-              child: Container(
-                padding: const EdgeInsets.symmetric(
-                  horizontal: 30,
-                ),
-                child: TextButton(
-                  onPressed: () async {
-                    signUpUser();
-                  },
-                  style: TextButton.styleFrom(
-                    backgroundColor: mPrimaryColor,
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(36),
-                      side: BorderSide(
-                        color: mPrimaryColor,
-                      ),
-                    ),
-                  ),
-                  child: Container(
-                    padding: const EdgeInsets.symmetric(
-                      vertical: 16,
-                    ),
-                    width: double.infinity,
-                    alignment: Alignment.center,
-                    child: _isLoading
-                        ? SizedBox(
-                            width: 20,
-                            height: 20,
-                            child: Center(
-                              child: CircularProgressIndicator(
-                                color: mBackgroundColor,
-                              ),
-                            ),
+                    _image != null
+                        ? CircleAvatar(
+                            radius: 64,
+                            backgroundImage: MemoryImage(_image!),
                           )
-                        : Text(
-                            'Sign Up',
-                            style: TextStyle(color: mBackgroundColor, fontSize: 18),
+                        : const CircleAvatar(
+                            radius: 64,
+                            backgroundImage: AssetImage('images/user_placeholder.png'),
                           ),
-                  ),
+                    Positioned(
+                      bottom: -10,
+                      left: 80,
+                      child: IconButton(
+                        onPressed: selectImage,
+                        icon: const Icon(
+                          Icons.add_a_photo,
+                        ),
+                      ),
+                    )
+                  ],
                 ),
               ),
-            ),
 
-            // <--------- REGISTER CONTAINER --------->
-            InkWell(
-              child: Container(
-                padding: const EdgeInsets.symmetric(
-                  horizontal: 30,
-                  vertical: 16,
-                ),
-                alignment: Alignment.center,
-                child: RichText(
-                    text: TextSpan(
-                  style: const TextStyle(
-                    color: Colors.grey,
-                    fontSize: 16,
-                  ),
-                  children: [
-                    const TextSpan(text: 'Already Have an Account?'),
-                    TextSpan(
-                      text: ' Sign In!',
-                      style: TextStyle(
-                        color: mPrimaryColor,
-                        fontSize: 16,
+              // <--------- EMAIL, USERNAME, AND PASSWORD CONTAINER --------->
+              Container(
+                padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 20),
+                child: Column(
+                  children: <Widget>[
+                    // <--------- EMAIL --------->
+                    TextField(
+                      controller: _emailController,
+                      keyboardType: TextInputType.emailAddress,
+                      cursorColor: Colors.grey,
+                      decoration: InputDecoration(
+                        labelText: 'Email',
+                        labelStyle: const TextStyle(color: Colors.grey),
+                        border: UnderlineInputBorder(
+                          borderSide: BorderSide(
+                            color: mPrimaryColor,
+                            width: 2,
+                          ),
+                        ),
+                        focusedBorder: UnderlineInputBorder(
+                          borderSide: BorderSide(
+                            color: mPrimaryColor,
+                            width: 2,
+                          ),
+                        ),
+                        enabledBorder: const UnderlineInputBorder(
+                          borderSide: BorderSide(
+                            color: Colors.grey,
+                            width: 0.5,
+                          ),
+                        ),
                       ),
-                      recognizer: TapGestureRecognizer()
-                        ..onTap = () {
-                          Navigator.of(context).pushReplacement(
-                              MaterialPageRoute(builder: (context) => const SignInPage()));
-                        },
+                    ),
+                    // <--------- USERNAME --------->
+                    TextField(
+                      controller: _usernameController,
+                      keyboardType: TextInputType.text,
+                      cursorColor: Colors.grey,
+                      decoration: InputDecoration(
+                        labelText: 'Username',
+                        labelStyle: const TextStyle(color: Colors.grey),
+                        border: UnderlineInputBorder(
+                          borderSide: BorderSide(
+                            color: mPrimaryColor,
+                            width: 2,
+                          ),
+                        ),
+                        focusedBorder: UnderlineInputBorder(
+                          borderSide: BorderSide(
+                            color: mPrimaryColor,
+                            width: 2,
+                          ),
+                        ),
+                        enabledBorder: const UnderlineInputBorder(
+                          borderSide: BorderSide(
+                            color: Colors.grey,
+                            width: 0.5,
+                          ),
+                        ),
+                      ),
+                    ),
+                    // <--------- PASSWORD --------->
+                    TextField(
+                      controller: _passwordController,
+                      keyboardType: TextInputType.text,
+                      obscureText: true,
+                      cursorColor: Colors.grey,
+                      decoration: InputDecoration(
+                        labelText: 'Password',
+                        labelStyle: const TextStyle(color: Colors.grey),
+                        border: UnderlineInputBorder(
+                          borderSide: BorderSide(
+                            color: mPrimaryColor,
+                            width: 2,
+                          ),
+                        ),
+                        focusedBorder: UnderlineInputBorder(
+                          borderSide: BorderSide(
+                            color: mPrimaryColor,
+                            width: 2,
+                          ),
+                        ),
+                        enabledBorder: const UnderlineInputBorder(
+                          borderSide: BorderSide(
+                            color: Colors.grey,
+                            width: 0.5,
+                          ),
+                        ),
+                      ),
+                    ),
+                    TextField(
+                      controller: _confirmPasswordController,
+                      keyboardType: TextInputType.text,
+                      obscureText: true,
+                      cursorColor: Colors.grey,
+                      decoration: InputDecoration(
+                        labelText: 'Confirm Password',
+                        labelStyle: const TextStyle(color: Colors.grey),
+                        border: UnderlineInputBorder(
+                          borderSide: BorderSide(
+                            color: mPrimaryColor,
+                            width: 2,
+                          ),
+                        ),
+                        focusedBorder: UnderlineInputBorder(
+                          borderSide: BorderSide(
+                            color: mPrimaryColor,
+                            width: 2,
+                          ),
+                        ),
+                        enabledBorder: const UnderlineInputBorder(
+                          borderSide: BorderSide(
+                            color: Colors.grey,
+                            width: 0.5,
+                          ),
+                        ),
+                      ),
                     ),
                   ],
-                )),
+                ),
               ),
-            ),
-          ],
+
+              InkWell(
+                child: Container(
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 30,
+                    vertical: 5,
+                  ),
+                  alignment: Alignment.center,
+                  child: RichText(
+                      text: TextSpan(
+                    style: const TextStyle(
+                      color: Colors.grey,
+                      fontSize: 12,
+                    ),
+                    children: [
+                      const TextSpan(text: 'By clicking the Sign up button, you agree to our '),
+                      TextSpan(
+                          text: 'Terms of Use',
+                          style: TextStyle(
+                            color: mPrimaryColor,
+                            fontSize: 12,
+                          ),
+                          recognizer: TapGestureRecognizer()
+                            ..onTap = () => _launchUrl(
+                                "/kitchen-goodies-terms-of-use/c89b2d33-03ee-4b5e-a77b-d9757ad6c799/terms")),
+                      const TextSpan(text: ' and that you have read our '),
+                      TextSpan(
+                          text: 'Privacy Policy.',
+                          style: TextStyle(
+                            color: mPrimaryColor,
+                            fontSize: 12,
+                          ),
+                          recognizer: TapGestureRecognizer()
+                            ..onTap = () => _launchUrl(
+                                "/kitchen-goodies-privacy-policy/1c986f35-3118-4bc2-aa0a-4e11c632157a/privacy")),
+                    ],
+                  )),
+                ),
+              ),
+              const SizedBox(
+                height: 15,
+              ),
+              // <--------- SIGNUP CONTAINER --------->
+              InkWell(
+                child: Container(
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 30,
+                  ),
+                  child: TextButton(
+                    onPressed: () async {
+                      signUpUser();
+                    },
+                    style: TextButton.styleFrom(
+                      backgroundColor: mPrimaryColor,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(36),
+                        side: BorderSide(
+                          color: mPrimaryColor,
+                        ),
+                      ),
+                    ),
+                    child: Container(
+                      padding: const EdgeInsets.symmetric(
+                        vertical: 16,
+                      ),
+                      width: double.infinity,
+                      alignment: Alignment.center,
+                      child: _isLoading
+                          ? SizedBox(
+                              width: 20,
+                              height: 20,
+                              child: Center(
+                                child: CircularProgressIndicator(
+                                  color: mBackgroundColor,
+                                ),
+                              ),
+                            )
+                          : Text(
+                              'Sign Up',
+                              style: TextStyle(color: mBackgroundColor, fontSize: 18),
+                            ),
+                    ),
+                  ),
+                ),
+              ),
+
+              // <--------- REGISTER CONTAINER --------->
+              InkWell(
+                child: Container(
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 30,
+                    vertical: 16,
+                  ),
+                  alignment: Alignment.center,
+                  child: RichText(
+                      text: TextSpan(
+                    style: const TextStyle(
+                      color: Colors.grey,
+                      fontSize: 16,
+                    ),
+                    children: [
+                      const TextSpan(text: 'Already Have an Account?'),
+                      TextSpan(
+                        text: ' Sign In!',
+                        style: TextStyle(
+                          color: mPrimaryColor,
+                          fontSize: 16,
+                        ),
+                        recognizer: TapGestureRecognizer()
+                          ..onTap = () {
+                            Navigator.of(context).pushReplacement(
+                                MaterialPageRoute(builder: (context) => const SignInPage()));
+                          },
+                      ),
+                    ],
+                  )),
+                ),
+              ),
+            ],
+          ),
         ),
       ),
     );

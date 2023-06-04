@@ -115,7 +115,7 @@ Future<bool> _onDeleteAccountPressed(BuildContext context) async {
             onPressed: () {
               AuthMethods().deleteUser();
               Navigator.of(context, rootNavigator: true).pushAndRemoveUntil(
-                  MaterialPageRoute(builder: (context) => LoginPage()), (route) => false);
+                  MaterialPageRoute(builder: (context) => LoginPage()), (route) => true);
             },
             child: Text(
               "Yes",

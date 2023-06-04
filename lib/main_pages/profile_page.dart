@@ -32,10 +32,10 @@ class _SettingsPageState extends State<SettingsPage> {
           'Account',
           style: TextStyle(color: appBarColor, fontWeight: FontWeight.w900, fontSize: 22),
         ),
-        actions: [
-          IconButton(
-              onPressed: () {}, icon: SvgPicture.asset('images/icons/settings/night-mode.svg'))
-        ],
+        // actions: [
+        //   IconButton(
+        //       onPressed: () {}, icon: SvgPicture.asset('images/icons/settings/night-mode.svg'))
+        // ],
         elevation: 0,
       ),
       body: SingleChildScrollView(
