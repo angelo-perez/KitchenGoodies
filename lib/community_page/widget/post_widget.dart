@@ -332,7 +332,16 @@ class _PostCardState extends State<PostCard> {
                 width: 20,
               ),
               IconButton(
-                onPressed: () {},
+                onPressed: () {
+                  Fluttertoast.showToast(
+                    msg: "Feature not yet available",
+                    toastLength: Toast.LENGTH_SHORT,
+                    gravity: ToastGravity.SNACKBAR,
+                    timeInSecForIosWeb: 1,
+                    backgroundColor: splashScreenBgColor,
+                    textColor: Colors.white,
+                    fontSize: 16.0);
+                },
                 icon: Icon(
                   Icons.send,
                   color: mSecondColor,
