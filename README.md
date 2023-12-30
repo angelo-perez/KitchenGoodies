@@ -2,6 +2,8 @@
 
 Kitchen Goodies is an Android application that enhances your cooking experience by providing a curated collection of recipes, cooking tips, and kitchen hacks. Whether you're a novice or an experienced chef, Kitchen Goodies offers a variety of delicious recipes and useful insights to make your time in the kitchen more enjoyable.
 
+<img src="https://github.com/angelo-perez/elective_project/blob/master/GIF/Splash_Screen_AdobeExpress.gif" width="187" height="90" />
+
 ## Table of Contents
 
 1. [Download](#installation)
@@ -24,20 +26,18 @@ Note: Make sure to download the APK only from trusted sources to ensure the secu
 
 Explore a wide range of recipes, cooking tips, and kitchen hacks within the Kitchen Goodies app. Enhance your culinary skills and discover new flavors.
 
-![Failed to load](https://github.com/angelo-perez/elective_project/blob/master/GIF/Splash_Screen_AdobeExpress.gif)
+<img src="https://github.com/angelo-perez/elective_project/blob/master/GIF/Feature_1_AdobeExpress.gif" width="187" height="90" />
 
-![Failed to load](https://github.com/angelo-perez/elective_project/blob/master/GIF/Feature_1_AdobeExpress.gif)
+<img src="https://github.com/angelo-perez/elective_project/blob/master/GIF/Feature_2_High_AdobeExpress.gif" width="187" height="90" />
 
-![Failed to load](https://github.com/angelo-perez/elective_project/blob/master/GIF/Feature_2_High_AdobeExpress.gif)
+<img src="https://github.com/angelo-perez/elective_project/blob/master/GIF/Feature_3_AdobeExpress.gif" width="187" height="90" />
+
+<img src="https://github.com/angelo-perez/elective_project/blob/master/GIF/Feature_4_AdobeExpress.gif" width="187" height="90" />
+
+<img src="https://github.com/angelo-perez/elective_project/blob/master/GIF/Feature_5_High_AdobeExpress.gif" width="187" height="90" />
 
 ## Pitching Video
 
 Watch our pitching video to get a quick overview of Kitchen Goodies and its features:
 
 [![Kitchen Goodies Pitching Video]([https://drive.google.com/file/d/13_iZL-T-q8bBF6vq6gQ3QAmnoXginimA/view?usp=sharing](https://cdn.discordapp.com/attachments/869851005393707124/1190604629252255795/kg-logo-with-bg.png))](https://drive.google.com/file/d/1oOnjOes2q3ff0gi29EqXrOXztCNQbkDr/view?usp=drive_link)
-
-![Failed to load](https://github.com/angelo-perez/elective_project/blob/master/GIF/Feature_3_AdobeExpress.gif)
-
-![Failed to load](https://github.com/angelo-perez/elective_project/blob/master/GIF/Feature_4_AdobeExpress.gif)
-
-![Failed to load](https://github.com/angelo-perez/elective_project/blob/master/GIF/Feature_5_High_AdobeExpress.gif)
