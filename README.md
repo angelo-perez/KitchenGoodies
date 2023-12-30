@@ -4,10 +4,10 @@ Kitchen Goodies is an Android application that enhances your cooking experience 
 
 ## Table of Contents
 
-1. [Installation](#installation)
+1. [Download](#installation)
 2. [Usage](#usage)
 
-## Installation
+## Download
 
 To install the Kitchen Goodies application, follow these steps:
 
