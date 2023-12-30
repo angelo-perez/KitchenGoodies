@@ -51,6 +51,6 @@ Explore a wide range of recipes, cooking tips, and kitchen hacks within the Kitc
 
 ## Pitching Video
 
-Watch our pitching video to get a quick overview of Kitchen Goodies and its features:
+Watch our [pitching video](https://www.youtube.com/watch?v=qfnu_o5enQ4) to get a quick overview of Kitchen Goodies and its features:
 
 [![Kitchen Goodies Pitching Video](https://img.youtube.com/vi/qfnu_o5enQ4/maxresdefault.jpg)](https://www.youtube.com/watch?v=qfnu_o5enQ4)
