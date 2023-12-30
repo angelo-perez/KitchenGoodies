@@ -22,3 +22,6 @@ Note: Make sure to download the APK only from trusted sources to ensure the secu
 ## Usage
 
 Explore a wide range of recipes, cooking tips, and kitchen hacks within the Kitchen Goodies app. Enhance your culinary skills and discover new flavors.
+
+Splash Screen:
+![Failed to load](https://drive.google.com/file/d/1-bx7fhJLFjzS0lIEcSPKtn9RKDvuYweI/view?usp=drive_link)
