@@ -2,7 +2,7 @@
 
 Kitchen Goodies is an Android application that enhances your cooking experience by providing a curated collection of recipes, cooking tips, and kitchen hacks. Whether you're a novice or an experienced chef, Kitchen Goodies offers a variety of delicious recipes and useful insights to make your time in the kitchen more enjoyable.
 
-<img src="https://github.com/angelo-perez/elective_project/blob/master/GIF/Splash_Screen_AdobeExpress.gif" width="187" height="90" />
+<img src="https://github.com/angelo-perez/elective_project/blob/master/GIF/Splash_Screen_AdobeExpress.gif" width="900" height="1870" />
 
 ## Table of Contents
 
