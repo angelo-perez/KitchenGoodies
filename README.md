@@ -34,7 +34,7 @@ Explore a wide range of recipes, cooking tips, and kitchen hacks within the Kitc
 
 Watch our pitching video to get a quick overview of Kitchen Goodies and its features:
 
-[![Kitchen Goodies Pitching Video](https://drive.google.com/file/d/13_iZL-T-q8bBF6vq6gQ3QAmnoXginimA/view?usp=sharing)](https://drive.google.com/file/d/1oOnjOes2q3ff0gi29EqXrOXztCNQbkDr/view?usp=drive_link)
+[![Kitchen Goodies Pitching Video]([https://drive.google.com/file/d/13_iZL-T-q8bBF6vq6gQ3QAmnoXginimA/view?usp=sharing](https://cdn.discordapp.com/attachments/869851005393707124/1190604629252255795/kg-logo-with-bg.png))](https://drive.google.com/file/d/1oOnjOes2q3ff0gi29EqXrOXztCNQbkDr/view?usp=drive_link)
 
 ![Failed to load](https://github.com/angelo-perez/elective_project/blob/master/GIF/Feature_3_AdobeExpress.gif)
 
