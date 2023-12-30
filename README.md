@@ -23,20 +23,14 @@ Note: Make sure to download the APK only from trusted sources to ensure the secu
 
 Explore a wide range of recipes, cooking tips, and kitchen hacks within the Kitchen Goodies app. Enhance your culinary skills and discover new flavors.
 
-Splash Screen:
 ![Failed to load](https://github.com/angelo-perez/elective_project/blob/master/GIF/Splash_Screen_AdobeExpress.gif)
 
-Feature 1:
 ![Failed to load](https://github.com/angelo-perez/elective_project/blob/master/GIF/Feature_1_AdobeExpress.gif)
 
-Feature 2:
 ![Failed to load](https://github.com/angelo-perez/elective_project/blob/master/GIF/Feature_2_High_AdobeExpress.gif)
 
-Feature 3:
 ![Failed to load](https://github.com/angelo-perez/elective_project/blob/master/GIF/Feature_3_AdobeExpress.gif)
 
-Feature 4:
 ![Failed to load](https://github.com/angelo-perez/elective_project/blob/master/GIF/Feature_4_AdobeExpress.gif)
 
-Feature 5:
 ![Failed to load](https://github.com/angelo-perez/elective_project/blob/master/GIF/Feature_5_High_AdobeExpress.gif)
