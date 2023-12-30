@@ -6,6 +6,7 @@ Kitchen Goodies is an Android application that enhances your cooking experience 
 
 1. [Download](#installation)
 2. [Usage](#usage)
+3. [Pitching Video](#pitching-video)
 
 ## Download
 
@@ -28,6 +29,12 @@ Explore a wide range of recipes, cooking tips, and kitchen hacks within the Kitc
 ![Failed to load](https://github.com/angelo-perez/elective_project/blob/master/GIF/Feature_1_AdobeExpress.gif)
 
 ![Failed to load](https://github.com/angelo-perez/elective_project/blob/master/GIF/Feature_2_High_AdobeExpress.gif)
+
+## Pitching Video
+
+Watch our pitching video to get a quick overview of Kitchen Goodies and its features:
+
+[![Kitchen Goodies Pitching Video](https://drive.google.com/file/d/13_iZL-T-q8bBF6vq6gQ3QAmnoXginimA/view?usp=sharing)](https://drive.google.com/file/d/1oOnjOes2q3ff0gi29EqXrOXztCNQbkDr/view?usp=drive_link)
 
 ![Failed to load](https://github.com/angelo-perez/elective_project/blob/master/GIF/Feature_3_AdobeExpress.gif)
 
