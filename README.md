@@ -15,7 +15,7 @@ Kitchen Goodies is an Android application that enhances your cooking experience 
 
 To install the Kitchen Goodies application, follow these steps:
 
-1. Download the APK file from the following link: [Kitchen Goodies APK](https://drive.google.com/file/d/15CYiVMCuK8rWEp0df149SAr_JxeJII5L/view?usp=drive_link)
+1. Download the APK file from the following link: [Kitchen Goodies APK](https://drive.google.com/uc?export=download&id=15CYiVMCuK8rWEp0df149SAr_JxeJII5L)
 
 2. Once the download is complete, open the file on your Android device.
 
